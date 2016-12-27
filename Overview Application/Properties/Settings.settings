@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="OverviewApp.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MySqlServerHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="SqlServerHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="MySqlServerPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">saldik</Value>
+    </Setting>
+    <Setting Name="SqlServerPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">saldik</Value>
+    </Setting>
+    <Setting Name="MySqlUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">salda</Value>
+    </Setting>
+    <Setting Name="SqlServerUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">salda</Value>
+    </Setting>
+    <Setting Name="SqlServerUseWindowsAuthentication" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DatabaseType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MySql</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
