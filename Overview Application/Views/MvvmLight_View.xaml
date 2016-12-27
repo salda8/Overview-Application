@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="MVVM_Template_Project.Views.MvvmLight_View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="800"
+             DataContext="{Binding MvvmLight_VM, Source={StaticResource Locator}}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <oxy:PlotView x:Name="Plot1" Title="Candlestick Graph" Model="{Binding PlotModel}" Margin="10" Grid.Row="1"
+                      Grid.ColumnSpan="5" Height="700" MaxWidth="1800" />
+
+    </Grid>
+</UserControl>

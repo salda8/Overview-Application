@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverviewApp", "Overview Application\OverviewApp.csproj", "{0D83B556-00B5-45F7-82C2-4F4DC49DF4BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{01E31FB8-8D8F-42C5-A825-E36AC71B664A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "DataStructures\DataStructures.csproj", "{BC9A1BE5-53DD-4FA4-9C80-9EA063BF4766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FF739AF7-5441-41B3-A180-5F282F8E7603}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D83B556-00B5-45F7-82C2-4F4DC49DF4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D83B556-00B5-45F7-82C2-4F4DC49DF4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D83B556-00B5-45F7-82C2-4F4DC49DF4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D83B556-00B5-45F7-82C2-4F4DC49DF4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E31FB8-8D8F-42C5-A825-E36AC71B664A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E31FB8-8D8F-42C5-A825-E36AC71B664A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E31FB8-8D8F-42C5-A825-E36AC71B664A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E31FB8-8D8F-42C5-A825-E36AC71B664A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9A1BE5-53DD-4FA4-9C80-9EA063BF4766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9A1BE5-53DD-4FA4-9C80-9EA063BF4766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9A1BE5-53DD-4FA4-9C80-9EA063BF4766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9A1BE5-53DD-4FA4-9C80-9EA063BF4766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF739AF7-5441-41B3-A180-5F282F8E7603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF739AF7-5441-41B3-A180-5F282F8E7603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF739AF7-5441-41B3-A180-5F282F8E7603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF739AF7-5441-41B3-A180-5F282F8E7603}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://salda.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Common\\Common.csproj
+		SccProjectName1 = Common
+		SccLocalPath1 = Common
+		SccProjectUniqueName2 = DataStructures\\DataStructures.csproj
+		SccProjectName2 = DataStructures
+		SccLocalPath2 = DataStructures
+		SccProjectUniqueName3 = DataAccess\\DataAccess.csproj
+		SccProjectName3 = DataAccess
+		SccLocalPath3 = DataAccess
+		SccProjectUniqueName4 = Overview\u0020Application\\OverviewApp.csproj
+		SccProjectName4 = Overview\u0020Application
+		SccLocalPath4 = Overview\u0020Application
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 3f2b8c97-edc2-4a5e-b832-c88ca54d39de
+	EndGlobalSection
+EndGlobal
