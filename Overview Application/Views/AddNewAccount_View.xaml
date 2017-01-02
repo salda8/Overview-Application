@@ -1,0 +1,40 @@
+﻿<Window x:Class="OverviewApp.Views.AddNewAccountView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OverviewApp.Views" 
+        xmlns:resources="clr-namespace:OverviewApp.Auxiliary.Resources"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Height="265.831" Width="279.499">
+    <resources:ApexGrid Rows="Auto, Auto,Auto, Auto,Auto,Auto, Auto" Margin="5, 5, 10,5">
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Content="Account Number" MinWidth="105"></Label>
+            <TextBox MinWidth="150" Text="{Binding AccountNumber}"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Broker Name" MinWidth="105"></Label>
+            <TextBox MinWidth="150" Text="{Binding BrokerName}"></TextBox>
+            </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="Current Balance" MinWidth="105"></Label>
+            <TextBox MinWidth="150" Text="{Binding CurrentBalance}"></TextBox>
+            </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label MinWidth="105" Content="Initial Balance" ></Label>
+            <TextBox Text="{Binding InitialBalance}" MinWidth="150"></TextBox>
+            </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label MinWidth="105" Content="IP Address" ></Label>
+            <TextBox Text="{Binding IpAddress}" MinWidth="150"></TextBox>
+            </StackPanel>
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
+            <Label Content="Port" MinWidth="105"></Label>
+            <TextBox Text="{Binding Port}" MinWidth="150"></TextBox>
+            </StackPanel>
+        <Button Grid.Row="6" Margin="5" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
+        <Button Grid.Row="6" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
+    </resources:ApexGrid>
+</Window>

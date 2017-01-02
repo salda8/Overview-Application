@@ -2,19 +2,17 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Timers;
-using System.Windows;
 using System.Windows.Data;
-using DataAccess;
-using DataStructures;
-using DataStructures.POCO;
+using EntityData;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MoreLinq;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using ReactiveUI;
+using QDMS;
 using ILogger = DataStructures.ILogger;
 
 namespace OverviewApp.ViewModels
@@ -23,8 +21,6 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        private readonly IDataService _dataService;
-        private readonly ILogger logger;
         private readonly Timer timer;
 
         private ObservableCollection<Candlestick> barsCollection;
@@ -43,7 +39,6 @@ namespace OverviewApp.ViewModels
 
         private ObservableCollection<string> symbol;
         private ObservableCollection<int> timeframe;
-        private DateTime lastUpdate = DateTime.Now;
         private CandleStickSeries lineSerie;
         // private List<Candlestick> FilteredBars = new List<Candlestick>();
 
@@ -56,11 +51,9 @@ namespace OverviewApp.ViewModels
         //private List<Candlestick> FilteredBarsBySymbol = new List<Candlestick>();
         // private List<Candlestick> FilteredBarsByTimeframe = new List<Candlestick>();
 
-        public BarsViewModel(IDataService dataService, ILogger logger) : base(dataService, logger)
+        public BarsViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
             PlotModel = new PlotModel();
-            _dataService = dataService;
-            this.logger = logger;
             LoadData();
 
             SetUpModel();
@@ -83,11 +76,7 @@ namespace OverviewApp.ViewModels
         public PlotModel PlotModel
         {
             get { return plotModel; }
-            set
-            {
-                plotModel = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref plotModel, value); }
         }
 
         public bool CanRemoveTimeframeFilter
@@ -95,9 +84,8 @@ namespace OverviewApp.ViewModels
             get { return canRemoveTimeframeFilter; }
             set
             {
-                canRemoveTimeframeFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveTimeframeFilter");
+               
+                this.RaiseAndSetIfChanged(ref canRemoveTimeframeFilter, value);
             }
         }
 
@@ -106,43 +94,27 @@ namespace OverviewApp.ViewModels
             get { return canRemoveSymbolFilter; }
             set
             {
-                canRemoveSymbolFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemovSymbolFilter");
+               
+                this.RaiseAndSetIfChanged(ref canRemoveSymbolFilter, value);
             }
         }
 
         public ObservableCollection<Candlestick> BarsCollection
         {
             get { return barsCollection; }
-            set
-            {
-                if (Equals(value, barsCollection)) return;
-                barsCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref barsCollection, value); }
         }
 
         public ObservableCollection<LiveTrade> LiveTrades
         {
             get { return livetradesCollection; }
-            set
-            {
-                if (Equals(value, livetradesCollection)) return;
-                livetradesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref livetradesCollection, value); }
         }
 
         public ObservableCollection<TradeHistory> TradesHistory
         {
             get { return historytradesCollection; }
-            set
-            {
-                if (Equals(value, historytradesCollection)) return;
-                historytradesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref historytradesCollection, value); }
         }
 
         /// <summary>
@@ -152,26 +124,13 @@ namespace OverviewApp.ViewModels
         public ObservableCollection<int> Timeframe
         {
             get { return timeframe; }
-            set
-            {
-                if (timeframe == value)
-                    return;
-                timeframe = value;
-                //RaisePropertyChanged("Authors");
-                RaisePropertyChanged();
-                //UpdateModel();
-            }
+            set { this.RaiseAndSetIfChanged(ref timeframe, value); }
         }
 
         public ObservableCollection<string> Symbol
         {
             get { return symbol; }
-            set
-            {
-                if (symbol == value) return;
-                symbol = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref symbol, value); }
         }
 
         public string SelectedSymbol
@@ -180,8 +139,7 @@ namespace OverviewApp.ViewModels
             set
             {
                 if (selectedSymbol == value) return;
-                selectedSymbol = value;
-                RaisePropertyChanged();
+                this.RaiseAndSetIfChanged(ref selectedSymbol, value);
                 ApplyFilter(!string.IsNullOrEmpty(selectedSymbol) ? FilterField.Symbol : FilterField.None);
                 UpdateModel();
             }
@@ -197,9 +155,7 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedTimeframe == value)
                     return;
-                selectedTimeframe = value;
-                RaisePropertyChanged();
-                //RaisePropertyChanged();
+                this.RaiseAndSetIfChanged(ref selectedTimeframe, value);
 
                 ApplyFilter(!string.IsNullOrEmpty(selectedTimeframe) ? FilterField.Timeframe : FilterField.None);
 
@@ -233,23 +189,23 @@ namespace OverviewApp.ViewModels
         {
             if (BarsCollection.Count > 0)
             {
-                var lastId = BarsCollection.Count - 1;
-                var lastBarId = BarsCollection[lastId].Id;
-                var newbars = _dataService.GetBars(lastBarId);
-                if (newbars.Count > 0)
-                {
-                    foreach (var bars in newbars)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => { BarsCollection.Add(bars); });
+                //var lastId = BarsCollection.Count - 1;
+                //var lastBarId = BarsCollection[lastId].Id;
+                //var newbars = Context.;
+                //if (newbars.Count > 0)
+                //{
+                //    foreach (var bars in newbars)
+                //    {
+                //        Application.Current.Dispatcher.Invoke(() => { BarsCollection.Add(bars); });
 
-                        if (bars.Interval == Convert.ToInt16(selectedTimeframe) && bars.Symbol == selectedSymbol)
-                        {
-                            lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.BarTime), bars.High, bars.Low,
-                                bars.Open, bars.Close));
-                            plotModel.InvalidatePlot(true);
-                        }
-                    }
-                }
+                //        if (bars.Interval == Convert.ToInt16(selectedTimeframe) && bars.Symbol == selectedSymbol)
+                //        {
+                //            lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.BarTime), bars.High, bars.Low,
+                //                bars.Open, bars.Close));
+                //            plotModel.InvalidatePlot(true);
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -281,17 +237,15 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            BarsCollection = _dataService.GetBars();
-            LiveTrades = _dataService.GetLiveTrades();
-            TradesHistory = _dataService.GetTradeHistory();
-            var tf = from t in BarsCollection
-                select t.Interval;
-            Timeframe = new ObservableCollection<int>(tf.Distinct());
-            var symbol = from s in BarsCollection
-                select s.Symbol;
-            Symbol = new ObservableCollection<string>(symbol.Distinct());
-
-            lastUpdate = DateTime.Now;
+            //BarsCollection = Context.GetBars();
+            //LiveTrades = Context.GetLiveTrades();
+            //TradesHistory = Context.GetTradeHistory();
+            //var tf = from t in BarsCollection
+            //    select t.Interval;
+            //Timeframe = new ObservableCollection<int>(tf.Distinct());
+            //var symbol = from s in BarsCollection
+            //    select s.Instrument.Symbol;
+            //Symbol = new ObservableCollection<string>(symbol.Distinct());
         }
 
         private void SetUpModel()
@@ -366,7 +320,7 @@ namespace OverviewApp.ViewModels
                         "Date: {2:HH.mm dd.MM.yy}" + Environment.NewLine + "Open: {5}" + Environment.NewLine +
                         "High: {3}" + Environment.NewLine + "Low: {4}" + Environment.NewLine + "Close: {6}",
                     Title =
-                        $"Symbol {filteredBarsList[0].Symbol + ":" + filteredBarsList[0].Interval + " minute"}"
+                        $"Symbol {filteredBarsList[0].Instrument.Symbol + ":" + filteredBarsList[0].Interval + " minute"}"
                 };
 
                 foreach (var data in filteredBarsList)
@@ -402,7 +356,7 @@ namespace OverviewApp.ViewModels
                 var src = (Candlestick) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedSymbol, src.Symbol) != 0)
+                else if (string.Compare(SelectedSymbol, src.Instrument.Symbol) != 0)
                 {
                     e.Accepted = false;
                 }

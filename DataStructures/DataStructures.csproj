@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataStructures</RootNamespace>
     <AssemblyName>DataStructures</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework.Core">
-      <HintPath>..\packages\EntityFramework.Core.7.0.0-rc1-final\lib\net451\EntityFramework.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>..\Common\bin\Debug\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
@@ -61,16 +58,13 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="POCO\Candlestick.cs" />
-    <Compile Include="POCO\DataItem.cs" />
-    <Compile Include="POCO\Equity.cs" />
-    <Compile Include="POCO\LiveTrade.cs" />
-    <Compile Include="POCO\Matlabvalue.cs" />
-    <Compile Include="POCO\OpenOrder.cs" />
-    <Compile Include="POCO\PortfolioSummary.cs" />
-    <Compile Include="POCO\Strategy.cs" />
-    <Compile Include="POCO\TradeHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\qdms\QDMS\QDMS.csproj">
+      <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
+      <Name>QDMS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

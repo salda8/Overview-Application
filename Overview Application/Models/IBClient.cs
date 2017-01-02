@@ -24,7 +24,7 @@ namespace OverviewApp.Models
 
         public IbClient()
         {
-            ClientSocket = new EClientSocket(this);
+            ClientSocket = new EClientSocket(this, new EReaderMonitorSignal());
         }
 
         #endregion
@@ -132,7 +132,7 @@ namespace OverviewApp.Models
         {
         }
 
-        public virtual void updatePortfolio(Contract contract, int position, double marketPrice, double marketValue,
+        public virtual void UpdatePortfolio(Contract contract, int position, double marketPrice, double marketValue,
             double averageCost, double unrealisedPnl, double realisedPnl, string accountName)
         {
         }
@@ -146,11 +146,11 @@ namespace OverviewApp.Models
         {
         }
 
-        public virtual void position(string account, Contract contract, int pos, double avgCost)
+        public virtual void Position(string account, Contract contract, int pos, double avgCost)
         {
         }
 
-        public virtual void orderStatus(int orderId, string status, int filled, int remaining, double avgFillPrice,
+        public virtual void OrderStatus(int orderId, string status, int filled, int remaining, double avgFillPrice,
             int permId, int parentId, double lastFillPrice, int clientId, string whyHeld)
         {
         }
@@ -294,6 +294,46 @@ namespace OverviewApp.Models
             var easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
             var userTime = TimeZoneInfo.ConvertTimeFromUtc(dtDateTime, easternZone);
             return userTime.ToString("hh:mm:ss.fff");
+        }
+        public void updatePortfolio(Contract contract, double position, double marketPrice, double marketValue,
+                                    double averageCost, double unrealisedPnl, double realisedPnl,
+                                    string accountName)
+        {
+        }
+        public void orderStatus(int orderId, string status, double filled, double remaining, double avgFillPrice,
+                                int permId, int parentId, double lastFillPrice, int clientId, string whyHeld)
+        {
+        }
+        public void position(string account, Contract contract, double pos, double avgCost)
+        {
+        }
+        public void connectAck()
+        {
+        }
+        public void positionMulti(int requestId, string account, string modelCode, Contract contract, double pos,
+                                  double avgCost)
+        {
+        }
+        public void positionMultiEnd(int requestId)
+        {
+        }
+        public void accountUpdateMulti(int requestId, string account, string modelCode, string key, string value,
+                                       string currency)
+        {
+        }
+        public void accountUpdateMultiEnd(int requestId)
+        {
+        }
+        public void securityDefinitionOptionParameter(int reqId, string exchange, int underlyingConId,
+                                                      string tradingClass, string multiplier, HashSet<string> expirations,
+                                                      HashSet<double> strikes)
+        {
+        }
+        public void securityDefinitionOptionParameterEnd(int reqId)
+        {
+        }
+        public void softDollarTiers(int reqId, SoftDollarTier[] tiers)
+        {
         }
     }
 

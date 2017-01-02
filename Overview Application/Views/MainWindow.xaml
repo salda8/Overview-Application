@@ -41,6 +41,11 @@
                 <MenuItem Header="_Custom commands" IsTabStop="False">
                     <MenuItem Command="{Binding OpenDatabaseSettingsCommand}" Header="Database Settings" />
                 </MenuItem>
+                <MenuItem Header="_Add New" IsTabStop="false">
+                    <MenuItem Command="{Binding AddNewAccountCommand}" Header="Account"></MenuItem>
+                    <MenuItem Command="{Binding AddNewStrategyCommand}" Header="Strategy"></MenuItem>
+                </MenuItem>
+                
             </Menu>
             <!--    -->
             <!--  StatusBar at the bottom.  Binds to a property on the main view  -->

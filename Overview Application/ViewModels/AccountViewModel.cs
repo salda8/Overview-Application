@@ -9,7 +9,7 @@ using System.Windows.Data;
 using DataAccess;
 using DataStructures;
 using DataStructures.Enums;
-using DataStructures.POCO;
+using EntityData;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
@@ -20,7 +20,9 @@ using OverviewApp.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using ILogger = DataStructures.ILogger;
+using QDMS;
+using ReactiveUI;
+
 
 namespace OverviewApp.ViewModels
 {
@@ -34,20 +36,20 @@ namespace OverviewApp.ViewModels
         private readonly List<Equity> filteredEquityByDate = new List<Equity>();
         private readonly Timer timer;
         private readonly Timer timerEquity;
-        private ObservableCollection<string> accounts;
+        private ReactiveList<string> accounts;
 
-        private ObservableCollection<PortfolioSummary> accsummaryCollection;
+        private ReactiveList<PortfolioSummary> accsummaryCollection;
         private bool canRemoveAccountFilter;
         private bool canRemoveEndDateFilter;
         private bool canRemoveStartDateFilter;
 
-        private ObservableCollection<Equity> equityCollection;
+        private ReactiveList<Equity> equityCollection;
 
-        private ObservableCollection<TradeHistory> historytradesCollection;
+        private ReactiveList<TradeHistory> historytradesCollection;
 
-        private ObservableCollection<LiveTrade> livetradesCollection;
+        private ReactiveList<LiveTrade> livetradesCollection;
 
-        private ObservableCollection<OpenOrder> openordersCollection;
+        private ReactiveList<OpenOrder> openordersCollection;
         private string selectedAccount;
         private DateTime selectedEndDate = DateTime.Today;
         private DateTime selectedStartDate = DateTime.Today.AddDays(-10);
@@ -59,6 +61,7 @@ namespace OverviewApp.ViewModels
 
 #pragma warning disable CS0169 // The field 'Account_ViewModel.stopwatch' is never used
         private Stopwatch stopwatch;
+        private ReactiveList<Account> accountsList;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
 
         #endregion
@@ -68,11 +71,12 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public AccountViewModel(IDataService dataService, ILogger logger) : base(dataService, logger)
+        public AccountViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
+          
             InitializeCommands();
             PlotModel = new PlotModel();
-            DataService = dataService;
+           
             
             SetUpModel();
             LoadData();
@@ -99,11 +103,7 @@ namespace OverviewApp.ViewModels
 
         #region Properties
 
-        /// <summary>
-        ///     Gets or sets the IDownloadDataService member
-        /// </summary>
-        internal IDataService DataService { get; set; }
-
+       
         /// <summary>
         ///     Gets or sets the CollectionViewSource which is the proxy for the
         ///     collection of Things and the datagrid in which each thing is displayed.
@@ -119,87 +119,50 @@ namespace OverviewApp.ViewModels
         public RelayCommand ResetFiltersCommand { get; private set; }
         public RelayCommand RemoveAccountFilterCommand { get; private set; }
 
-        public ObservableCollection<LiveTrade> LiveTrades
+        public ReactiveList<LiveTrade> LiveTrades
         {
             get { return livetradesCollection; }
-            set
-            {
-                if (Equals(value, livetradesCollection)) return;
-                livetradesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref livetradesCollection, value); }
         }
 
-        public ObservableCollection<TradeHistory> TradesHistory
+        public ReactiveList<TradeHistory> TradesHistory
         {
             get { return historytradesCollection; }
-            set
-            {
-                if (Equals(value, historytradesCollection)) return;
-                historytradesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref historytradesCollection, value); }
         }
 
-        public ObservableCollection<OpenOrder> OpenOrders
+        public ReactiveList<OpenOrder> OpenOrders
         {
             get { return openordersCollection; }
-            set
-            {
-                if (Equals(value, openordersCollection)) return;
-                openordersCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref openordersCollection, value); }
         }
 
-        public ObservableCollection<PortfolioSummary> AccountSummaryCollection
+        public ReactiveList<PortfolioSummary> AccountSummaryCollection
         {
             get { return accsummaryCollection; }
-            set
-            {
-                if (Equals(value, accsummaryCollection)) return;
-                accsummaryCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref accsummaryCollection, value); }
         }
 
         public PlotModel PlotModel
         {
             get { return plotModel; }
-            set
-            {
-                plotModel = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref plotModel, value); }
         }
 
-        public ObservableCollection<Equity> EquityCollection
+        public ReactiveList<Equity> EquityCollection
         {
             get { return equityCollection; }
-            set
-            {
-                if (Equals(value, equityCollection)) return;
-                equityCollection = value;
-                //PlotModel.InvalidatePlot(true); //UpdateModel();
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref equityCollection, value); }
         }
 
         /// <summary>
         ///     Gets or sets a list of accounts which is used to populate the account filter
         ///     drop down list.
         /// </summary>
-        public ObservableCollection<string> Accounts
+        public ReactiveList<string> Accounts
         {
             get { return accounts; }
-            set
-            {
-                if (accounts == value)
-                    return;
-                accounts = value;
-                //RaisePropertyChanged("Authors");
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref accounts, value); }
         }
 
         /// <summary>
@@ -212,9 +175,9 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedAccount == value)
                     return;
-                selectedAccount = value;
+               
                 //RaisePropertyChanged("SelectedAuthor");
-                RaisePropertyChanged();
+             this.RaiseAndSetIfChanged(ref selectedAccount, value);
                 // FilteredEquity.Clear();
 
                 ApplyFilter(!string.IsNullOrEmpty(selectedAccount) ? FilterField.Account : FilterField.None);
@@ -232,9 +195,9 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedStartDate == value)
                     return;
-                selectedStartDate = value;
+              
                 //RaisePropertyChanged("SelectedAuthor");
-                RaisePropertyChanged();
+                this.RaiseAndSetIfChanged(ref selectedStartDate, value);
                 if (selectedStartDate != DateTime.Today.AddYears(-1))
                 {
                     // FilteredEquityByDate.Clear();
@@ -255,9 +218,7 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedEndDate == value)
                     return;
-                selectedEndDate = value;
-                //RaisePropertyChanged("SelectedAuthor");
-                RaisePropertyChanged();
+                this.RaiseAndSetIfChanged(ref selectedEndDate, value);
                 if (selectedEndDate != DateTime.Today)
                 {
                     filteredEquityByDate.Clear();
@@ -273,41 +234,22 @@ namespace OverviewApp.ViewModels
         public bool CanRemoveAccountFilter
         {
             get { return canRemoveAccountFilter; }
-            set
-            {
-                canRemoveAccountFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveAccountFilter");
-            }
+            set { this.RaiseAndSetIfChanged(ref canRemoveAccountFilter, value); }
         }
 
         public bool CanRemoveEndDateFilter
         {
             get { return canRemoveEndDateFilter; }
-            set
-            {
-                canRemoveEndDateFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveEndDateFilter");
-            }
+            set { this.RaiseAndSetIfChanged(ref canRemoveEndDateFilter, value); }
         }
 
         public bool CanRemoveStartDateFilter
         {
             get { return canRemoveStartDateFilter; }
-            set
-            {
-                canRemoveStartDateFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveStartdDateFilter");
-            }
+            set { this.RaiseAndSetIfChanged(ref canRemoveStartDateFilter, value); }
         }
 
-        public DateTime Today
-        {
-            get { return DateTime.Today; }
-            private set { }
-        }
+        public DateTime Today => DateTime.Today;
 
         #endregion
 
@@ -345,10 +287,10 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public override void Cleanup()
+        public  void Cleanup()
         {
             Messenger.Default.Unregister<ViewCollectionViewSourceMessageToken>(this);
-            base.Cleanup();
+            //base.Cleanup();
         }
 
         /// <summary>
@@ -356,31 +298,22 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-            var livetrades = DataService.GetLiveTrades();
-            var history = DataService.GetTradeHistory();
-            var openorder = DataService.GetOpenOrders();
-            var summary = DataService.GetPortfolioSummary();
-            var equity = DataService.GetEquity();
-            var q1 = from t in history
-                select t.Account;
-            var q2 = from t in livetrades
-                select t.Account;
-            var q3 = from t in openorder
-                select t.Account;
-            var q4 = from t in summary
-                select t.Account;
-            var dis = q1.Union(q2).Union(q3).Union(q4);
-
-            Accounts = new ObservableCollection<string>(dis);
-
-            LiveTrades = new ObservableCollection<LiveTrade>(livetrades);
-            TradesHistory = new ObservableCollection<TradeHistory>(history);
-            OpenOrders = new ObservableCollection<OpenOrder>(openorder);
-            AccountSummaryCollection = new ObservableCollection<PortfolioSummary>(summary);
-            EquityCollection = new ObservableCollection<Equity>(equity);
+         
+            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
+            TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistories.ToList());
+            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
+            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
+            AccountsList = new ReactiveList<Account>(Context.Accounts.ToList());
+            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
+            Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
             //SetUpModelData();
 
-            //EquityCollection = EquityCollection1.GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
+        }
+
+        public ReactiveList<Account> AccountsList
+        {
+            get { return accountsList; }
+            set { this.RaiseAndSetIfChanged(ref accountsList, value); }
         }
 
         /// <summary>
@@ -388,18 +321,18 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateData()
         {
-            var livetrades = DataService.GetLiveTrades();
-            var openorder = DataService.GetOpenOrders();
-            var summary = DataService.GetPortfolioSummary();
-            ObservableCollection<TradeHistory> history;
+            //var livetrades = Context.GetLiveTrades();
+            //var openorder = Context.GetOpenOrders();
+            //var summary = Context.GetPortfolioSummary();
+           List<TradeHistory> history;
             if (TradesHistory.Count > 0)
             {
-                var lastIdHistoricalTrade = TradesHistory[TradesHistory.Count - 1].Id;
-                history = DataService.GetTradeHistory(lastIdHistoricalTrade);
+                var lastIdHistoricalTrade = TradesHistory[TradesHistory.Count - 1].ID;
+                history = Context.TradeHistories.Where(x=>x.ID> lastIdHistoricalTrade).ToList();
             }
             else
             {
-                history = DataService.GetTradeHistory();
+                history = new ReactiveList<TradeHistory>(Context.TradeHistories).ToList();
             }
 
             foreach (var tradeHistory in history)
@@ -407,11 +340,11 @@ namespace OverviewApp.ViewModels
                 Application.Current.Dispatcher.Invoke(() => { TradesHistory.Add(tradeHistory); });
             }
 
-            LiveTrades = new ObservableCollection<LiveTrade>(livetrades);
+            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
             Application.Current.Dispatcher.Invoke(() => { OpenOrders.Clear(); });
 
-            OpenOrders = new ObservableCollection<OpenOrder>(openorder);
-            AccountSummaryCollection = new ObservableCollection<PortfolioSummary>(summary);
+            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
+            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
 
         /// <summary>
@@ -419,15 +352,15 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateEquityData()
         {
-            ObservableCollection<Equity> equity;
+            List<Equity> equity;
             if (EquityCollection.Count > 0)
             {
-                var lastIdEquity = EquityCollection[EquityCollection.Count - 1].Id;
-                equity = DataService.GetEquity(lastIdEquity);
+                var lastIdEquity = EquityCollection[EquityCollection.Count - 1].ID;
+                equity = Context.Equities.Where(x=>x.ID>lastIdEquity).ToList();
             }
             else
             {
-                equity = DataService.GetEquity();
+                equity = Context.Equities.ToList();
             }
             foreach (var equit in equity)
             {
@@ -475,16 +408,14 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateModel()
         {
-            var xxx = Ecvs.CollectionViewType;
-            var xxxx = Ecvs.GetType();
             var listEquity = Ecvs.View.Cast<Equity>().ToList();
             if (listEquity.Count != 0)
             {
                 var dataperaccount =
-                    listEquity.DistinctBy(x => x.Id).GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
+                    listEquity.DistinctBy(x => x.ID).GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
 
-                var min = listEquity.MinBy(m => m.Value).Value;
-                var max = listEquity.MaxBy(m => m.Value).Value;
+                var min = Convert.ToDouble(listEquity.MinBy(m => m.Value).Value);
+                var max = Convert.ToDouble(listEquity.MaxBy(m => m.Value).Value);
 
                 PlotModel.Series.Clear();
                 var find = PlotModel.Axes.First(x => x.Title == "Value");
@@ -522,7 +453,7 @@ namespace OverviewApp.ViewModels
                         Smooth = false
                     };
 
-                    data.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), d.Value)));
+                    data.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double) d.Value)));
                     PlotModel.Series.Add(lineSerie);
                     PlotModel.Title = "Equity Graph"; // Account:"+data.Key;
                 }
@@ -565,7 +496,7 @@ namespace OverviewApp.ViewModels
                 var src = (LiveTrade) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                     e.Accepted = false;
             }
             else if (e.Item is OpenOrder)
@@ -573,7 +504,7 @@ namespace OverviewApp.ViewModels
                 var src = (OpenOrder) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                     e.Accepted = false;
             }
             else if (e.Item is TradeHistory)
@@ -581,7 +512,7 @@ namespace OverviewApp.ViewModels
                 var src = (TradeHistory) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                     e.Accepted = false;
             }
             else if (e.Item is Equity)
@@ -589,7 +520,7 @@ namespace OverviewApp.ViewModels
                 var src = (Equity) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                 {
                     e.Accepted = false;
                 }
@@ -603,7 +534,7 @@ namespace OverviewApp.ViewModels
                 var src = (PortfolioSummary) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                 {
                     e.Accepted = false;
                 }

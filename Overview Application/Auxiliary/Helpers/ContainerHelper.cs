@@ -1,9 +1,6 @@
-﻿using DataAccess;
-using DataAccess.Helpers;
-using DataStructures;
-using GalaSoft.MvvmLight.Ioc;
+﻿using DataStructures;
+using EntityData;
 using Microsoft.Practices.Unity;
-using OverviewApp.Logger;
 using OverviewApp.ViewModels;
 
 namespace OverviewApp.Auxiliary.Helpers
@@ -15,7 +12,6 @@ namespace OverviewApp.Auxiliary.Helpers
            //ContainerHelperDa.Configure(connectionString);
            //var container = new UnityContainer();
            container.RegisterType<MainViewModel>();
-           container.RegisterType<IDataService, MySQLStorage>();
            container.RegisterType<SummaryViewModel>();
            container.RegisterType<AccountViewModel>();
            container.RegisterType<EquityViewModel>();
@@ -26,6 +22,7 @@ namespace OverviewApp.Auxiliary.Helpers
            container.RegisterType<DatabaseConnectionViewModel>();
            container.RegisterType<ILogger, Logger.Logger>();
            container.RegisterType<IAttributesHelper, AttributesHelper>();
+           container.RegisterInstance(typeof(IMyDbContext), new MyDBContext());
         }
     }
 }

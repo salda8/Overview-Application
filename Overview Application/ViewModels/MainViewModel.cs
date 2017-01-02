@@ -1,12 +1,13 @@
-﻿using System.Windows.Input;
-using DataAccess;
-using DataStructures;
+﻿using System.Reactive;
+using System.Windows.Input;
+using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
+using OverviewApp.Views;
+using ReactiveUI;
 using ILogger = DataStructures.ILogger;
 
 namespace OverviewApp.ViewModels
@@ -19,8 +20,7 @@ namespace OverviewApp.ViewModels
     /// </summary>
     public class MainViewModel : MyBaseViewModel
     {
-        private readonly ILogger logger;
-        private readonly IUnityContainer container;
+       
 
         #region Fields
 
@@ -29,15 +29,16 @@ namespace OverviewApp.ViewModels
         private ICommand refreshPeopleMenuCommand;
 
         private string statusBarMessage;
+        private ReactiveCommand<Unit, Unit> addNewAccountCommand;
+        private ReactiveCommand<Unit, Unit> addNewStrategyCommand;
 
         #endregion
 
         #region
 
-        public MainViewModel(IDataService dataService, ILogger logger,IUnityContainer container) : base(dataService, logger)
+        public MainViewModel(IMyDbContext context, ILogger logger,IUnityContainer container) : base(context, logger)
         {
-            this.logger = logger;
-            this.container = container;
+          
             // This will register our method with the Messenger class for incoming 
             // messages of type StatusMessage. So now we can send a StatusMessage from
             // any place in our application, it'l end up here, we'll update the string
@@ -46,14 +47,9 @@ namespace OverviewApp.ViewModels
             Messenger.Default.Register<StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
 
             // This is how you can have some design time data
-            if (IsInDesignMode)
-            {
+            
                 StatusBarMessage = "Status in design";
-            }
-            else
-            {
-                StatusBarMessage = "Ready to rock and roll.";
-            }
+            
         }
 
         #endregion
@@ -83,12 +79,7 @@ namespace OverviewApp.ViewModels
         public string StatusBarMessage
         {
             get { return statusBarMessage; }
-            set
-            {
-                if (value == statusBarMessage) return;
-                statusBarMessage = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref statusBarMessage, value); }
         }
 
         public ICommand OpenDatabaseSettingsCommand => openDatabaseSettingsMenuCommand ??
@@ -97,15 +88,32 @@ namespace OverviewApp.ViewModels
                                                                 Execute_OpenDatabaseSettingsWindow,
                                                                 CanExecute_OpenDatabaseSetttingsWindow));
 
-        /// <summary>
-        ///     This is in order to bind the command that we have in the MainWindow.
-        ///     The Command is always enabled (so the can execute just returns true),
-        ///     And it will send a message (that will be received by the Random View Model.
-        /// </summary>
         public ICommand RefreshPeopleMenuCommand => refreshPeopleMenuCommand ??
                                                      (refreshPeopleMenuCommand =
                                                          new RelayCommand<string>(Execute_RefreshPeopleMenu,
                                                              CanExecute_RefreshPeopleMenu));
+
+        public ReactiveCommand<Unit, Unit> AddNewStrategyCommand
+            =>
+                addNewStrategyCommand ??
+                (addNewStrategyCommand = ReactiveCommand.Create(AddNewStrategy));
+
+        private static void AddNewStrategy()
+        {
+            var window = new AddEditStrategy(null);
+            window.ShowDialog();
+        }
+
+        public ReactiveCommand<Unit, Unit> AddNewAccountCommand
+            =>
+                addNewAccountCommand ??
+                (addNewAccountCommand = ReactiveCommand.Create(AddNewAccount));
+
+        private static void AddNewAccount()
+        {
+            var window = new AddNewAccountView(null);
+            window.ShowDialog();
+        }
 
         #endregion
 

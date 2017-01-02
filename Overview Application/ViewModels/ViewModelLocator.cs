@@ -10,15 +10,9 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
-using DataAccess;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Design_Time;
-using OverviewApp.Models;
-using OverviewApp.Properties;
 
 namespace OverviewApp.ViewModels
 {
@@ -41,19 +35,20 @@ namespace OverviewApp.ViewModels
             ContainerHelper.Configure(container, "");
 
             ServiceLocator.SetLocatorProvider(() => locator);
+            
             //var ioc = new SimpleIoc();
 
             //if (ViewModelBase.IsInDesignModeStatic)
             //{
-            //    SimpleIoc.Default.Register<IDataService, DesignDataService>();
+            //    SimpleIoc.Default.Register<IMyDbContext, DesignContext>();
             //}
             //else { 
-            //    SimpleIoc.Default.Register<IDataService, DataService>();
-               
-              
+            //    SimpleIoc.Default.Register<IMyDbContext, Context>();
+
+
             //}
 
-            
+
 
         }
 

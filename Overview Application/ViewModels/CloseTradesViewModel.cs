@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using DataAccess;
-using DataStructures;
-using DataStructures.POCO;
+using QDMS;
+using EntityData;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Models;
+using ReactiveUI;
 using ILogger = DataStructures.ILogger;
 
 namespace OverviewApp.ViewModels
 {
     public class CloseTradesViewModel : MyBaseViewModel
     {
-        private readonly ILogger logger;
-
+     
         #region Fields
 
         private readonly List<Equity> filteredEquity = new List<Equity>();
@@ -68,11 +68,11 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public CloseTradesViewModel(IDataService dataService, ILogger logger) : base(dataService, logger)
+        public CloseTradesViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
-            this.logger = logger;
+          
             InitializeCommands();
-            DataService = dataService;
+           
             LoadData();
             // This will register our method with the Messenger class for incoming
             // messages of type ViewCollectionViewSourceMessageToken.
@@ -85,9 +85,9 @@ namespace OverviewApp.ViewModels
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the IDownloadDataService member
+        ///     Gets or sets the IDownloadContext member
         /// </summary>
-        internal IDataService DataService { get; set; }
+       
 
         /// <summary>
         ///     Gets or sets the CollectionViewSource which is the proxy for the
@@ -102,34 +102,19 @@ namespace OverviewApp.ViewModels
         public ObservableCollection<LiveTrade> LiveTrades
         {
             get { return livetradesCollection; }
-            set
-            {
-                if (Equals(value, livetradesCollection)) return;
-                livetradesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref livetradesCollection, value); }
         }
 
         public ObservableCollection<OpenOrder> OpenOrders
         {
             get { return openordersCollection; }
-            set
-            {
-                if (Equals(value, openordersCollection)) return;
-                openordersCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref openordersCollection, value); }
         }
 
         public ObservableCollection<PortfolioSummary> AccountSummaryCollection
         {
             get { return accsummaryCollection; }
-            set
-            {
-                if (Equals(value, accsummaryCollection)) return;
-                accsummaryCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref accsummaryCollection, value); }
         }
 
         /// <summary>
@@ -139,14 +124,7 @@ namespace OverviewApp.ViewModels
         public ObservableCollection<string> Accounts
         {
             get { return accounts; }
-            set
-            {
-                if (accounts == value)
-                    return;
-                accounts = value;
-                //RaisePropertyChanged("Authors");
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref accounts, value); }
         }
 
         public string SelectedAccount
@@ -156,11 +134,7 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedAccount == value)
                     return;
-                selectedAccount = value;
-                //RaisePropertyChanged("SelectedAuthor");
-                RaisePropertyChanged();
-                // FilteredEquity.Clear();
-
+                this.RaiseAndSetIfChanged(ref selectedAccount, value);
                 ApplyFilter(!string.IsNullOrEmpty(selectedAccount) ? FilterField.Account : FilterField.None);
             }
         }
@@ -168,42 +142,22 @@ namespace OverviewApp.ViewModels
         public LiveTrade SelectedRow
         {
             get { return selectedRow; }
-            set
-            {
-                if (selectedRow == value)
-                    return;
-                selectedRow = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref selectedRow, value); }
         }
 
         public bool CanRemoveAccountFilter
         {
             get { return canRemoveAccountFilter; }
-            set
-            {
-                canRemoveAccountFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveAccountFilter");
-            }
+            set { this.RaiseAndSetIfChanged(ref canRemoveAccountFilter, value); }
         }
 
         public bool CanRemoveEndDateFilter
         {
             get { return canRemoveEndDateFilter; }
-            set
-            {
-                canRemoveEndDateFilter = value;
-                //RaisePropertyChanged("CanRemoveAuthorFilter");
-                RaisePropertyChanged("CanRemoveEndDateFilter");
-            }
+            set { this.RaiseAndSetIfChanged(ref canRemoveEndDateFilter, value); }
         }
 
-        public DateTime Today
-        {
-            get { return DateTime.Today; }
-            private set { }
-        }
+        public DateTime Today => DateTime.Today;
 
         #endregion
 
@@ -229,10 +183,10 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public override void Cleanup()
+        public  void Cleanup()
         {
             Messenger.Default.Unregister<ViewCollectionViewSourceMessageToken>(this);
-            base.Cleanup();
+            //base.Cleanup();
         }
 
         /// <summary>
@@ -240,7 +194,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-            var livetrades = DataService.GetLiveTrades();
+            var livetrades = Context.LiveTrades.ToList();
             LiveTrades = new ObservableCollection<LiveTrade>(livetrades);
         }
 
@@ -249,7 +203,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateData()
         {
-            var livetrades = DataService.GetLiveTrades();
+            var livetrades = Context.LiveTrades.ToList();
 
             Application.Current.Dispatcher.Invoke(() => { LiveTrades.Clear(); });
             LiveTrades = new ObservableCollection<LiveTrade>(livetrades);
@@ -274,7 +228,7 @@ namespace OverviewApp.ViewModels
             var wrapper = new IbClient();
             wrapper.ClientSocket.eConnect("127.0.0.1", row.Port, 9999);
             ReqGlobalCancel(wrapper);
-            Trade.PlaceMarketTrade(row.Symbol, row.Position, wrapper);
+            Trade.PlaceMarketTrade(row.Instrument.Symbol, (double) row.Position, wrapper);
             wrapper.ClientSocket.eDisconnect();
         }
 
@@ -301,7 +255,7 @@ namespace OverviewApp.ViewModels
                 var src = (LiveTrade) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedAccount, src.Account) != 0)
+                else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
                     e.Accepted = false;
             }
         }

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using DataAccess;
 using DataStructures;
-using DataStructures.POCO;
+using EntityData;
 using MoreLinq;
-using OverviewApp.Logger;
-using OverviewApp.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using QDMS;
+using ReactiveUI;
 
 namespace OverviewApp.ViewModels
 {
@@ -17,9 +15,8 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        private readonly IDataService _dataService;
-        private readonly ILogger logger;
-        private ObservableCollection<Equity> equityCollection;
+        
+        private ReactiveList<Equity> equityCollection;
         private DateTime lastUpdate = DateTime.Now;
         private PlotModel plotModel;
 
@@ -27,12 +24,11 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public EquityViewModel(IDataService dataService, ILogger logger) : base(dataService, logger)
+        public EquityViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
             PlotModel = new PlotModel();
             SetUpModel();
-            _dataService = dataService;
-            this.logger = logger;
+         
 
             LoadData();
         }
@@ -47,26 +43,21 @@ namespace OverviewApp.ViewModels
             set
             {
                 plotModel = value;
-                RaisePropertyChanged();
+                this.RaiseAndSetIfChanged(ref plotModel, value);
             }
         }
 
-        public ObservableCollection<Equity> EquityCollection
+        public ReactiveList<Equity> EquityCollection
         {
             get { return equityCollection; }
-            set
-            {
-                if (Equals(value, equityCollection)) return;
-                equityCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref equityCollection, value); }
         }
 
         #endregion
 
         private void LoadData()
         {
-            EquityCollection = _dataService.GetEquity();
+            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
             var dataperaccount = EquityCollection.GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
             if (EquityCollection.Count > 0)
             {
@@ -77,8 +68,8 @@ namespace OverviewApp.ViewModels
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Dot,
-                    Maximum = max,
-                    Minimum = min,
+                    Maximum = (double) max,
+                    Minimum = (double) min,
                     Title = "Value"
                 };
 #pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
@@ -97,7 +88,7 @@ namespace OverviewApp.ViewModels
                     };
 
                     data.ToList()
-                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), d.Value)));
+                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double) d.Value)));
                     PlotModel.Series.Add(lineSerie);
                 }
             }

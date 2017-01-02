@@ -23,7 +23,7 @@ namespace OverviewApp.Auxiliary.Helpers
                 buffer = ProtectedData.Unprotect(Convert.FromBase64String(encryptedString), null,
                     DataProtectionScope.CurrentUser);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //if it's empty or incorrectly formatted, we get an exception. Just return an empty string.
                 return "";

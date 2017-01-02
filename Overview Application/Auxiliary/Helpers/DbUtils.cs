@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace OverviewApp.Auxiliary.Helpers
 {
-    public static class DBUtils
+    public static class DbUtils
     {
         public static void SetConnectionString()
         {
@@ -61,19 +61,19 @@ namespace OverviewApp.Auxiliary.Helpers
         }
 
         public static SqlConnection CreateSqlServerConnection(string database = "qdms", string server = null,
-            string username = null, string password = null, bool noDB = false, bool useWindowsAuthentication = true)
+            string username = null, string password = null, bool noDb = false, bool useWindowsAuthentication = true)
         {
-            var connectionString = GetSqlServerConnectionString(database, server, username, password, noDB,
+            var connectionString = GetSqlServerConnectionString(database, server, username, password, noDb,
                 useWindowsAuthentication);
             return new SqlConnection(connectionString);
         }
 
         private static string GetSqlServerConnectionString(string database = "Data", string server = null,
-            string username = null, string password = null, bool noDB = false, bool useWindowsAuthentication = true)
+            string username = null, string password = null, bool noDb = false, bool useWindowsAuthentication = true)
         {
             var connectionString = $"Data Source={server ?? Settings.Default.SqlServerHost};";
 
-            if (!noDB)
+            if (!noDb)
             {
                 connectionString += $"Initial Catalog={database};";
             }
@@ -99,7 +99,7 @@ namespace OverviewApp.Auxiliary.Helpers
         }
 
         public static MySqlConnection CreateMySqlConnection(string database = "Data", string server = null,
-            string username = null, string password = null, bool noDB = false)
+            string username = null, string password = null, bool noDb = false)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace OverviewApp.Auxiliary.Helpers
             var connectionString = $"server={server ?? Settings.Default.MySqlServerHost};" +
                                    $"user id={username ?? Settings.Default.MySqlUsername};" + $"Password={password};";
 
-            if (!noDB)
+            if (!noDb)
             {
                 connectionString += $"database={database};";
             }

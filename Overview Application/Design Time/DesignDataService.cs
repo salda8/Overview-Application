@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using DataAccess;
-using DataStructures;
-using DataStructures.POCO;
-using OverviewApp.Models;
+using QDMS;
 
 namespace OverviewApp.Design_Time
 {
-    public class DesignDataService : IDataService
+    public class DesignContext
     {
         #region
 
@@ -78,13 +75,13 @@ namespace OverviewApp.Design_Time
 
         #endregion
 
-        public void GetData(Action<DataItem, Exception> callback)
-        {
-            // Use this to create design time data
+        //public void GetData(Action<DataItem, Exception> callback)
+        //{
+        //    // Use this to create design time data
 
-            var item = new DataItem("Welcome to MVVM Light [design]");
-            callback(item, null);
-        }
+        //    var item = new DataItem("Welcome to MVVM Light [design]");
+        //    callback(item, null);
+        //}
 
         public ObservableCollection<string> GetNames(int anAmount)
         {

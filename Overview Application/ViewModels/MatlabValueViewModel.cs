@@ -1,20 +1,17 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Data;
-using DataAccess;
-using DataStructures;
-using DataStructures.POCO;
+using EntityData;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
+using QDMS;
+using ReactiveUI;
 using ILogger = DataStructures.ILogger;
 
 namespace OverviewApp.ViewModels
 {
     public class MatlabValueViewModel : MyBaseViewModel
     {
-        private readonly IDataService dataService;
-        private readonly ILogger logger;
-
         #region Fields
 
         private ObservableCollection<Matlabvalue> matlabvaluesCollection;
@@ -23,10 +20,8 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public MatlabValueViewModel(IDataService dataService, ILogger logger) : base(dataService, logger)
+        public MatlabValueViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
-            this.dataService = dataService;
-            this.logger = logger;
            
             LoadData();
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
@@ -37,29 +32,21 @@ namespace OverviewApp.ViewModels
 
         #region Properties
 
-        /// <summary>
-        ///     Gets or sets the IDownloadDataService member
-        /// </summary>
-        internal IDataService DataService { get; set; }
+       
 
         private CollectionViewSource Mcvs { get; set; }
 
         public ObservableCollection<Matlabvalue> MatlabValueCollection
         {
             get { return matlabvaluesCollection; }
-            set
-            {
-                if (Equals(value, matlabvaluesCollection)) return;
-                matlabvaluesCollection = value;
-                RaisePropertyChanged();
-            }
+            set { this.RaiseAndSetIfChanged(ref matlabvaluesCollection, value); }
         }
 
         #endregion
 
         private void LoadData()
         {
-            var mlc = dataService.GetMatlabvalues();
+            var mlc = Context.Matlabvalues.ToList();
             MatlabValueCollection = new ObservableCollection<Matlabvalue>(mlc);
         }
 

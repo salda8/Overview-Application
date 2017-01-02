@@ -11,7 +11,7 @@ namespace OverviewApp.Auxiliary
 	 * to clicking a button.
 	 * 
 	 * For example, using MVVM data service DI:
-	 * Messenger.Default.Send(new SwitchView(new SomeViewModel(_dataService)));
+	 * Messenger.Default.Send(new SwitchView(new SomeViewModel(_Context)));
 	 *
 	 * Or without using MVVM data service DI:
 	 * Messenger.Default.Send(new SwitchView(new SomeOtherViewModel()));

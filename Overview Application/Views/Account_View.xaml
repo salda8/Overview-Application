@@ -7,10 +7,8 @@
              xmlns:resources="clr-namespace:OverviewApp.Auxiliary.Resources"
              d:DesignHeight="800"
              d:DesignWidth="800"
-             DataContext="{Binding AccountVm,
-                                   Source={StaticResource Locator}}"
              mc:Ignorable="d">
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <CollectionViewSource x:Key="CCvs" Source="{Binding LiveTrades}" />
         <CollectionViewSource x:Key="TCvs" Source="{Binding TradesHistory}" />
         <CollectionViewSource x:Key="OCvs" Source="{Binding OpenOrders}" />
@@ -18,7 +16,7 @@
         <CollectionViewSource x:Key="ECvs" Source="{Binding EquityCollection}" />
 
 
-    </UserControl.Resources>
+    </UserControl.Resources>-->
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
         <resources:ApexGrid Background="White"
                             Columns="110,120,70,110,70,100,150,*"
@@ -86,7 +84,7 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource CCvs}}" />
+                      ItemsSource="{Binding LiveTrades}" />
             <Label Grid.Row="9"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -96,7 +94,7 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource TCvs}}" />
+                      ItemsSource="{Binding TradesHistory}" />
             <Label Grid.Row="5"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -106,7 +104,7 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource OCvs}}" />
+                      ItemsSource="{Binding OpenOrders}" />
             <Label Grid.Row="1"
                    Grid.ColumnSpan="8"
                    Width="200"
@@ -117,7 +115,7 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource SCvs}}" />
+                      ItemsSource="{Binding AccountsList}" />
             <Label Grid.Row="11"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -128,7 +126,7 @@
                       Height="300"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource ECvs}}"
+                      ItemsSource="{Binding EquityCollection}"
                       VerticalScrollBarVisibility="Auto" />
 
             <oxy:PlotView x:Name="Plot1"

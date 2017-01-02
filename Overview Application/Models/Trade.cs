@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using DataAccess;
 using IBApi;
 
 namespace OverviewApp.Models
@@ -15,15 +14,15 @@ namespace OverviewApp.Models
         /// <param name="wrapper"></param>
         public static void PlaceMarketTrade(string cntract, double i, IbClient wrapper)
         {
-            var contract = DataService.GetContract(cntract);
-            if (i >= 1)
-            {
-                MakeMktTrade(contract, "BUY", "MKT", Convert.ToInt32(i), wrapper);
-            }
-            else if (i <= -1)
-            {
-                MakeMktTrade(contract, "SELL", "MKT", Convert.ToInt32(i), wrapper);
-            }
+            //var contract = Context.GetContract(cntract);
+            //if (i >= 1)
+            //{
+            //    MakeMktTrade(contract, "BUY", "MKT", Convert.ToInt32(i), wrapper);
+            //}
+            //else if (i <= -1)
+            //{
+            //    MakeMktTrade(contract, "SELL", "MKT", Convert.ToInt32(i), wrapper);
+            //}
         }
 
         /// <summary>

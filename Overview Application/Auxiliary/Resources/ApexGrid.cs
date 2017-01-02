@@ -15,14 +15,14 @@ namespace OverviewApp.Auxiliary.Resources
         /// <summary>
         ///     The rows dependency property.
         /// </summary>
-        private static readonly DependencyProperty rowsProperty =
+        private static readonly DependencyProperty RowsProperty =
             DependencyProperty.Register("Rows", typeof (string), typeof (ApexGrid),
                 new PropertyMetadata(null, OnRowsChanged));
 
         /// <summary>
         ///     The columns dependency property.
         /// </summary>
-        private static readonly DependencyProperty columnsProperty =
+        private static readonly DependencyProperty ColumnsProperty =
             DependencyProperty.Register("Columns", typeof (string), typeof (ApexGrid),
                 new PropertyMetadata(null, OnColumnsChanged));
 
@@ -37,8 +37,8 @@ namespace OverviewApp.Auxiliary.Resources
         [Description("The rows property."), Category("Common Properties")]
         public string Rows
         {
-            get { return (string) GetValue(rowsProperty); }
-            set { SetValue(rowsProperty, value); }
+            get { return (string) GetValue(RowsProperty); }
+            set { SetValue(RowsProperty, value); }
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace OverviewApp.Auxiliary.Resources
         [Description("The columns property."), Category("Common Properties")]
         public string Columns
         {
-            get { return (string) GetValue(columnsProperty); }
-            set { SetValue(columnsProperty, value); }
+            get { return (string) GetValue(ColumnsProperty); }
+            set { SetValue(ColumnsProperty, value); }
         }
 
         #endregion
