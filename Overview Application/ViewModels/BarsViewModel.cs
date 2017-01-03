@@ -54,14 +54,14 @@ namespace OverviewApp.ViewModels
         public BarsViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
             PlotModel = new PlotModel();
-            LoadData();
+            //LoadData();
 
-            SetUpModel();
-            InitializeCommands();
-            timer = new Timer();
-            timer.Elapsed += tick_handler;
-            timer.Interval = 60000;
-            timer.Enabled = true;
+            //SetUpModel();
+            //InitializeCommands();
+            //timer = new Timer();
+            //timer.Elapsed += tick_handler;
+            //timer.Interval = 60000;
+            //timer.Enabled = true;
 
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
@@ -187,7 +187,7 @@ namespace OverviewApp.ViewModels
 
         private void UpdateBarsData()
         {
-            if (BarsCollection.Count > 0)
+            if (BarsCollection!=null && BarsCollection.Count > 0)
             {
                 //var lastId = BarsCollection.Count - 1;
                 //var lastBarId = BarsCollection[lastId].Id;

@@ -108,12 +108,12 @@ namespace OverviewApp.ViewModels
         ///     Gets or sets the CollectionViewSource which is the proxy for the
         ///     collection of Things and the datagrid in which each thing is displayed.
         /// </summary>
-        private CollectionViewSource Cvs { get; set; }
+        private CollectionViewSource LiveTradesCollectionViewSource { get; set; }
 
-        private CollectionViewSource Tcvs { get; set; }
-        private CollectionViewSource Ocvs { get; set; }
-        private CollectionViewSource Scvs { get; set; }
-        private CollectionViewSource Ecvs { get; set; }
+        private CollectionViewSource TradesHistoryCollectionViewSource { get; set; }
+        private CollectionViewSource OpenTradesCollectionViewSource { get; set; }
+        private CollectionViewSource AccountsCollectionViewSource { get; set; }
+        private CollectionViewSource EquityCollectionViewSource { get; set; }
 
         public RelayCommand ResetDateFilterCommand { get; private set; }
         public RelayCommand ResetFiltersCommand { get; private set; }
@@ -267,23 +267,23 @@ namespace OverviewApp.ViewModels
         {
             if (token.LiveTradesCollectionViewSource != null)
             {
-                Cvs = token.LiveTradesCollectionViewSource;
+                LiveTradesCollectionViewSource = token.LiveTradesCollectionViewSource;
             }
             else if (token.TradesHistoryCollectionViewSource != null)
             {
-                Tcvs = token.TradesHistoryCollectionViewSource;
+                TradesHistoryCollectionViewSource = token.TradesHistoryCollectionViewSource;
             }
             else if (token.OpenTradesCollectionViewSource != null)
             {
-                Ocvs = token.OpenTradesCollectionViewSource;
+                OpenTradesCollectionViewSource = token.OpenTradesCollectionViewSource;
             }
             else if (token.EquityCollectionViewSource != null)
             {
-                Ecvs = token.EquityCollectionViewSource;
+                EquityCollectionViewSource = token.EquityCollectionViewSource;
             }
             else
             {
-                Scvs = token.AccountSummaryCollectionViewSource;
+                AccountsCollectionViewSource = token.AccountSummaryCollectionViewSource;
             }
         }
 
@@ -408,7 +408,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateModel()
         {
-            var listEquity = Ecvs.View.Cast<Equity>().ToList();
+            var listEquity = EquityCollectionViewSource.View.Cast<Equity>().ToList();
             if (listEquity.Count != 0)
             {
                 var dataperaccount =
@@ -548,24 +548,24 @@ namespace OverviewApp.ViewModels
         {
             if (CanRemoveAccountFilter)
             {
-                Tcvs.Filter -= FilterByAccount;
-                Tcvs.Filter += FilterByAccount;
-                Cvs.Filter -= FilterByAccount;
-                Cvs.Filter += FilterByAccount;
-                Ocvs.Filter -= FilterByAccount;
-                Ocvs.Filter += FilterByAccount;
-                Scvs.Filter -= FilterByAccount;
-                Scvs.Filter += FilterByAccount;
-                Ecvs.Filter += FilterByAccount;
-                Ecvs.Filter -= FilterByAccount;
+                TradesHistoryCollectionViewSource.Filter -= FilterByAccount;
+                TradesHistoryCollectionViewSource.Filter += FilterByAccount;
+                LiveTradesCollectionViewSource.Filter -= FilterByAccount;
+                LiveTradesCollectionViewSource.Filter += FilterByAccount;
+                OpenTradesCollectionViewSource.Filter -= FilterByAccount;
+                OpenTradesCollectionViewSource.Filter += FilterByAccount;
+                AccountsCollectionViewSource.Filter -= FilterByAccount;
+                AccountsCollectionViewSource.Filter += FilterByAccount;
+                EquityCollectionViewSource.Filter += FilterByAccount;
+                EquityCollectionViewSource.Filter -= FilterByAccount;
             }
             else
             {
-                Tcvs.Filter += FilterByAccount;
-                Ocvs.Filter += FilterByAccount;
-                Cvs.Filter += FilterByAccount;
-                Scvs.Filter += FilterByAccount;
-                Ecvs.Filter += FilterByAccount;
+                TradesHistoryCollectionViewSource.Filter += FilterByAccount;
+                OpenTradesCollectionViewSource.Filter += FilterByAccount;
+                LiveTradesCollectionViewSource.Filter += FilterByAccount;
+                AccountsCollectionViewSource.Filter += FilterByAccount;
+                EquityCollectionViewSource.Filter += FilterByAccount;
                 CanRemoveAccountFilter = true;
             }
         }
@@ -577,15 +577,15 @@ namespace OverviewApp.ViewModels
         {
             if (CanRemoveEndDateFilter)
             {
-                Tcvs.Filter -= FilterByEndDate;
-                Tcvs.Filter += FilterByEndDate;
-                Ecvs.Filter -= FilterByEndDate;
-                Ecvs.Filter += FilterByEndDate;
+                TradesHistoryCollectionViewSource.Filter -= FilterByEndDate;
+                TradesHistoryCollectionViewSource.Filter += FilterByEndDate;
+                EquityCollectionViewSource.Filter -= FilterByEndDate;
+                EquityCollectionViewSource.Filter += FilterByEndDate;
             }
             else
             {
-                Tcvs.Filter += FilterByEndDate;
-                Ecvs.Filter += FilterByEndDate;
+                TradesHistoryCollectionViewSource.Filter += FilterByEndDate;
+                EquityCollectionViewSource.Filter += FilterByEndDate;
                 CanRemoveEndDateFilter = true;
             }
         }
@@ -629,15 +629,15 @@ namespace OverviewApp.ViewModels
         {
             if (CanRemoveStartDateFilter)
             {
-                Tcvs.Filter -= FilterByStartDate;
-                Ecvs.Filter -= FilterByStartDate;
-                Tcvs.Filter += FilterByStartDate;
-                Ecvs.Filter += FilterByStartDate;
+                TradesHistoryCollectionViewSource.Filter -= FilterByStartDate;
+                EquityCollectionViewSource.Filter -= FilterByStartDate;
+                TradesHistoryCollectionViewSource.Filter += FilterByStartDate;
+                EquityCollectionViewSource.Filter += FilterByStartDate;
             }
             else
             {
-                Tcvs.Filter += FilterByStartDate;
-                Ecvs.Filter += FilterByStartDate;
+                TradesHistoryCollectionViewSource.Filter += FilterByStartDate;
+                EquityCollectionViewSource.Filter += FilterByStartDate;
                 CanRemoveStartDateFilter = true;
             }
         }
@@ -696,11 +696,11 @@ namespace OverviewApp.ViewModels
         {
             if (CanRemoveAccountFilter)
             {
-                Cvs.Filter -= FilterByAccount;
-                Ocvs.Filter -= FilterByAccount;
-                Tcvs.Filter -= FilterByAccount;
-                Scvs.Filter -= FilterByAccount;
-                Ecvs.Filter -= FilterByAccount;
+                LiveTradesCollectionViewSource.Filter -= FilterByAccount;
+                OpenTradesCollectionViewSource.Filter -= FilterByAccount;
+                TradesHistoryCollectionViewSource.Filter -= FilterByAccount;
+                AccountsCollectionViewSource.Filter -= FilterByAccount;
+                EquityCollectionViewSource.Filter -= FilterByAccount;
 
                 SelectedAccount = null;
                 CanRemoveAccountFilter = false;
@@ -718,14 +718,14 @@ namespace OverviewApp.ViewModels
         {
             if (CanRemoveEndDateFilter)
             {
-                Tcvs.Filter -= FilterByEndDate;
-                Ecvs.Filter -= FilterByEndDate;
+                TradesHistoryCollectionViewSource.Filter -= FilterByEndDate;
+                EquityCollectionViewSource.Filter -= FilterByEndDate;
                 //SelectedEndDate = new DateTime(2020, 1, 1);
             }
             if (CanRemoveStartDateFilter)
             {
-                Tcvs.Filter -= FilterByStartDate;
-                Ecvs.Filter -= FilterByStartDate;
+                TradesHistoryCollectionViewSource.Filter -= FilterByStartDate;
+                EquityCollectionViewSource.Filter -= FilterByStartDate;
                 //SelectedStartDate = new DateTime(2014, 1, 1);
             }
             PlotModel.Series.Clear();
