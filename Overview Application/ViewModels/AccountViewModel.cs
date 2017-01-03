@@ -324,7 +324,7 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-           List<TradeHistory> history;
+            List<TradeHistory> history;
             if (TradesHistory.Count > 0)
             {
                 var lastIdHistoricalTrade = TradesHistory[TradesHistory.Count - 1].ID;
@@ -334,8 +334,11 @@ namespace OverviewApp.ViewModels
             {
                 history = new List<TradeHistory>(Context.TradeHistories).ToList();
             }
-
-            Application.Current.Dispatcher.Invoke(()=>TradesHistory.AddRange(history));
+            foreach (TradeHistory tradeHistory in history)
+            {
+                Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistory));
+            }
+            
             
             LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
             

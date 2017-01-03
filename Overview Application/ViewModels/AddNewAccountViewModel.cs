@@ -17,10 +17,10 @@ namespace OverviewApp.ViewModels
     public class AddNewAccountViewModel : MyValidatableBaseViewModel
     {
         
-        private int port;
+        private int? port;
         private string ipAddress;
-        private decimal initialBalance;
-        private decimal currentBalance;
+        private decimal? initialBalance;
+        private decimal? currentBalance;
         private string brokerName;
         private string accountNumber;
         private string windowTitle;
@@ -86,7 +86,6 @@ namespace OverviewApp.ViewModels
         private void ConfigureValidationRules()
         {
             Validator.AddRequiredRule(() => AccountNumber, "Account Name is required");
-
             Validator.AddRule((string)(nameof(AccountNumber)),
                  () =>
                 {
@@ -97,7 +96,7 @@ namespace OverviewApp.ViewModels
                                              $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
                 });
 
-            
+            Validator.AddRequiredRule(() => IpAddress, "IP Adress is required.");
             Validator.AddRule((string)(nameof(IpAddress)),
                 () =>
                 {
@@ -108,6 +107,7 @@ namespace OverviewApp.ViewModels
                 });
 
             Validator.AddRequiredRule(() => Port, "Port is required");
+
          
 
 
@@ -161,10 +161,10 @@ namespace OverviewApp.ViewModels
             {
                 AccountNumber = this.accountNumber,
                 BrokerName = this.brokerName,
-                CurrentBalance = this.currentBalance,
-                InitialBalance = this.initialBalance,
+                CurrentBalance = this.currentBalance.GetValueOrDefault(),
+                InitialBalance = this.initialBalance.GetValueOrDefault(),
                 IpAddress = this.ipAddress,
-                Port = this.port
+                Port = this.port.Value
 
             };
             if (addingNew)
@@ -194,7 +194,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref windowTitle, value); }
         }
 
-        public int Port
+        public int? Port
         {
             get { return port; }
             set
@@ -214,13 +214,13 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public decimal InitialBalance
+        public decimal? InitialBalance
         {
             get { return initialBalance; }
             set { this.RaiseAndSetIfChanged(ref initialBalance, value); }
         }
 
-        public decimal CurrentBalance
+        public decimal? CurrentBalance
         {
             get { return currentBalance; }
             set { this.RaiseAndSetIfChanged(ref currentBalance, value); }
