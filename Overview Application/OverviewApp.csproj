@@ -85,6 +85,10 @@
       <HintPath>..\packages\morelinq.1.1.1\lib\net35\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MvvmValidation, Version=3.1.0.0, Culture=neutral, PublicKeyToken=113792d2053ac461, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmValidation.3.1.0-beta2\lib\netstandard1.0\MvvmValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>.\MySql.Data.dll</HintPath>
     </Reference>

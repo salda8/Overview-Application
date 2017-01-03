@@ -84,7 +84,7 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource LiveTradesCvs}}" />
+                      ItemsSource="{Binding Source={StaticResource LiveTradesCvs}}" CanUserReorderColumns="False" />
             <Label Grid.Row="9"
                    Grid.ColumnSpan="8"
                    Margin="1"
