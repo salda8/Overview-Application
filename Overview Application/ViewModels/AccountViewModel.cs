@@ -332,18 +332,15 @@ namespace OverviewApp.ViewModels
             }
             else
             {
-                history = new ReactiveList<TradeHistory>(Context.TradeHistories).ToList();
+                history = new List<TradeHistory>(Context.TradeHistories).ToList();
             }
 
-            foreach (var tradeHistory in history)
-            {
-                Application.Current.Dispatcher.Invoke(() => { TradesHistory.Add(tradeHistory); });
-            }
-
+            Application.Current.Dispatcher.Invoke(()=>TradesHistory.AddRange(history));
+            
             LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
-            Application.Current.Dispatcher.Invoke(() => { OpenOrders.Clear(); });
-
+            
             OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
+
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
 

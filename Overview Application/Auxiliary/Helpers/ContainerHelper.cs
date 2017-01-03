@@ -22,7 +22,8 @@ namespace OverviewApp.Auxiliary.Helpers
            container.RegisterType<DatabaseConnectionViewModel>();
            container.RegisterType<ILogger, Logger.Logger>();
            container.RegisterType<IAttributesHelper, AttributesHelper>();
-           container.RegisterInstance(typeof(IMyDbContext), new MyDBContext());
+           container.RegisterType<IMyDbContext, MyDBContext>(
+               new InjectionConstructor("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=qdms;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
         }
     }
 }

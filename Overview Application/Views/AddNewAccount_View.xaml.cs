@@ -23,7 +23,7 @@ namespace OverviewApp.Views
             InitializeComponent();
 
             this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Hide());
-            this.WhenAnyObservable(x => x.ViewModel.SaveCommand).Subscribe(x => Hide());
+            //this.WhenAnyObservable(x => x.ViewModel.SaveCommand).Subscribe(x => Hide());
 
         }
 
