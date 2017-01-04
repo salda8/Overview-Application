@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using DataStructures;
 using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
+using MvvmValidation;
 using QDMS;
 using ReactiveUI;
 using ReactiveUI.Legacy;
@@ -13,7 +16,7 @@ using ReactiveCommand = ReactiveUI.ReactiveCommand;
 
 namespace OverviewApp.ViewModels
 {
-    public class AddEditStrategyViewModel : MyBaseViewModel
+    public class AddEditStrategyViewModel : MyValidatableBaseViewModel
     {
         
        
@@ -34,6 +37,10 @@ namespace OverviewApp.ViewModels
         private string filePath;
         private Instrument selectedInstrument;
         private List<Instrument> instruments;
+        private bool? isValid;
+        private string validationErrorsString;
+        private ReactiveCommand<Unit, Unit> saveCommand;
+        private ReactiveCommand<Unit, Unit> openFileDialogCommand;
 
         public AddEditStrategyViewModel(IMyDbContext context, ILogger logger,Strategy strategy) : base(context, logger)
         {
@@ -68,16 +75,19 @@ namespace OverviewApp.ViewModels
 
             }
 
-            SaveCommand = ReactiveCommand.Create(AddNewStrategy);
-            OpenFileDialogCommand = ReactiveCommand.Create(OpenNewFileDialog);
+           
+        
+            ConfigureValidationRules();
+            Validator.ResultChanged += OnValidationResultChanged;
 
 
         }
 
         public List<Instrument> Instruments
             => instruments?? (instruments = new List<Instrument>(Context.Instruments.ToList()));
-        
-        public ReactiveCommand<Unit, Unit> OpenFileDialogCommand { get; set; }
+
+        public ReactiveCommand<Unit, Unit> OpenFileDialogCommand=> openFileDialogCommand?? (openFileDialogCommand=ReactiveCommand.Create(OpenNewFileDialog));
+
 
         private void OpenNewFileDialog()
         {
@@ -90,8 +100,19 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public ReactiveCommand<Unit,Unit> SaveCommand { get; }
+        public ReactiveCommand<Unit, Unit> SaveCommand => saveCommand??(saveCommand= ReactiveCommand.Create(() =>
+        {
+            {
+                Validate();
 
+                if (IsValid.GetValueOrDefault(false))
+                {
+                    AddNewStrategy();
+                }
+
+            }
+
+        }));
 
         private void AddNewStrategy()
         {
@@ -129,7 +150,11 @@ namespace OverviewApp.ViewModels
         public string StrategyName
         {
             get { return strategyName; }
-            set { this.RaiseAndSetIfChanged(ref strategyName, value); }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref strategyName, value);
+                Validator.Validate((nameof(StrategyName)));
+            }
         }
 
         public decimal BacktestDrawDown
@@ -171,7 +196,11 @@ namespace OverviewApp.ViewModels
         public string FilePath
         {
             get { return filePath; }
-            set { this.RaiseAndSetIfChanged(ref filePath, value); }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref filePath, value);
+                Validator.Validate((nameof(FilePath)));
+            }
         }
 
         public Instrument SelectedInstrument
@@ -199,6 +228,83 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref addNewEditText, value); }
         }
 
+        #region Validation
+        public string ValidationErrorsString
+        {
+            get { return validationErrorsString; }
+            private set
+            {
+
+                this.RaiseAndSetIfChanged(ref validationErrorsString, value);
+            }
+        }
+
+        public bool? IsValid
+        {
+            get { return isValid; }
+            private set { this.RaiseAndSetIfChanged(ref isValid, value); }
+        }
+
+
+        private void ConfigureValidationRules()
+        {
+            Validator.AddRequiredRule(() => StrategyName, "Account Name is required");
+
+            Validator.AddRule((string)(nameof(StrategyName)),
+                 () =>
+                 {
+                     bool isAvailable =
+                          Context.Strategies.Any(x => x.StrategyName == this.StrategyName);
+
+                     return RuleResult.Assert(isAvailable,
+                                              $"This strategy name {StrategyName} is present. Please choose a different one or edit existing one");
+                 });
+
+            
+            Validator.AddRequiredRule(() => FilePath, "FilePath is required");
+            Validator.AddRule((string)(nameof(FilePath)),
+                () =>
+                {
+                    bool isAvailable =
+                         Context.Strategies.Any(x => x.Filepath == this.FilePath);
+
+                    return RuleResult.Assert(isAvailable,
+                                             $"This file is already used. Please choose a different strategy or edit existing one.");
+                });
+
+
+
+
+
+
+        }
+        private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
+        {
+            if (!IsValid.GetValueOrDefault(true))
+            {
+                ValidationResult validationResult = Validator.GetResult();
+
+                UpdateValidationSummary(validationResult);
+            }
+        }
+        private void UpdateValidationSummary(ValidationResult validationResult)
+        {
+            IsValid = validationResult.IsValid;
+            ValidationErrorsString = validationResult.ToString();
+        }
+
+        private async void Validate()
+        {
+            await ValidateAsync();
+        }
+
+        private async Task ValidateAsync()
+        {
+            var result = await Validator.ValidateAllAsync();
+
+            UpdateValidationSummary(result);
+        }
+        #endregion
 
     }
 }

@@ -5,13 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OverviewApp.Views"
         xmlns:resources="clr-namespace:OverviewApp.Auxiliary.Resources"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-       Title="{Binding WindowTitle}" Height="304.462" Width="470.381">
-        <resources:ApexGrid Rows="Auto, Auto,Auto, Auto,Auto,Auto, Auto, Auto,Auto,Auto" Margin="5, 5, 10,5">
+       Title="{Binding WindowTitle}" Height="422.524" Width="470.381">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{StaticResource DefaultErrorTemplate}" />
+        </Style>
+    </Window.Resources>
+        <resources:ApexGrid Rows="Auto, Auto,Auto, Auto,Auto,Auto, Auto, Auto,Auto,Auto, Auto" Margin="5, 5, 10,5">
+        <i:Interaction.Behaviors>
+            <ei:DataStateBehavior Binding="{Binding IsValid}"
+                                  Value="True"
+                                  TrueState="ValidState"
+                                  FalseState="InvalidState" />
+        </i:Interaction.Behaviors>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ValidationSummaryStates">
+                <VisualState x:Name="ValidState">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                       Storyboard.TargetName="ValidSummaryContainer">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                       Storyboard.TargetName="BackgroundOverlayBorder">
+                            <EasingDoubleKeyFrame KeyTime="0:0:1"
+                                                  Value="0.5" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:2"
+                                                  Value="0" />
+                        </DoubleAnimationUsingKeyFrames>-->
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="InvalidState">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                       Storyboard.TargetName="ErrorsSummaryContainer">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <!--<DoubleAnimationUsingKeyFrames
+                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                            Storyboard.TargetName="border">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.066"
+                                                  Value="-10" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.134"
+                                                  Value="10" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.2"
+                                                  Value="0" />
+                        </DoubleAnimationUsingKeyFrames>-->
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Label Content="Name" MinWidth="105"></Label>
-                <TextBox MinWidth="150" Text="{Binding StrategyName}"></TextBox>
+            <TextBox MinWidth="150" Text="{Binding StrategyName,Mode=TwoWay, ValidatesOnDataErrors=True}"></TextBox>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
@@ -44,11 +103,49 @@
             </StackPanel>
         <StackPanel Grid.Row="7" Orientation="Horizontal">
             <Label Content="FilePath:" MinWidth="105"></Label>
-            <TextBox Text="{Binding FilePath}" MinWidth="300"/>
+            <TextBox Text="{Binding FilePath, Mode=TwoWay, ValidatesOnDataErrors=True}" MinWidth="300"/>
             <Button Content="File" Command="{Binding OpenFileDialogCommand}"/>
         </StackPanel>
 
         <Button Grid.Row="9" Margin="5" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
             <Button Grid.Row="9" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
-        </resources:ApexGrid>
+        <Grid Grid.Row="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="ErrorsSummaryContainer"
+                          Grid.Column="0"
+                          Visibility="Collapsed"
+                          Margin="0,10,10,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Plase correct the following errors before proceeding:"
+                                   Foreground="Red"
+                                   FontWeight="Bold" />
+                <TextBlock Grid.Row="1"
+                                   Text="{Binding ValidationErrorsString}"
+                                   Foreground="Red"
+                                   Margin="0,5,0,0" />
+
+            </Grid>
+
+            <Grid x:Name="ValidSummaryContainer"
+                          Grid.Column="0"
+                          Visibility="Collapsed"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Left"
+                          Margin="0,10,5,0">
+                <TextBlock Text="Congratulations! You successfully added new account!"
+                                   Foreground="Green"
+                                   FontSize="14" />
+            </Grid>
+
+        </Grid>
+    </resources:ApexGrid>
 </Window>

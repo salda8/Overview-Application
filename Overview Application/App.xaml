@@ -16,5 +16,8 @@
             <!--  Global View Model Locator  -->
             <viewModels:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>
+       
+                
+            
     </Application.Resources>
 </Application>
