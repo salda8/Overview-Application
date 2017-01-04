@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
@@ -62,6 +64,7 @@ namespace OverviewApp.ViewModels
 #pragma warning disable CS0169 // The field 'Account_ViewModel.stopwatch' is never used
         private Stopwatch stopwatch;
         private ReactiveList<Account> accountsList;
+        private int latestProccesedCommissionMessage=0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
 
         #endregion
@@ -83,13 +86,14 @@ namespace OverviewApp.ViewModels
 
             timer = new Timer();
             timer.Elapsed += timer_tick;
-            timer.Interval = 1000; //10000 ms = 10 seconds
+            timer.Interval = 10000; //10000 ms = 10 seconds
             timer.Enabled = true;
 
             timerEquity = new Timer();
             timerEquity.Elapsed += timer_tick_equity;
             timerEquity.Interval = 65000;
             timerEquity.Enabled = true;
+            
 
             logger.Log(LogType.Admin, "Ahoj", LogSeverity.Info);
 
@@ -324,28 +328,50 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-            List<TradeHistory> history;
-            if (TradesHistory.Count > 0)
-            {
-                var lastIdHistoricalTrade = TradesHistory[TradesHistory.Count - 1].ID;
-                history = Context.TradeHistories.Where(x=>x.ID> lastIdHistoricalTrade).ToList();
-            }
-            else
-            {
-                history = new List<TradeHistory>(Context.TradeHistories).ToList();
-            }
-            foreach (TradeHistory tradeHistory in history)
-            {
-                Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistory));
-            }
-            
-            
+            UpdateTradeHistory();
+
             LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
             
             OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
+        public static TradeDirection ConvertFromString(string side) => side == "SLD" ? TradeDirection.Long : TradeDirection.Short;
+        private void UpdateTradeHistory()
+        {
+            List<TradeHistory> newTradeHistory = (from s1 in Context.ExecutionMessages
+                        join s2 in Context.CommissionMessages
+                        on s1.ExecutionId equals s2.ExecutionId
+                        where s2.ID>latestProccesedCommissionMessage
+                        select new TradeHistory {
+
+                    ID=s2.ID,
+                    AccountID = s1.AccountID,
+                    ExecId = s1.ExecutionId,
+                    ExecTime = s1.Time,
+                    Side = ConvertFromString(s1.Side),
+                    Position = s1.Qty,
+                    InstrumentID = s1.InstrumentID,
+                    Price = s1.Price,
+                    Commission = s2.Commission,
+                    RealizedPnL = s2.RealizedPnL
+                    }).ToList();
+
+            latestProccesedCommissionMessage += newTradeHistory.Count;//not sure about that thou alternatively newTradeHistory.Max(x=>x.ID)?
+
+            if (newTradeHistory?.Count>0)
+            {
+                Context.TradeHistories.AddRange(newTradeHistory);
+                Context.SaveChangesAsync();
+
+                foreach (TradeHistory tradeHistory in newTradeHistory)
+                {
+                   Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistory));
+                }
+            }
+        }
+
+
 
         /// <summary>
         ///     Updates the equity data.
@@ -471,16 +497,19 @@ namespace OverviewApp.ViewModels
             RemoveAccountFilterCommand = new RelayCommand(RemoveAccountFilter, () => CanRemoveAccountFilter);
             ResetFiltersCommand = new RelayCommand(ResetFilters, null);
             ResetDateFilterCommand = new RelayCommand(ResetDateFilter, null);
+            ReloadDataCommand = ReactiveCommand.Create(LoadData);
+
         }
+        public ReactiveCommand<Unit, Unit> ReloadDataCommand { get; set; }
 
         private void timer_tick_equity(object sender, EventArgs e)
         {
             UpdateData();
         }
 
-        private void timer_tick(object sender, EventArgs e)
+        private async void timer_tick(object sender, EventArgs e)
         {
-            UpdateData();
+            await ReloadDataCommand.Execute();
         }
 
         /// <summary>
