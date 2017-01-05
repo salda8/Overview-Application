@@ -50,6 +50,10 @@
       <HintPath>.\CSharpAPI.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="ExpressMapper, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.8.3\lib\net45\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.1.1.35049, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -172,6 +176,7 @@
     <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
     <Compile Include="Design Time\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MappingConfiguration.cs" />
     <Compile Include="Models\IBClient.cs" />
     <Compile Include="Models\MyContracts.cs" />
     <Compile Include="Models\Trade.cs" />
@@ -180,6 +185,7 @@
     <Compile Include="ViewModels\AddEditStrategyViewModel.cs" />
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
+    <Compile Include="ViewModels\MessageHandler.cs" />
     <Compile Include="ViewModels\MyValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />

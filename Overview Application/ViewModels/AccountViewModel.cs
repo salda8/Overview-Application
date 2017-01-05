@@ -66,7 +66,7 @@ namespace OverviewApp.ViewModels
         private ReactiveList<Account> accountsList;
         private int latestProccesedCommissionMessage=0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
-
+        private MessageHandler messageHandler;
         #endregion
 
         #region
@@ -82,6 +82,7 @@ namespace OverviewApp.ViewModels
            
             
             SetUpModel();
+            messageHandler = new MessageHandler(Context);
             LoadData();
 
             timer = new Timer();
@@ -257,11 +258,7 @@ namespace OverviewApp.ViewModels
 
         #endregion
 
-        #region Nested
-
-       
-
-        #endregion
+      
 
         /// <summary>
         ///     This method handles a message recieved from the View which enables a reference to the
@@ -328,48 +325,26 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-            UpdateTradeHistory();
+            var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
+            if (tradeHistory?.Count > 0)
+            {
+                Context.TradeHistories.AddRange(tradeHistory);
+                Context.SaveChangesAsync();
 
-            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
-            
+                foreach (TradeHistory tradeHistor in tradeHistory)
+                {
+                    Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
+                }
+            }
+
+            LiveTrades = new ReactiveList<LiveTrade>(messageHandler.UpdateLiveTrades(LiveTrades.ToList()));
+
             OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
-        public static TradeDirection ConvertFromString(string side) => side == "SLD" ? TradeDirection.Long : TradeDirection.Short;
-        private void UpdateTradeHistory()
-        {
-            List<TradeHistory> newTradeHistory = (from s1 in Context.ExecutionMessages
-                        join s2 in Context.CommissionMessages
-                        on s1.ExecutionId equals s2.ExecutionId
-                        where s2.ID>latestProccesedCommissionMessage
-                        select new TradeHistory {
 
-                    ID=s2.ID,
-                    AccountID = s1.AccountID,
-                    ExecId = s1.ExecutionId,
-                    ExecTime = s1.Time,
-                    Side = ConvertFromString(s1.Side),
-                    Position = s1.Qty,
-                    InstrumentID = s1.InstrumentID,
-                    Price = s1.Price,
-                    Commission = s2.Commission,
-                    RealizedPnL = s2.RealizedPnL
-                    }).ToList();
-
-            latestProccesedCommissionMessage += newTradeHistory.Count;//not sure about that thou alternatively newTradeHistory.Max(x=>x.ID)?
-
-            if (newTradeHistory?.Count>0)
-            {
-                Context.TradeHistories.AddRange(newTradeHistory);
-                Context.SaveChangesAsync();
-
-                foreach (TradeHistory tradeHistory in newTradeHistory)
-                {
-                   Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistory));
-                }
-            }
-        }
+ 
 
 
 
