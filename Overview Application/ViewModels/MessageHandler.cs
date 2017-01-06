@@ -9,78 +9,131 @@ namespace OverviewApp.ViewModels
 {
     internal class MessageHandler
     {
-        private IMyDBContext Context;
+        private readonly IMyDbContext context;
+        private Func<LiveTrade, bool> accountIdAndSymbolForOrdersEquealFunc;
         public MessageHandler(IMyDbContext context)
         {
-            Context = context;
+            this.context = context;
+        }
+        #region OpenOrder Handling
+        /// <summary>
+        ///     Handles the order status.
+        /// </summary>
+        public List<OpenOrder> UpdateOpenOrders()
+        {
+            List<OrderStatusMessage> orderSatusMessage = context.OrderStatusMessages.Where(x=>x.Status.ToUpper() == "CANCELLED" || x.Status.ToUpper() == "FILLED").ToList();
+            List<OpenOrder> openOrders = context.OpenOrders.ToList();
+            
+            foreach (OpenOrder openOrder in openOrders)
+            {
+                if (orderSatusMessage.Any(x=>x.PermanentId==openOrder.PermanentId))
+                {
+                    context.OpenOrders.Remove(openOrder);
+                }
+                else
+                {
+                    HandleOpenOrder(openOrder, openOrders);
+                }
+            }
+
+            context.OrderStatusMessages.RemoveRange(orderSatusMessage);
+            context.SaveChanges();
+
+            return openOrders;
+
+        }
+        
+        /// <summary>
+        ///     Handles the open order.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="openOrders"></param>
+        private void HandleOpenOrder(OpenOrder message, ICollection<OpenOrder> openOrders)
+        {
+            if (message.Status == "Cancelled")
+            {
+                openOrders.Remove(message);
+                context.OpenOrders.Remove(message);
+            }
+            else if (message.Status == "Filled")
+            {
+                openOrders.Remove(message);
+                context.OpenOrders.Remove(message);
+            }
         }
 
-        //PREREQ logic: One trade, one account, one strategy
-        public List<LiveTrade> UpdateLiveTrades(List<LiveTrade> liveTradesList)
+        #endregion
+
+        #region LiveTradeHandling
+
+            //PREREQ logic: One trade, one account, one strategy
+            public List<LiveTrade> UpdateLiveTrades(List<LiveTrade> liveTradesList)
         {
             Int32 latestId = 0;
-            var executionMessages = Context.ExecutionMessages.Where(x => x.ID > latestId).ToList();
+            var executionMessages = context.ExecutionMessages.Where(x => x.ID > latestId).ToList();
             var liveTrades = new List<LiveTrade>();
 
             foreach (var message in executionMessages)
             {
-                LiveTrade liveTrade= new LiveTrade();
-                if (ItIsFirstTradeOnAccount(message, liveTradesList))
+                accountIdAndSymbolForOrdersEquealFunc = x => x.AccountID == message.AccountID &&
+                                                             x.Instrument.SymbolForOrders ==
+                                                             message.Instrument.SymbolForOrders;
+                
+                LiveTrade liveTrade = new LiveTrade();
+                var item = liveTrades.LastOrDefault(accountIdAndSymbolForOrdersEquealFunc);
+                if (item == null)
                 {
-                   
                     message.Map(liveTrade);
                     liveTrades.Add(liveTrade);
-                    Context.LiveTrades.Add(liveTrade)
-                    
-                    
+                    context.LiveTrades.Add(liveTrade);
                 }
-                else if (ItIsSameSideTrade(message,liveTradesList))
+                else if (ItIsSameSideTrade(message, liveTradesList))
                 {
-                    var item =
-                        liveTrades.LastOrDefault(
-                            x => x.AccountID == message.AccountID && x.InstrumentID== message.InstrumentID);
-                    var newFillPrice = (item.AverageCost * item.Position + message.Price * message.Qty) / (item.Position + message.Qty);
-                    var newQty = item.Position + message.Qty;
-                    message.Map(liveTrade);
-                    liveTrade.Position = newQty;
-                    liveTrade.AverageCost = newFillPrice;
 
-                    liveTrades.Add(liveTrade);
-                    Context.LiveTrades.RemoveRange(Context.LiveTrades.Where(x => x.AccountID == message.AccountID));//InstrumentID==InstrumentID account which is trading more than one symbol.
-                    Context.LiveTrades.Add(liveTrade);
-                    
-                   
+                    var newFillPrice = (item.AveragePrice * item.Quantity +
+                                        message.Price * message.Quantity) / (item.Quantity + message.Quantity);
+                    var newQuantity = item.Quantity + message.Quantity;
+                    message.Map(liveTrade);
+                    liveTrade.Quantity = newQuantity;
+                    liveTrade.AveragePrice = newFillPrice;
+
+                    AddToListRemoveAndAddToDatabase(liveTrades, liveTrade, message);
                 }
                 else //different side trade
                 {
-                    var item =
-                        liveTrades.LastOrDefault(
-                            x => x.AccountID == message.AccountID && x.InstrumentID == message.InstrumentID);
-
-                    if (message.Qty > item.Position)
+                    if (message.Quantity > item.Quantity)
                     {
-                        var newFillPrice = (item.AverageCost * item.Position - message.Price * message.Qty) / (item.Position - message.Qty);
-                        var newQty = message.Qty - item.Position;
+                        var newFillPrice = (item.AveragePrice * item.Quantity -
+                                            message.Price * message.Quantity) /
+                                           (item.Quantity - message.Quantity);
+                        var newQuantity = message.Quantity - item.Quantity;
                         message.Map(liveTrade);
-                        liveTrade.AverageCost = newFillPrice;
-                        liveTrade.Position = newQty;
-                        
-                        liveTrades.Add(liveTrade);
-                        Context.LiveTrades.RemoveRange(Context.LiveTrades.Where(x => x.AccountID == message.AccountID));
-                        Context.LiveTrades.Add(liveTrade);
+                        liveTrade.AveragePrice = newFillPrice;
+                        liveTrade.Quantity = newQuantity;
+
+                        AddToListRemoveAndAddToDatabase(liveTrades, liveTrade, message);
                     }
                     else
                     {
-                        Context.LiveTrades.RemoveRange(Context.LiveTrades.Where(x => x.AccountID == message.AccountID));
+                        context.LiveTrades.RemoveRange(
+                            context.LiveTrades.Where(x => x.AccountID == message.AccountID));
                     }
 
                     liveTrades.Remove(item);
 
                 }
 
-               
+
             }
             return liveTrades;
+        }
+        private void AddToListRemoveAndAddToDatabase(List<LiveTrade> liveTrades, LiveTrade liveTrade,
+                                                     ExecutionMessage message)
+        {
+            liveTrades.Add(liveTrade);
+            context.LiveTrades.RemoveRange(context.LiveTrades.Where(x => x.AccountID == message.AccountID));
+                //InstrumentID==InstrumentID account which is trading more than one symbol.
+            context.LiveTrades.Add(liveTrade);
         }
 
         /// <summary>
@@ -88,7 +141,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        private bool ItIsSameSideTrade(ExecutionMessage message, List<LiveTrade> liveTrades)
+        private static bool ItIsSameSideTrade(ExecutionMessage message, List<LiveTrade> liveTrades)
         {
             return liveTrades.Any(
                  x =>
@@ -104,16 +157,15 @@ namespace OverviewApp.ViewModels
         /// <returns></returns>
         private bool ItIsFirstTradeOnAccount(ExecutionMessage message, List<LiveTrade> liveTrades)
         {
-            return
-                 liveTrades.Any(x=>x.AccountID== message.AccountID &&
-                     x.Instrument.SymbolForOrders == message.Instrument.SymbolForOrders);
+           return
+                 liveTrades.Any(accountIdAndSymbolForOrdersEquealFunc);
         }
-
+        #endregion
         public static TradeDirection ConvertFromString(string side) => side == "SLD" ? TradeDirection.Long : TradeDirection.Short;
         public List<TradeHistory> UpdateTradeHistory(int latestHistoryTrade)
         {
-            return (from s1 in Context.ExecutionMessages
-                                                  join s2 in Context.CommissionMessages
+            return (from s1 in context.ExecutionMessages
+                                                  join s2 in context.CommissionMessages
                                                   on s1.ExecutionId equals s2.ExecutionId
                                                   where s2.ID > latestHistoryTrade
                                                   select new TradeHistory
@@ -124,7 +176,7 @@ namespace OverviewApp.ViewModels
                                                       ExecId = s1.ExecutionId,
                                                       ExecTime = s1.Time,
                                                       Side = ConvertFromString(s1.Side),
-                                                      Position = s1.Qty,
+                                                      Quantity = s1.Quantity,
                                                       InstrumentID = s1.InstrumentID,
                                                       Price = s1.Price,
                                                       Commission = s2.Commission,

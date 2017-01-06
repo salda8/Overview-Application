@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
@@ -36,8 +37,8 @@ namespace OverviewApp.ViewModels
 
         private readonly List<Equity> filteredEquity = new List<Equity>();
         private readonly List<Equity> filteredEquityByDate = new List<Equity>();
-        private readonly Timer timer;
-        private readonly Timer timerEquity;
+        private readonly Timer realoadDataTimer;
+        private readonly Timer reloadEquity;
         private ReactiveList<string> accounts;
 
         private ReactiveList<PortfolioSummary> accsummaryCollection;
@@ -66,7 +67,7 @@ namespace OverviewApp.ViewModels
         private ReactiveList<Account> accountsList;
         private int latestProccesedCommissionMessage=0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
-        private MessageHandler messageHandler;
+        private readonly MessageHandler messageHandler;
         #endregion
 
         #region
@@ -85,15 +86,15 @@ namespace OverviewApp.ViewModels
             messageHandler = new MessageHandler(Context);
             LoadData();
 
-            timer = new Timer();
-            timer.Elapsed += timer_tick;
-            timer.Interval = 10000; //10000 ms = 10 seconds
-            timer.Enabled = true;
+            realoadDataTimer = new Timer();
+            realoadDataTimer.Elapsed += RealoadDataTimerOnElapsed;
+            realoadDataTimer.Interval = 10000; //10000 ms = 10 seconds
+            realoadDataTimer.Enabled = true;
 
-            timerEquity = new Timer();
-            timerEquity.Elapsed += timer_tick_equity;
-            timerEquity.Interval = 65000;
-            timerEquity.Enabled = true;
+            reloadEquity = new Timer();
+            reloadEquity.Elapsed += ReloadTickEquity;
+            reloadEquity.Interval = 65000;
+            reloadEquity.Enabled = true;
             
 
             logger.Log(LogType.Admin, "Ahoj", LogSeverity.Info);
@@ -339,7 +340,7 @@ namespace OverviewApp.ViewModels
 
             LiveTrades = new ReactiveList<LiveTrade>(messageHandler.UpdateLiveTrades(LiveTrades.ToList()));
 
-            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
+            OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
@@ -477,14 +478,14 @@ namespace OverviewApp.ViewModels
         }
         public ReactiveCommand<Unit, Unit> ReloadDataCommand { get; set; }
 
-        private void timer_tick_equity(object sender, EventArgs e)
+        private void ReloadTickEquity(object sender, EventArgs e)
         {
             UpdateData();
         }
 
-        private async void timer_tick(object sender, EventArgs e)
+        private async void RealoadDataTimerOnElapsed(object sender, EventArgs e)
         {
-            await ReloadDataCommand.Execute();
+            await Task.Run(() => ReloadDataCommand.Execute()).ConfigureAwait(true);
         }
 
         /// <summary>
