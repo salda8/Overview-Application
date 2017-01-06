@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
@@ -34,8 +37,8 @@ namespace OverviewApp.ViewModels
 
         private readonly List<Equity> filteredEquity = new List<Equity>();
         private readonly List<Equity> filteredEquityByDate = new List<Equity>();
-        private readonly Timer timer;
-        private readonly Timer timerEquity;
+        private readonly Timer realoadDataTimer;
+        private readonly Timer reloadEquity;
         private ReactiveList<string> accounts;
 
         private ReactiveList<PortfolioSummary> accsummaryCollection;
@@ -62,8 +65,9 @@ namespace OverviewApp.ViewModels
 #pragma warning disable CS0169 // The field 'Account_ViewModel.stopwatch' is never used
         private Stopwatch stopwatch;
         private ReactiveList<Account> accountsList;
+        private int latestProccesedCommissionMessage=0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
-
+        private readonly MessageHandler messageHandler;
         #endregion
 
         #region
@@ -79,17 +83,19 @@ namespace OverviewApp.ViewModels
            
             
             SetUpModel();
+            messageHandler = new MessageHandler(Context);
             LoadData();
 
-            timer = new Timer();
-            timer.Elapsed += timer_tick;
-            timer.Interval = 1000; //10000 ms = 10 seconds
-            timer.Enabled = true;
+            realoadDataTimer = new Timer();
+            realoadDataTimer.Elapsed += RealoadDataTimerOnElapsed;
+            realoadDataTimer.Interval = 10000; //10000 ms = 10 seconds
+            realoadDataTimer.Enabled = true;
 
-            timerEquity = new Timer();
-            timerEquity.Elapsed += timer_tick_equity;
-            timerEquity.Interval = 65000;
-            timerEquity.Enabled = true;
+            reloadEquity = new Timer();
+            reloadEquity.Elapsed += ReloadTickEquity;
+            reloadEquity.Interval = 65000;
+            reloadEquity.Enabled = true;
+            
 
             logger.Log(LogType.Admin, "Ahoj", LogSeverity.Info);
 
@@ -253,11 +259,7 @@ namespace OverviewApp.ViewModels
 
         #endregion
 
-        #region Nested
-
-       
-
-        #endregion
+      
 
         /// <summary>
         ///     This method handles a message recieved from the View which enables a reference to the
@@ -324,28 +326,28 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-            List<TradeHistory> history;
-            if (TradesHistory.Count > 0)
+            var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
+            if (tradeHistory?.Count > 0)
             {
-                var lastIdHistoricalTrade = TradesHistory[TradesHistory.Count - 1].ID;
-                history = Context.TradeHistories.Where(x=>x.ID> lastIdHistoricalTrade).ToList();
+                Context.TradeHistories.AddRange(tradeHistory);
+                Context.SaveChangesAsync();
+
+                foreach (TradeHistory tradeHistor in tradeHistory)
+                {
+                    Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
+                }
             }
-            else
-            {
-                history = new List<TradeHistory>(Context.TradeHistories).ToList();
-            }
-            foreach (TradeHistory tradeHistory in history)
-            {
-                Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistory));
-            }
-            
-            
-            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
-            
-            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
+
+            LiveTrades = new ReactiveList<LiveTrade>(messageHandler.UpdateLiveTrades(LiveTrades.ToList()));
+
+            OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
+
+ 
+
+
 
         /// <summary>
         ///     Updates the equity data.
@@ -471,16 +473,19 @@ namespace OverviewApp.ViewModels
             RemoveAccountFilterCommand = new RelayCommand(RemoveAccountFilter, () => CanRemoveAccountFilter);
             ResetFiltersCommand = new RelayCommand(ResetFilters, null);
             ResetDateFilterCommand = new RelayCommand(ResetDateFilter, null);
-        }
+            ReloadDataCommand = ReactiveCommand.Create(LoadData);
 
-        private void timer_tick_equity(object sender, EventArgs e)
+        }
+        public ReactiveCommand<Unit, Unit> ReloadDataCommand { get; set; }
+
+        private void ReloadTickEquity(object sender, EventArgs e)
         {
             UpdateData();
         }
 
-        private void timer_tick(object sender, EventArgs e)
+        private async void RealoadDataTimerOnElapsed(object sender, EventArgs e)
         {
-            UpdateData();
+            await Task.Run(() => ReloadDataCommand.Execute()).ConfigureAwait(true);
         }
 
         /// <summary>
