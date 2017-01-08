@@ -9,7 +9,7 @@ using EntityData;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
+
 using ReactiveUI;
 using ILogger = DataStructures.ILogger;
 
@@ -224,23 +224,23 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void CloseTrade()
         {
-            var row = SelectedRow;
-            var wrapper = new IbClient();
-            wrapper.ClientSocket.eConnect("127.0.0.1", row.Port, 9999);
-            ReqGlobalCancel(wrapper);
-            Trade.PlaceMarketTrade(row.Instrument.Symbol, (double) row.Position, wrapper);
-            wrapper.ClientSocket.eDisconnect();
+           // var row = SelectedRow;
+           //var wrapper = new IbClient();
+           // wrapper.ClientSocket.eConnect("127.0.0.1", row.Port, 9999);
+           // ReqGlobalCancel(wrapper);
+           // Trade.PlaceMarketTrade(row.Instrument.Symbol, (double) row.Quantity, wrapper);
+           // wrapper.ClientSocket.eDisconnect();
         }
 
         /// <summary>
         ///     Reqs the global cancel.
         /// </summary>
         /// <param name="wrapper">The wrapper.</param>
-        public static void ReqGlobalCancel(IbClient wrapper)
-        {
-            wrapper.ClientSocket.reqGlobalCancel();
+        //public static void ReqGlobalCancel(IbClient wrapper)
+        //{
+        //    wrapper.ClientSocket.reqGlobalCancel();
             
-        }
+        //}
 
         /// <summary>
         ///     Filters by account.

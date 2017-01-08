@@ -69,10 +69,7 @@ namespace OverviewApp.ViewModels
         public StrategyViewModel StrategyVm => ServiceLocator.Current.GetInstance<StrategyViewModel>();
 
         public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
-
-        public DatabaseConnectionViewModel DatabaseConnectionVm
-            => ServiceLocator.Current.GetInstance<DatabaseConnectionViewModel>();
-
+        
         /// <summary>
         ///     Used to bind any incoming status messages, to the MainWindow status bar.
         /// </summary>
@@ -82,11 +79,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref statusBarMessage, value); }
         }
 
-        public ICommand OpenDatabaseSettingsCommand => openDatabaseSettingsMenuCommand ??
-                                                        (openDatabaseSettingsMenuCommand =
-                                                            new RelayCommand<string>(
-                                                                Execute_OpenDatabaseSettingsWindow,
-                                                                CanExecute_OpenDatabaseSetttingsWindow));
+     
 
         public ICommand RefreshPeopleMenuCommand => refreshPeopleMenuCommand ??
                                                      (refreshPeopleMenuCommand =

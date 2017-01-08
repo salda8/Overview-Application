@@ -6,14 +6,13 @@ using System.Linq;
 using System.Reactive;
 using System.Windows;
 using System.Windows.Data;
-using DataAccess;
 using DataStructures;
 using EntityData;
 using QDMS;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
+
 using ReactiveUI;
 
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using DataAccess;
+
 using DataStructures;
 using DataStructures.Enums;
 using EntityData;
@@ -19,7 +19,7 @@ using GalaSoft.MvvmLight.Messaging;
 using MoreLinq;
 
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
+
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -67,7 +67,7 @@ namespace OverviewApp.ViewModels
         private ReactiveList<Account> accountsList;
         private int latestProccesedCommissionMessage=0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
-        private readonly MessageHandler messageHandler;
+        
         #endregion
 
         #region
@@ -83,7 +83,7 @@ namespace OverviewApp.ViewModels
            
             
             SetUpModel();
-            messageHandler = new MessageHandler(Context);
+           
             LoadData();
 
             realoadDataTimer = new Timer();
@@ -326,21 +326,21 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-            var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
-            if (tradeHistory?.Count > 0)
-            {
-                Context.TradeHistories.AddRange(tradeHistory);
-                Context.SaveChangesAsync();
+            //var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
+            //if (tradeHistory?.Count > 0)
+            //{
+            //    Context.TradeHistories.AddRange(tradeHistory);
+            //    Context.SaveChangesAsync();
 
-                foreach (TradeHistory tradeHistor in tradeHistory)
-                {
-                    Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
-                }
-            }
+            //    foreach (TradeHistory tradeHistor in tradeHistory)
+            //    {
+            //        Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
+            //    }
+            //}
 
-            LiveTrades = new ReactiveList<LiveTrade>(messageHandler.UpdateLiveTrades(LiveTrades.ToList()));
+            //LiveTrades = new ReactiveList<LiveTrade>();
 
-            OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
+            //OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
