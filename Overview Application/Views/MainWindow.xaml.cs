@@ -26,8 +26,10 @@ namespace OverviewApp.Views
         {
             DBUtils.CheckDBConnection();
 
+            SetLogDirectory();
 
-
+            DBUtils.SetConnectionString();
+            
             InitializeComponent();
             //Log unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += AppDomain_CurrentDomain_UnhandledException;

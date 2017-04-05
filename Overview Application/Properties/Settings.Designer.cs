@@ -73,7 +73,7 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("qdmsdata")]
+        [global::System.Configuration.DefaultSettingValueAttribute("data")]
         public string dataDatabaseName {
             get {
                 return ((string)(this["dataDatabaseName"]));
@@ -85,7 +85,7 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("qdms")]
+        [global::System.Configuration.DefaultSettingValueAttribute("server")]
         public string allPurposeDatabaseName {
             get {
                 return ((string)(this["allPurposeDatabaseName"]));

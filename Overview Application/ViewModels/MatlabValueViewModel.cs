@@ -51,12 +51,12 @@ namespace OverviewApp.ViewModels
         }
 
         /// <summary>
-        ///     This method handles a message recieved from the View which enables a reference to the
+        ///     This method handles a message received from the View which enables a reference to the
         ///     instantiated CollectionViewSource to be used in the ViewModel.
         /// </summary>
         private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken token)
         {
-            if (token.LiveTradesCollectionViewSource != null)
+            if (token.MatlabValuesCollectionViewSource != null)
             {
                 Mcvs = token.MatlabValuesCollectionViewSource;
             }

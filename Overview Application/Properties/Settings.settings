@@ -15,10 +15,10 @@
       <Value Profile="(Default)">MSSQL</Value>
     </Setting>
     <Setting Name="dataDatabaseName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">qdmsdata</Value>
+      <Value Profile="(Default)">data</Value>
     </Setting>
     <Setting Name="allPurposeDatabaseName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">qdms</Value>
+      <Value Profile="(Default)">server</Value>
     </Setting>
     <Setting Name="logDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

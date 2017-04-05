@@ -20,10 +20,12 @@ namespace OverviewApp.Auxiliary.Helpers
             container.RegisterType<StrategyViewModel>();
             container.RegisterType<CloseTradesViewModel>();
             container.RegisterType<IAttributesHelper, AttributesHelper>();
-           
-            container.RegisterType<IMyDbContext, MyDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.allPurposeDatabaseName)));
+            container.RegisterType<IMyDbContext, MyDBContext>();
+            container.RegisterType<IDataDBContext, DataDBContext>();
+            
+            //container.RegisterType<IMyDbContext, MyDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.allPurposeDatabaseName)));
 
-            container.RegisterType<IDataDBContext, DataDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.dataDatabaseName)));
+            //container.RegisterType<IDataDBContext, DataDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.dataDatabaseName)));
         }
     }
 }

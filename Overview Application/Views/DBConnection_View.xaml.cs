@@ -64,9 +64,7 @@ namespace OverviewApp.Views
             Properties.Settings.Default.sqlServerPassword = EncryptionUtils.Protect(SqlServerPasswordTextBox.Password);
             Properties.Settings.Default.databaseType = "SqlServer";
             Properties.Settings.Default.Save();
-
-            DBUtils.SetConnectionString();
-
+            
             Close();
         }
 
