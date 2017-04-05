@@ -1,7 +1,6 @@
 ﻿using System.Reactive;
-using DataStructures;
 using EntityData;
-using log4net.Core;
+using NLog;
 using ReactiveUI;
 
 namespace OverviewApp.ViewModels
@@ -18,16 +17,16 @@ namespace OverviewApp.ViewModels
 
         protected IMyDbContext Context { get; }
 
-        protected ILogger Logger { get; }
+        protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ReactiveCommand<Unit,Unit> CancelCommand
             => cancelCommand ?? (cancelCommand = ReactiveCommand.Create((() => { })));
         
 
-        public MyBaseViewModel(IMyDbContext context,Splat.ILogger logger)// IUnityContainer container)
+        public MyBaseViewModel(IMyDbContext context)// IUnityContainer container)
         {
             this.Context = context;
-            this.Logger = logger;
+           
           
         }
 

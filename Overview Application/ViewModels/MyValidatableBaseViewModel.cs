@@ -3,9 +3,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Reactive;
 using System.Threading.Tasks;
-using DataStructures;
+
 using EntityData;
 using MvvmValidation;
+using NLog;
 using ReactiveUI;
 
 namespace OverviewApp.ViewModels
@@ -22,7 +23,7 @@ namespace OverviewApp.ViewModels
 
         protected IMyDbContext Context { get; }
 
-        protected ILogger Logger { get; }
+        protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ReactiveCommand<Unit,Unit> CancelCommand
             => cancelCommand ?? (cancelCommand = ReactiveCommand.Create((() => { })));
@@ -31,11 +32,11 @@ namespace OverviewApp.ViewModels
 
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; }
 
-        public MyValidatableBaseViewModel(IMyDbContext context,ILogger logger)// IUnityContainer container)
+        public MyValidatableBaseViewModel(IMyDbContext context)// IUnityContainer container)
         {
             Validator = new ValidationHelper();
             this.Context = context;
-            this.Logger = logger;
+           
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(Validator);
             NotifyDataErrorInfoAdapter.ErrorsChanged += OnErrorsChanged;
         }

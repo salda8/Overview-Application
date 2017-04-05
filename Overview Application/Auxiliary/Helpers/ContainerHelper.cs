@@ -1,8 +1,8 @@
-﻿using DataStructures;
+﻿
 using EntityData;
 using Microsoft.Practices.Unity;
 using OverviewApp.ViewModels;
-using Splat;
+
 
 namespace OverviewApp.Auxiliary.Helpers
 {
@@ -20,8 +20,8 @@ namespace OverviewApp.Auxiliary.Helpers
            container.RegisterType<MatlabValueViewModel>();
            container.RegisterType<StrategyViewModel>();
            container.RegisterType<CloseTradesViewModel>();
-           
-           container.RegisterType<ILogger, Logger.Logger>();
+         
+         
            container.RegisterType<IAttributesHelper, AttributesHelper>();
            container.RegisterType<IMyDbContext, MyDBContext>(
                new InjectionConstructor("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=qdms;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));

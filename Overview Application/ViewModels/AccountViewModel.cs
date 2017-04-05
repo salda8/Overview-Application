@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using Splat;
 
 namespace OverviewApp.ViewModels
 {
@@ -66,7 +65,7 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public AccountViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public AccountViewModel(IMyDbContext context) : base(context)
         {
             InitializeCommands();
             PlotModel = new PlotModel();
@@ -740,5 +739,14 @@ namespace OverviewApp.ViewModels
                     break;
             }
         }
+    }
+
+    public enum FilterField
+    {
+        None,
+        Account,
+        StartDate,
+        EndDate,
+       
     }
 }

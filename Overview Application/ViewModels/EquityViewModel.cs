@@ -24,7 +24,7 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public EquityViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public EquityViewModel(IMyDbContext context) : base(context)
         {
             PlotModel = new PlotModel();
             SetUpModel();

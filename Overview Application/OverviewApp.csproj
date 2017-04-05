@@ -92,6 +92,9 @@
     <Reference Include="MySql.Data">
       <HintPath>.\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.5\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="OxyPlot, Version=2014.1.546.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <HintPath>..\packages\OxyPlot.Core.2014.1.546\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
       <Private>True</Private>
@@ -152,7 +155,6 @@
     </ApplicationDefinition>
     <Compile Include="Auxiliary\Converters\CommentsConverter.cs" />
     <Compile Include="Auxiliary\Converters\ErrorContentConverter.cs" />
-    <Compile Include="Auxiliary\DataStorageFactory.cs" />
     <Compile Include="Auxiliary\Helpers\Db.cs" />
     <Compile Include="Auxiliary\Helpers\DbUtils.cs" />
     <Compile Include="Auxiliary\Helpers\EncryptionUtils.cs" />
@@ -167,6 +169,12 @@
     <Compile Include="Auxiliary\ViewCollectionViewSourceMessageToken.cs" />
     <Compile Include="Auxiliary\Helpers\ContainerHelper.cs" />
     <Compile Include="Auxiliary\Helpers\MapperHelper.cs" />
+    <Compile Include="Helpers\AttributesHelper.cs" />
+    <Compile Include="Helpers\EncryptionUtils.cs" />
+    <Compile Include="Helpers\IAttributesHelper.cs" />
+    <Compile Include="Helpers\Random_Helper.cs" />
+    <Compile Include="Helpers\StringExtensionMethods.cs" />
+    <Compile Include="Helpers\Validation_Helper.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
     <Compile Include="Design Time\DesignDataService.cs" />
@@ -300,6 +308,12 @@
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -336,10 +350,6 @@
     <ProjectReference Include="..\..\qdms\QDMS\QDMS.csproj">
       <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
       <Name>QDMS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{01e31fb8-8d8f-42c5-a825-e36ac71b664a}</Project>
-      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

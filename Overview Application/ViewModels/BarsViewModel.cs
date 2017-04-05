@@ -15,7 +15,6 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using QDMS;
-using Splat;
 
 
 namespace OverviewApp.ViewModels
@@ -56,7 +55,7 @@ namespace OverviewApp.ViewModels
         //private List<Candlestick> FilteredBarsBySymbol = new List<Candlestick>();
         // private List<Candlestick> FilteredBarsByTimeframe = new List<Candlestick>();
 
-        public BarsViewModel(IMyDbContext context, ILogger logger, DataDBContext dataDbContext) : base(context, logger)
+        public BarsViewModel(IMyDbContext context, DataDBContext dataDbContext) : base(context)
         {
             PlotModel = new PlotModel();
             Instruments = new ObservableCollection<Instrument>(context.Instruments.ToList());

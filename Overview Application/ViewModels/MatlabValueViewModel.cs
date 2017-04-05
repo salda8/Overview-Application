@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
 using QDMS;
 using ReactiveUI;
-using ILogger = DataStructures.ILogger;
+
 
 namespace OverviewApp.ViewModels
 {
@@ -20,7 +20,7 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public MatlabValueViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public MatlabValueViewModel(IMyDbContext context) : base(context)
         {
            
             LoadData();
@@ -46,7 +46,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            var mlc = Context.Matlabvalues.ToList();
+            var mlc = Context.MatlabValues.ToList();
             MatlabValueCollection = new ObservableCollection<Matlabvalue>(mlc);
         }
 

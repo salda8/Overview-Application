@@ -3,8 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using DataStructures;
+
 using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using MvvmValidation;
@@ -34,7 +33,7 @@ namespace OverviewApp.ViewModels
         private string validationErrorsString;
         private bool? isValid;
 
-        public AddNewAccountViewModel(IMyDbContext context, ILogger logger,Account account = null) : base(context, logger)
+        public AddNewAccountViewModel(IMyDbContext context, Account account = null) : base(context)
         {
              
             originalAccount = account;

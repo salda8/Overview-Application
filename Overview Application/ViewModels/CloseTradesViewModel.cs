@@ -11,7 +11,6 @@ using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
 
 using ReactiveUI;
-using Splat;
 
 
 namespace OverviewApp.ViewModels
@@ -69,7 +68,7 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public CloseTradesViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public CloseTradesViewModel(IMyDbContext context) : base(context)
         {
           
             InitializeCommands();

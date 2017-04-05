@@ -4,11 +4,10 @@ using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Views;
 using ReactiveUI;
-using ILogger = DataStructures.ILogger;
+
 
 namespace OverviewApp.ViewModels
 {
@@ -32,7 +31,7 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public MainViewModel(IMyDbContext context, ILogger logger,IUnityContainer container) : base(context, logger)
+        public MainViewModel(IMyDbContext context) : base(context)
         {
           
             // This will register our method with the Messenger class for incoming 
