@@ -78,9 +78,7 @@ namespace OverviewApp.ViewModels
 
         public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
 
-        public DatabaseConnectionViewModel DatabaseConnectionVm
-            => ServiceLocator.Current.GetInstance<DatabaseConnectionViewModel>();
-
+       
         #endregion
 
         /// <summary>

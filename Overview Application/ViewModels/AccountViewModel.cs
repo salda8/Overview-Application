@@ -1,6 +1,15 @@
-﻿using System;
+﻿using EntityData;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using MoreLinq;
+using OverviewApp.Auxiliary.Helpers;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using QDMS;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
@@ -9,31 +18,13 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using DataAccess;
-using DataStructures;
-using DataStructures.Enums;
-using EntityData;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-
-using MoreLinq;
-
-using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Models;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using QDMS;
-using ReactiveUI;
-
+using Splat;
 
 namespace OverviewApp.ViewModels
 {
     public class AccountViewModel : MyBaseViewModel
     {
         #region Fields
-
-        
 
         private readonly List<Equity> filteredEquity = new List<Equity>();
         private readonly List<Equity> filteredEquityByDate = new List<Equity>();
@@ -65,10 +56,10 @@ namespace OverviewApp.ViewModels
 #pragma warning disable CS0169 // The field 'Account_ViewModel.stopwatch' is never used
         private Stopwatch stopwatch;
         private ReactiveList<Account> accountsList;
-        private int latestProccesedCommissionMessage=0;
+        private int latestProccesedCommissionMessage = 0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
-        private readonly MessageHandler messageHandler;
-        #endregion
+
+        #endregion Fields
 
         #region
 
@@ -77,13 +68,11 @@ namespace OverviewApp.ViewModels
         /// </summary>
         public AccountViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
         {
-          
             InitializeCommands();
             PlotModel = new PlotModel();
-           
-            
+
             SetUpModel();
-            messageHandler = new MessageHandler(Context);
+
             LoadData();
 
             realoadDataTimer = new Timer();
@@ -95,9 +84,8 @@ namespace OverviewApp.ViewModels
             reloadEquity.Elapsed += ReloadTickEquity;
             reloadEquity.Interval = 65000;
             reloadEquity.Enabled = true;
-            
 
-            logger.Log(LogType.Admin, "Ahoj", LogSeverity.Info);
+            
 
             // This will register our method with the Messenger class for incoming
             // messages of type ViewCollectionViewSourceMessageToken.
@@ -109,7 +97,6 @@ namespace OverviewApp.ViewModels
 
         #region Properties
 
-       
         /// <summary>
         ///     Gets or sets the CollectionViewSource which is the proxy for the
         ///     collection of Things and the datagrid in which each thing is displayed.
@@ -181,9 +168,9 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedAccount == value)
                     return;
-               
+
                 //RaisePropertyChanged("SelectedAuthor");
-             this.RaiseAndSetIfChanged(ref selectedAccount, value);
+                this.RaiseAndSetIfChanged(ref selectedAccount, value);
                 // FilteredEquity.Clear();
 
                 ApplyFilter(!string.IsNullOrEmpty(selectedAccount) ? FilterField.Account : FilterField.None);
@@ -201,7 +188,7 @@ namespace OverviewApp.ViewModels
             {
                 if (selectedStartDate == value)
                     return;
-              
+
                 //RaisePropertyChanged("SelectedAuthor");
                 this.RaiseAndSetIfChanged(ref selectedStartDate, value);
                 if (selectedStartDate != DateTime.Today.AddYears(-1))
@@ -259,8 +246,6 @@ namespace OverviewApp.ViewModels
 
         #endregion
 
-      
-
         /// <summary>
         ///     This method handles a message recieved from the View which enables a reference to the
         ///     instantiated CollectionViewSource to be used in the ViewModel.
@@ -289,7 +274,7 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public  void Cleanup()
+        public void Cleanup()
         {
             Messenger.Default.Unregister<ViewCollectionViewSourceMessageToken>(this);
             //base.Cleanup();
@@ -300,7 +285,6 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-         
             LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
             TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistories.ToList());
             OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
@@ -309,7 +293,6 @@ namespace OverviewApp.ViewModels
             EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
             Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
             //SetUpModelData();
-
         }
 
         public ReactiveList<Account> AccountsList
@@ -326,28 +309,24 @@ namespace OverviewApp.ViewModels
             //var livetrades = Context.GetLiveTrades();
             //var openorder = Context.GetOpenOrders();
             //var summary = Context.GetPortfolioSummary();
-            var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
-            if (tradeHistory?.Count > 0)
-            {
-                Context.TradeHistories.AddRange(tradeHistory);
-                Context.SaveChangesAsync();
+            //var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
+            //if (tradeHistory?.Count > 0)
+            //{
+            //    Context.TradeHistories.AddRange(tradeHistory);
+            //    Context.SaveChangesAsync();
 
-                foreach (TradeHistory tradeHistor in tradeHistory)
-                {
-                    Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
-                }
-            }
+            //    foreach (TradeHistory tradeHistor in tradeHistory)
+            //    {
+            //        Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
+            //    }
+            //}
 
-            LiveTrades = new ReactiveList<LiveTrade>(messageHandler.UpdateLiveTrades(LiveTrades.ToList()));
+            //LiveTrades = new ReactiveList<LiveTrade>();
 
-            OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
+            //OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
             AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
         }
-
- 
-
-
 
         /// <summary>
         ///     Updates the equity data.
@@ -358,7 +337,7 @@ namespace OverviewApp.ViewModels
             if (EquityCollection.Count > 0)
             {
                 var lastIdEquity = EquityCollection[EquityCollection.Count - 1].ID;
-                equity = Context.Equities.Where(x=>x.ID>lastIdEquity).ToList();
+                equity = Context.Equities.Where(x => x.ID > lastIdEquity).ToList();
             }
             else
             {
@@ -455,7 +434,7 @@ namespace OverviewApp.ViewModels
                         Smooth = false
                     };
 
-                    data.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double) d.Value)));
+                    data.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double)d.Value)));
                     PlotModel.Series.Add(lineSerie);
                     PlotModel.Title = "Equity Graph"; // Account:"+data.Key;
                 }
@@ -474,8 +453,8 @@ namespace OverviewApp.ViewModels
             ResetFiltersCommand = new RelayCommand(ResetFilters, null);
             ResetDateFilterCommand = new RelayCommand(ResetDateFilter, null);
             ReloadDataCommand = ReactiveCommand.Create(LoadData);
-
         }
+
         public ReactiveCommand<Unit, Unit> ReloadDataCommand { get; set; }
 
         private void ReloadTickEquity(object sender, EventArgs e)
@@ -498,7 +477,7 @@ namespace OverviewApp.ViewModels
             // see Notes on Filter Methods:
             if (e.Item is LiveTrade)
             {
-                var src = (LiveTrade) e.Item;
+                var src = (LiveTrade)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
@@ -506,7 +485,7 @@ namespace OverviewApp.ViewModels
             }
             else if (e.Item is OpenOrder)
             {
-                var src = (OpenOrder) e.Item;
+                var src = (OpenOrder)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
@@ -514,7 +493,7 @@ namespace OverviewApp.ViewModels
             }
             else if (e.Item is TradeHistory)
             {
-                var src = (TradeHistory) e.Item;
+                var src = (TradeHistory)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
@@ -522,7 +501,7 @@ namespace OverviewApp.ViewModels
             }
             else if (e.Item is Equity)
             {
-                var src = (Equity) e.Item;
+                var src = (Equity)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
@@ -536,7 +515,7 @@ namespace OverviewApp.ViewModels
             }
             else
             {
-                var src = (PortfolioSummary) e.Item;
+                var src = (PortfolioSummary)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)
@@ -604,7 +583,7 @@ namespace OverviewApp.ViewModels
         {
             if (e.Item is TradeHistory)
             {
-                var src = (TradeHistory) e.Item;
+                var src = (TradeHistory)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 //else if (string.Compare(SelectedAccount, src.Account) != 0)
@@ -613,7 +592,7 @@ namespace OverviewApp.ViewModels
             }
             else if (e.Item is Equity)
             {
-                var src = (Equity) e.Item;
+                var src = (Equity)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (DateTime.Compare(SelectedEndDate, src.UpdateTime) <= 0)
@@ -656,7 +635,7 @@ namespace OverviewApp.ViewModels
         {
             if (e.Item is TradeHistory)
             {
-                var src = (TradeHistory) e.Item;
+                var src = (TradeHistory)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (DateTime.Compare(SelectedStartDate, src.ExecTime) >= 0)
@@ -664,7 +643,7 @@ namespace OverviewApp.ViewModels
             }
             else if (e.Item is Equity)
             {
-                var src = (Equity) e.Item;
+                var src = (Equity)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (DateTime.Compare(SelectedStartDate, src.UpdateTime) >= 0)

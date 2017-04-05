@@ -32,30 +32,7 @@
     <DataTemplate DataType="{x:Type vm:CloseTradesViewModel}">
         <views1:CloseTradesView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:DatabaseConnectionViewModel}">
-        <views1:DatabaseConnectionView />
-    </DataTemplate>
-
-
-    <!--  You can of course simply use the dataTemplate to directly manipulate  -->
-    <!--  how things will look, like in the following example:  -->
-
-    <!--
-	
-	<DataTemplate DataType="{x:Type model:SomeClass}">
-		<Border Background="Navy"  Margin="2" Padding="2">
-			<StackPanel Orientation="Horizontal">
-
-				<TextBlock Text="{Binding Date, StringFormat=dd-MM-yyyy}" Width="80"/>
-				<TextBlock Text="{Binding Name}" FontWeight="Bold" Width="130"/>
-				<TextBlock Text="{Binding Age}" Width="60" Foreground="LightSteelBlue"/>
-				<TextBlock Text="{Binding Comment, Converter={StaticResource CommentsConverter}}" />
-
-			</StackPanel>
-			
-		</Border>
-	</DataTemplate>
-	-->
+ 
     <ControlTemplate x:Key="DefaultErrorTemplate">
         <Grid x:Name="container">
             <Grid.ColumnDefinitions>

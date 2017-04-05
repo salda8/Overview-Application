@@ -24,10 +24,6 @@ namespace OverviewApp.ViewModels
 
         #region Fields
 
-        private ICommand openDatabaseSettingsMenuCommand;
-
-        private ICommand refreshPeopleMenuCommand;
-
         private string statusBarMessage;
         private ReactiveCommand<Unit, Unit> addNewAccountCommand;
         private ReactiveCommand<Unit, Unit> addNewStrategyCommand;
@@ -69,10 +65,7 @@ namespace OverviewApp.ViewModels
         public StrategyViewModel StrategyVm => ServiceLocator.Current.GetInstance<StrategyViewModel>();
 
         public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
-
-        public DatabaseConnectionViewModel DatabaseConnectionVm
-            => ServiceLocator.Current.GetInstance<DatabaseConnectionViewModel>();
-
+        
         /// <summary>
         ///     Used to bind any incoming status messages, to the MainWindow status bar.
         /// </summary>
@@ -81,17 +74,7 @@ namespace OverviewApp.ViewModels
             get { return statusBarMessage; }
             set { this.RaiseAndSetIfChanged(ref statusBarMessage, value); }
         }
-
-        public ICommand OpenDatabaseSettingsCommand => openDatabaseSettingsMenuCommand ??
-                                                        (openDatabaseSettingsMenuCommand =
-                                                            new RelayCommand<string>(
-                                                                Execute_OpenDatabaseSettingsWindow,
-                                                                CanExecute_OpenDatabaseSetttingsWindow));
-
-        public ICommand RefreshPeopleMenuCommand => refreshPeopleMenuCommand ??
-                                                     (refreshPeopleMenuCommand =
-                                                         new RelayCommand<string>(Execute_RefreshPeopleMenu,
-                                                             CanExecute_RefreshPeopleMenu));
+        
 
         public ReactiveCommand<Unit, Unit> AddNewStrategyCommand
             =>
@@ -116,39 +99,5 @@ namespace OverviewApp.ViewModels
         }
 
         #endregion
-
-        private bool CanExecute_OpenDatabaseSetttingsWindow(string arg)
-        {
-            return true;
-        }
-
-        private void Execute_OpenDatabaseSettingsWindow(string obj)
-        {
-            Messenger.Default.Send(new DatabaseSettings());
-            //DatabaseConnection_ViewModel =
-            
-        }
-
-
-        /// <summary>
-        ///     Can always exectue this
-        /// </summary>
-        private bool CanExecute_RefreshPeopleMenu(string aNumberAsString)
-        {
-            return true;
-        }
-
-        /// <summary>
-        ///     This will send the message when someone hits the command on the menu.
-        /// </summary>
-        /// <param name="aNumberAsString">
-        ///     In our case, hard codedd in the MenuItem paramater.
-        ///     You can easily bind it to anything you want.
-        /// </param>
-        private void Execute_RefreshPeopleMenu(string aNumberAsString)
-        {
-            var peopleToFetch = int.Parse(aNumberAsString);
-            Messenger.Default.Send(new RefreshPeople(peopleToFetch));
-        }
     }
 }
