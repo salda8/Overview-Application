@@ -2,29 +2,29 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="OverviewApp.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MySqlServerHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1</Value>
+    <Setting Name="sqlServerPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SqlServerHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1</Value>
+    <Setting Name="sqlServerUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MySqlServerPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">saldik</Value>
-    </Setting>
-    <Setting Name="SqlServerPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">saldik</Value>
-    </Setting>
-    <Setting Name="MySqlUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">salda</Value>
-    </Setting>
-    <Setting Name="SqlServerUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">salda</Value>
-    </Setting>
-    <Setting Name="SqlServerUseWindowsAuthentication" Type="System.Boolean" Scope="User">
+    <Setting Name="sqlServerUseWindowsAuthentication" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="DatabaseType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MySql</Value>
+    <Setting Name="databaseType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MSSQL</Value>
+    </Setting>
+    <Setting Name="dataDatabaseName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">qdmsdata</Value>
+    </Setting>
+    <Setting Name="allPurposeDatabaseName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">qdms</Value>
+    </Setting>
+    <Setting Name="logDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="sqlServerHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(localdb)\MSSQLLocalDB11</Value>
     </Setting>
   </Settings>
 </SettingsFile>

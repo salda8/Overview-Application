@@ -163,11 +163,7 @@ namespace OverviewApp.ViewModels
 
         #region Nested
 
-        private enum FilterField
-        {
-            Account,
-            None
-        }
+        
 
         #endregion
 
@@ -194,7 +190,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-            var livetrades = Context.LiveTrades.ToList();
+            var livetrades = Context.LiveTrade.ToList();
             LiveTrades = new ObservableCollection<LiveTrade>(livetrades);
         }
 
@@ -203,7 +199,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateData()
         {
-            var livetrades = Context.LiveTrades.ToList();
+            var livetrades = Context.LiveTrade.ToList();
 
             Application.Current.Dispatcher.Invoke(() => { LiveTrades.Clear(); });
             LiveTrades = new ObservableCollection<LiveTrade>(livetrades);

@@ -23,7 +23,7 @@ namespace OverviewApp.ViewModels
             => cancelCommand ?? (cancelCommand = ReactiveCommand.Create((() => { })));
         
 
-        public MyBaseViewModel(IMyDbContext context)// IUnityContainer container)
+        public MyBaseViewModel(IMyDbContext context)
         {
             this.Context = context;
            

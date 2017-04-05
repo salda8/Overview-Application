@@ -58,7 +58,9 @@ namespace OverviewApp.ViewModels
         public BarsViewModel(IMyDbContext context, DataDBContext dataDbContext) : base(context)
         {
             PlotModel = new PlotModel();
-            Instruments = new ObservableCollection<Instrument>(context.Instruments.ToList());
+            DataDBContext = dataDbContext;
+            
+            Instruments = new ObservableCollection<Instrument>(Context.Instruments.ToList());
             Timeframe = new ObservableCollection<BarSize>() { BarSize.FifteenMinutes, BarSize.FifteenSeconds, BarSize.FiveMinutes, BarSize.FiveSeconds, BarSize.OneDay,
                 BarSize.OneHour, BarSize.OneMinute, BarSize.OneMonth, BarSize.OneQuarter, BarSize.OneSecond, BarSize.OneWeek, BarSize.OneYear, BarSize.ThirtyMinutes, BarSize.ThirtySeconds, BarSize.Tick };
             LoadData();
@@ -69,7 +71,8 @@ namespace OverviewApp.ViewModels
             timer.Elapsed += tick_handler;
             timer.Interval = 60000;
             timer.Enabled = true;
-            DataDBContext = dataDbContext;
+           
+            Logger.Info(() => "BarsViewModel init");
 
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
@@ -178,13 +181,7 @@ namespace OverviewApp.ViewModels
 
         #region Nested
 
-        private enum FilterField
-        {
-            Symbol,
-            Timeframe,
-
-            None
-        }
+        
 
         #endregion
 

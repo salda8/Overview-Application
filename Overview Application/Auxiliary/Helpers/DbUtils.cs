@@ -1,94 +1,71 @@
-﻿using MySql.Data.MySqlClient;
-using OverviewApp.Properties;
+﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Reflection;
+using OverviewApp.Properties;
+using OverviewApp.Views;
 
 namespace OverviewApp.Auxiliary.Helpers
 {
-    public static class DbUtils
+    public static class DBUtils
     {
         public static void SetConnectionString()
         {
-            if (Settings.Default.DatabaseType == "MySql")
-            {
-                SetMySqlConnectionString("qdmsEntities", "qdms");
-                SetMySqlConnectionString("qdmsDataEntities", "qdmsdata");
-            }
-            else
-            {
-                SetSqlServerConnectionString("qdmsEntities", "qdms");
-                SetSqlServerConnectionString("qdmsDataEntities", "qdmsdata");
-            }
+            SetSqlServerConnectionString(Settings.Default.allPurposeDatabaseName);
+            SetSqlServerConnectionString(Settings.Default.dataDatabaseName);
 
             ConfigurationManager.RefreshSection("connectionStrings");
         }
 
-        private static void SetSqlServerConnectionString(string stringName, string dbName)
+        private static void SetSqlServerConnectionString(string dbName)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var conSettings = config.ConnectionStrings.ConnectionStrings[stringName];
-
-            //this is an extremely dirty hack that allows us to change the connection string at runtime
-            var fi = typeof(ConfigurationElement).GetField("_bReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
-            fi.SetValue(conSettings, false);
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            ConnectionStringSettings conSettings = config.ConnectionStrings.ConnectionStrings[dbName];
+           
 
             conSettings.ConnectionString = GetSqlServerConnectionString(
                 dbName,
-                Settings.Default.SqlServerHost,
-                Settings.Default.SqlServerUsername,
-                EncryptionUtils.Unprotect(Settings.Default.SqlServerPassword),
-                useWindowsAuthentication: Settings.Default.SqlServerUseWindowsAuthentication);
+                Settings.Default.sqlServerHost,
+                Settings.Default.sqlServerUsername,
+                EncryptionUtils.Unprotect(Settings.Default.sqlServerPassword),
+                useWindowsAuthentication: Settings.Default.sqlServerUseWindowsAuthentication);
             conSettings.ProviderName = "System.Data.SqlClient";
 
             config.Save();
         }
 
-        private static void SetMySqlConnectionString(string stringName, string dbName)
+        internal static string GetConnectionStringFromAppConfig(string dbName)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var conSettings = config.ConnectionStrings.ConnectionStrings[stringName];
-
-            //this is an extremely dirty hack that allows us to change the connection string at runtime
-            var fi = typeof(ConfigurationElement).GetField("_bReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
-            fi.SetValue(conSettings, false);
-
-            conSettings.ConnectionString =
-                $"User Id={Settings.Default.MySqlUsername};Password={EncryptionUtils.Unprotect(Settings.Default.MySqlServerPassword)};Host={Settings.Default.MySqlServerHost};Database={dbName};Persist Security Info=True";
-            conSettings.ProviderName = "MySql.Data.MySqlClient";
-
-            config.Save();
+            return ConfigurationManager.ConnectionStrings[dbName].ConnectionString;
         }
 
-        public static SqlConnection CreateSqlServerConnection(string database = "qdms", string server = null,
-            string username = null, string password = null, bool noDb = false, bool useWindowsAuthentication = true)
+        public static SqlConnection CreateSqlServerConnection(string database = "qdms", string server = null, string username = null, string password = null, bool noDB = false, bool useWindowsAuthentication = true)
         {
-            var connectionString = GetSqlServerConnectionString(database, server, username, password, noDb,
-                useWindowsAuthentication);
-            return new SqlConnection(connectionString);
+            return new SqlConnection(GetSqlServerConnectionString(database, server, username, password, noDB, useWindowsAuthentication));
+          
         }
 
-        private static string GetSqlServerConnectionString(string database = "Data", string server = null,
-            string username = null, string password = null, bool noDb = false, bool useWindowsAuthentication = true)
+        internal static string GetSqlServerConnectionString(string database = "qdms", string server = null, string username = null, string password = null, bool noDB = false, bool useWindowsAuthentication = true)
         {
-            var connectionString = $"Data Source={server ?? Settings.Default.SqlServerHost};";
+            string connectionString = $"Data Source={server ?? Settings.Default.sqlServerHost};";
 
-            if (!noDb)
+            if (!noDB)
             {
                 connectionString += $"Initial Catalog={database};";
             }
 
             if (!useWindowsAuthentication) //user/pass authentication
             {
-                try
+                if (password == null)
                 {
-                    password = EncryptionUtils.Unprotect(Settings.Default.SqlServerPassword);
+                    try
+                    {
+                        password = EncryptionUtils.Unprotect(Settings.Default.sqlServerPassword);
+                    }
+                    catch
+                    {
+                        password = "";
+                    }
                 }
-                catch
-                {
-                    password = "";
-                }
-
                 connectionString += $"User ID={username};Password={password};";
             }
             else //windows authentication
@@ -98,32 +75,20 @@ namespace OverviewApp.Auxiliary.Helpers
             return connectionString;
         }
 
-        public static MySqlConnection CreateMySqlConnection(string database = "Data", string server = null,
-            string username = null, string password = null, bool noDb = false)
+        public static void CheckDBConnection(string databaseName="")
         {
+            
+            SqlConnection connection = CreateSqlServerConnection(noDB: true, useWindowsAuthentication: Settings.Default.sqlServerUseWindowsAuthentication);
             try
             {
-                password = EncryptionUtils.Unprotect(Settings.Default.MySqlServerPassword);
+                connection.Open();
             }
-            catch
+            catch (Exception)
             {
-                password = "";
+                var dbDetailsWindow = new DBConnection_View();
+                dbDetailsWindow.ShowDialog();
             }
-
-            var connectionString = $"server={server ?? Settings.Default.MySqlServerHost};" +
-                                   $"user id={username ?? Settings.Default.MySqlUsername};" + $"Password={password};";
-
-            if (!noDb)
-            {
-                connectionString += $"database={database};";
-            }
-
-            connectionString +=
-                "allow user variables=true;" +
-                "persist security info=true;" +
-                "Convert Zero Datetime=True";
-
-            return new MySqlConnection(connectionString);
+            connection.Close();
         }
     }
 }

@@ -284,13 +284,13 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
-            TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistories.ToList());
-            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
-            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
-            AccountsList = new ReactiveList<Account>(Context.Accounts.ToList());
-            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
-            Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
+            //LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrade.ToList());
+            //TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.ToList());
+            //OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrder.ToList());
+            //AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
+            //AccountsList = new ReactiveList<Account>(Context.Account.ToList());
+            //EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
+            //Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
             //SetUpModelData();
         }
 
@@ -324,7 +324,7 @@ namespace OverviewApp.ViewModels
 
             //OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
-            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
+            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
         }
 
         /// <summary>
@@ -336,11 +336,11 @@ namespace OverviewApp.ViewModels
             if (EquityCollection.Count > 0)
             {
                 var lastIdEquity = EquityCollection[EquityCollection.Count - 1].ID;
-                equity = Context.Equities.Where(x => x.ID > lastIdEquity).ToList();
+                equity = Context.Equity.Where(x => x.ID > lastIdEquity).ToList();
             }
             else
             {
-                equity = Context.Equities.ToList();
+                equity = Context.Equity.ToList();
             }
             foreach (var equit in equity)
             {
@@ -739,14 +739,5 @@ namespace OverviewApp.ViewModels
                     break;
             }
         }
-    }
-
-    public enum FilterField
-    {
-        None,
-        Account,
-        StartDate,
-        EndDate,
-       
     }
 }

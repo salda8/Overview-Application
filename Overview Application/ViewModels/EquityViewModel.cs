@@ -57,7 +57,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
+            EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
             var dataperaccount = EquityCollection.GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
             if (EquityCollection.Count > 0)
             {

@@ -46,7 +46,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            var mlc = Context.MatlabValues.ToList();
+            var mlc = Context.MatlabValue.ToList();
             MatlabValueCollection = new ObservableCollection<Matlabvalue>(mlc);
         }
 

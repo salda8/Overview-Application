@@ -111,11 +111,11 @@ namespace OverviewApp.ViewModels
 
             if (addingNew)
             {
-                Context.Strategies.Add(strat);
+                Context.Strategy.Add(strat);
             }
             else
             {
-                Context.Strategies.Attach(Strategy);
+                Context.Strategy.Attach(Strategy);
 
                 Context.Entry(originalStrategy).CurrentValues.SetValues(strat);
             }
@@ -227,7 +227,7 @@ namespace OverviewApp.ViewModels
                  () =>
                  {
                      bool isAvailable =
-                          Context.Strategies.Any(x => x.StrategyName == this.StrategyName);
+                          Context.Strategy.Any(x => x.StrategyName == this.StrategyName);
 
                      return RuleResult.Assert(isAvailable,
                                               $"This strategy name {StrategyName} is present. Please choose a different one or edit existing one");
@@ -238,7 +238,7 @@ namespace OverviewApp.ViewModels
                 () =>
                 {
                     bool isAvailable =
-                         Context.Strategies.Any(x => x.Filepath == this.FilePath);
+                         Context.Strategy.Any(x => x.Filepath == this.FilePath);
 
                     return RuleResult.Assert(isAvailable,
                                              $"This file is already used. Please choose a different strategy or edit existing one.");

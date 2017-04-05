@@ -84,7 +84,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            StrategyCollection = new ReactiveList<Strategy>(Context.Strategies.ToList());
+            StrategyCollection = new ReactiveList<Strategy>(Context.Strategy.ToList());
            
             Strategy = new ObservableCollection<string>();
             if (StrategyCollection.Count > 0)

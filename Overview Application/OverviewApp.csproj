@@ -155,8 +155,7 @@
     </ApplicationDefinition>
     <Compile Include="Auxiliary\Converters\CommentsConverter.cs" />
     <Compile Include="Auxiliary\Converters\ErrorContentConverter.cs" />
-    <Compile Include="Auxiliary\Helpers\Db.cs" />
-    <Compile Include="Auxiliary\Helpers\DbUtils.cs" />
+    <Compile Include="Auxiliary\Helpers\DBUtils.cs" />
     <Compile Include="Auxiliary\Helpers\EncryptionUtils.cs" />
     <Compile Include="Auxiliary\Helpers\StringExtensionMethods.cs" />
     <Compile Include="Auxiliary\Helpers\MessengerClasses.cs" />
@@ -175,16 +174,22 @@
     <Compile Include="Helpers\Random_Helper.cs" />
     <Compile Include="Helpers\StringExtensionMethods.cs" />
     <Compile Include="Helpers\Validation_Helper.cs" />
+    <Compile Include="Auxiliary\Converters\LogEventInfoToStringConverter.cs" />
+    <Compile Include="ListBoxExt.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
     <Compile Include="Design Time\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Auxiliary\Converters\LogItemToColorConverter.cs" />
     <Compile Include="MappingConfiguration.cs" />
+    <Compile Include="MemoryTarget.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AddEditStrategyViewModel.cs" />
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
+    <Compile Include="ViewModels\ConcurrentNotifierBlockingList.cs" />
+    <Compile Include="ViewModels\FilterField.cs" />
     <Compile Include="ViewModels\MyValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />
@@ -209,6 +214,9 @@
     </Compile>
     <Compile Include="Views\CloseTrades_View.xaml.cs">
       <DependentUpon>CloseTrades_View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DBConnection_View.xaml.cs">
+      <DependentUpon>DBConnection_View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Equity_View.xaml.cs">
       <DependentUpon>Equity_View.xaml</DependentUpon>
@@ -250,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CloseTrades_View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DBConnection_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -304,9 +316,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
     </None>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -338,9 +349,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Auxiliary\Resources\OxyPlot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="log4dotnet.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\qdms\EntityData\EntityData.csproj">

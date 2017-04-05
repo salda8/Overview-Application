@@ -1,9 +1,9 @@
 ﻿using System.Reactive;
 using System.Windows.Input;
-using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
+using NLog;
 using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Views;
 using ReactiveUI;
@@ -17,21 +17,22 @@ namespace OverviewApp.ViewModels
     ///         See http://www.galasoft.ch/mvvm
     ///     </para>
     /// </summary>
-    public class MainViewModel : MyBaseViewModel
+    public class MainViewModel : ReactiveObject
     {
-       
+
 
         #region Fields
-
+        protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
         private string statusBarMessage;
         private ReactiveCommand<Unit, Unit> addNewAccountCommand;
         private ReactiveCommand<Unit, Unit> addNewStrategyCommand;
+        public ConcurrentNotifierBlockingList<LogEventInfo> LogMessages { get; set; }
 
         #endregion
 
         #region
 
-        public MainViewModel(IMyDbContext context) : base(context)
+        public MainViewModel()
         {
           
             // This will register our method with the Messenger class for incoming 
@@ -40,11 +41,13 @@ namespace OverviewApp.ViewModels
             // we use to bind to our MainWindow status bar string, and wualla, magic
             // just happened.
             Messenger.Default.Register<StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
-
+            LogMessages = new ConcurrentNotifierBlockingList<LogEventInfo>();
             // This is how you can have some design time data
-            
-                StatusBarMessage = "Status in design";
-            
+
+            StatusBarMessage = "Status in design";
+
+            Logger.Info(() => "MainViewModel init");
+
         }
 
         #endregion

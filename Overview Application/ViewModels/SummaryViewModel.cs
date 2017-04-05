@@ -27,7 +27,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         public SummaryViewModel(IMyDbContext context) : base(context)
         {
-            SummaryCollection = new ReactiveList<PortfolioSummary>(this.Context.PortfolioSummaries.ToList());
+            SummaryCollection = new ReactiveList<PortfolioSummary>(this.Context.PortfolioSummary.ToList());
 
             // This will register our method with the Messenger class for incoming
             // messages of type RefreshPeople.
@@ -68,7 +68,7 @@ namespace OverviewApp.ViewModels
         /// <param name="arg"></param>
         private void Execute_RefreshSummary()
         {
-            SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
+            SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
             var msg = "refreshed.";
             OverviewApp.Auxiliary.StatusSetter.SetStatus(msg);
         }
