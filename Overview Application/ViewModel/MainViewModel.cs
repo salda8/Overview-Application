@@ -16,5 +16,6 @@ namespace OverviewApp.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+      
     }
 }

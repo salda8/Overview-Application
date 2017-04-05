@@ -5,8 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Windows;
-using System.Windows.Data;
-using DataStructures;
+
 using EntityData;
 using QDMS;
 using GalaSoft.MvvmLight.Command;
@@ -34,7 +33,7 @@ namespace OverviewApp.ViewModels
         #region
 
         public StrategyViewModel(IMyDbContext
-            dataService, ILogger logger) : base(dataService, logger)
+            dataService) : base(dataService)
         {
             LoadData();
 
@@ -85,7 +84,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            StrategyCollection = new ReactiveList<Strategy>(Context.Strategies.ToList());
+            StrategyCollection = new ReactiveList<Strategy>(Context.Strategy.ToList());
            
             Strategy = new ObservableCollection<string>();
             if (StrategyCollection.Count > 0)

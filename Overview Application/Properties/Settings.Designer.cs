@@ -12,7 +12,7 @@ namespace OverviewApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,97 +25,97 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
-        public string MySqlServerHost {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string sqlServerPassword {
             get {
-                return ((string)(this["MySqlServerHost"]));
+                return ((string)(this["sqlServerPassword"]));
             }
             set {
-                this["MySqlServerHost"] = value;
+                this["sqlServerPassword"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
-        public string SqlServerHost {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string sqlServerUsername {
             get {
-                return ((string)(this["SqlServerHost"]));
+                return ((string)(this["sqlServerUsername"]));
             }
             set {
-                this["SqlServerHost"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("saldik")]
-        public string MySqlServerPassword {
-            get {
-                return ((string)(this["MySqlServerPassword"]));
-            }
-            set {
-                this["MySqlServerPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("saldik")]
-        public string SqlServerPassword {
-            get {
-                return ((string)(this["SqlServerPassword"]));
-            }
-            set {
-                this["SqlServerPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("salda")]
-        public string MySqlUsername {
-            get {
-                return ((string)(this["MySqlUsername"]));
-            }
-            set {
-                this["MySqlUsername"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("salda")]
-        public string SqlServerUsername {
-            get {
-                return ((string)(this["SqlServerUsername"]));
-            }
-            set {
-                this["SqlServerUsername"] = value;
+                this["sqlServerUsername"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SqlServerUseWindowsAuthentication {
+        public bool sqlServerUseWindowsAuthentication {
             get {
-                return ((bool)(this["SqlServerUseWindowsAuthentication"]));
+                return ((bool)(this["sqlServerUseWindowsAuthentication"]));
             }
             set {
-                this["SqlServerUseWindowsAuthentication"] = value;
+                this["sqlServerUseWindowsAuthentication"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MySql")]
-        public string DatabaseType {
+        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
+        public string databaseType {
             get {
-                return ((string)(this["DatabaseType"]));
+                return ((string)(this["databaseType"]));
             }
             set {
-                this["DatabaseType"] = value;
+                this["databaseType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("data")]
+        public string dataDatabaseName {
+            get {
+                return ((string)(this["dataDatabaseName"]));
+            }
+            set {
+                this["dataDatabaseName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("server")]
+        public string allPurposeDatabaseName {
+            get {
+                return ((string)(this["allPurposeDatabaseName"]));
+            }
+            set {
+                this["allPurposeDatabaseName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string logDirectory {
+            get {
+                return ((string)(this["logDirectory"]));
+            }
+            set {
+                this["logDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("(localdb)\\MSSQLLocalDB11")]
+        public string sqlServerHost {
+            get {
+                return ((string)(this["sqlServerHost"]));
+            }
+            set {
+                this["sqlServerHost"] = value;
             }
         }
     }

@@ -92,6 +92,9 @@
     <Reference Include="MySql.Data">
       <HintPath>.\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.5\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="OxyPlot, Version=2014.1.546.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <HintPath>..\packages\OxyPlot.Core.2014.1.546\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
       <Private>True</Private>
@@ -152,9 +155,7 @@
     </ApplicationDefinition>
     <Compile Include="Auxiliary\Converters\CommentsConverter.cs" />
     <Compile Include="Auxiliary\Converters\ErrorContentConverter.cs" />
-    <Compile Include="Auxiliary\DataStorageFactory.cs" />
-    <Compile Include="Auxiliary\Helpers\Db.cs" />
-    <Compile Include="Auxiliary\Helpers\DbUtils.cs" />
+    <Compile Include="Auxiliary\Helpers\DBUtils.cs" />
     <Compile Include="Auxiliary\Helpers\EncryptionUtils.cs" />
     <Compile Include="Auxiliary\Helpers\StringExtensionMethods.cs" />
     <Compile Include="Auxiliary\Helpers\MessengerClasses.cs" />
@@ -167,16 +168,28 @@
     <Compile Include="Auxiliary\ViewCollectionViewSourceMessageToken.cs" />
     <Compile Include="Auxiliary\Helpers\ContainerHelper.cs" />
     <Compile Include="Auxiliary\Helpers\MapperHelper.cs" />
+    <Compile Include="Helpers\AttributesHelper.cs" />
+    <Compile Include="Helpers\EncryptionUtils.cs" />
+    <Compile Include="Helpers\IAttributesHelper.cs" />
+    <Compile Include="Helpers\Random_Helper.cs" />
+    <Compile Include="Helpers\StringExtensionMethods.cs" />
+    <Compile Include="Helpers\Validation_Helper.cs" />
+    <Compile Include="Auxiliary\Converters\LogEventInfoToStringConverter.cs" />
+    <Compile Include="ListBoxExt.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
     <Compile Include="Design Time\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Auxiliary\Converters\LogItemToColorConverter.cs" />
     <Compile Include="MappingConfiguration.cs" />
+    <Compile Include="MemoryTarget.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AddEditStrategyViewModel.cs" />
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
+    <Compile Include="ViewModels\ConcurrentNotifierBlockingList.cs" />
+    <Compile Include="ViewModels\FilterField.cs" />
     <Compile Include="ViewModels\MyValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />
@@ -201,6 +214,9 @@
     </Compile>
     <Compile Include="Views\CloseTrades_View.xaml.cs">
       <DependentUpon>CloseTrades_View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DBConnection_View.xaml.cs">
+      <DependentUpon>DBConnection_View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Equity_View.xaml.cs">
       <DependentUpon>Equity_View.xaml</DependentUpon>
@@ -242,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CloseTrades_View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DBConnection_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -296,9 +316,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="log4net.config">
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -326,9 +351,6 @@
     <EmbeddedResource Include="Auxiliary\Resources\OxyPlot.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="log4dotnet.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\qdms\EntityData\EntityData.csproj">
       <Project>{aea3426e-81b7-4c7e-a1cc-29743229cdcc}</Project>
       <Name>EntityData</Name>
@@ -336,10 +358,6 @@
     <ProjectReference Include="..\..\qdms\QDMS\QDMS.csproj">
       <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
       <Name>QDMS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{01e31fb8-8d8f-42c5-a825-e36ac71b664a}</Project>
-      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using Splat;
 
 namespace OverviewApp.ViewModels
 {
@@ -66,7 +65,7 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public AccountViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public AccountViewModel(IMyDbContext context) : base(context)
         {
             InitializeCommands();
             PlotModel = new PlotModel();
@@ -76,7 +75,7 @@ namespace OverviewApp.ViewModels
             LoadData();
 
             realoadDataTimer = new Timer();
-            realoadDataTimer.Elapsed += RealoadDataTimerOnElapsed;
+            realoadDataTimer.Elapsed += ReloadDataTimerOnElapsed;
             realoadDataTimer.Interval = 10000; //10000 ms = 10 seconds
             realoadDataTimer.Enabled = true;
 
@@ -285,12 +284,12 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void LoadData()
         {
-            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrades.ToList());
-            TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistories.ToList());
-            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrders.ToList());
-            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
-            AccountsList = new ReactiveList<Account>(Context.Accounts.ToList());
-            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
+            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrade.ToList());
+            TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.ToList());
+            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrder.ToList());
+            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
+            AccountsList = new ReactiveList<Account>(Context.Account.ToList());
+            EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
             Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
             //SetUpModelData();
         }
@@ -306,10 +305,10 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateData()
         {
-            //var livetrades = Context.GetLiveTrades();
-            //var openorder = Context.GetOpenOrders();
-            //var summary = Context.GetPortfolioSummary();
-            //var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count-1);
+            //var livetrades = Context.LiveTrade.ToList();
+            //var openorder = Context.OpenOrder();
+            //var summary = Context.PortfolioSummary();
+            //var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count - 1);
             //if (tradeHistory?.Count > 0)
             //{
             //    Context.TradeHistories.AddRange(tradeHistory);
@@ -325,7 +324,7 @@ namespace OverviewApp.ViewModels
 
             //OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
 
-            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
+            //AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
         }
 
         /// <summary>
@@ -337,15 +336,15 @@ namespace OverviewApp.ViewModels
             if (EquityCollection.Count > 0)
             {
                 var lastIdEquity = EquityCollection[EquityCollection.Count - 1].ID;
-                equity = Context.Equities.Where(x => x.ID > lastIdEquity).ToList();
+                equity = Context.Equity.Where(x => x.ID > lastIdEquity).ToList();
             }
             else
             {
-                equity = Context.Equities.ToList();
+                equity = Context.Equity.ToList();
             }
-            foreach (var equit in equity)
+            foreach (var equita in equity)
             {
-                Application.Current.Dispatcher.Invoke(() => { EquityCollection.Add(equit); });
+                Application.Current.Dispatcher.Invoke(() => { EquityCollection.Add(equita); });
             }
         }
 
@@ -392,7 +391,7 @@ namespace OverviewApp.ViewModels
             var listEquity = EquityCollectionViewSource.View.Cast<Equity>().ToList();
             if (listEquity.Count != 0)
             {
-                var dataperaccount =
+                var dataPerAccount =
                     listEquity.DistinctBy(x => x.ID).GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
 
                 var min = Convert.ToDouble(listEquity.MinBy(m => m.Value).Value);
@@ -418,7 +417,7 @@ namespace OverviewApp.ViewModels
 #pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
                 PlotModel.Axes.Add(valueAxis);
 
-                foreach (var data in dataperaccount)
+                foreach (var data in dataPerAccount)
                 {
                     var lineSerie = new LineSeries
                     {
@@ -462,7 +461,7 @@ namespace OverviewApp.ViewModels
             UpdateData();
         }
 
-        private async void RealoadDataTimerOnElapsed(object sender, EventArgs e)
+        private async void ReloadDataTimerOnElapsed(object sender, EventArgs e)
         {
             await Task.Run(() => ReloadDataCommand.Execute()).ConfigureAwait(true);
         }

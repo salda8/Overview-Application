@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ignore="http://www.ignore.com"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:OverviewApp.Auxiliary.Converters"
         Title="Managing Application"
         Width="800"
         Height="800"
@@ -13,7 +14,10 @@
         WindowState="Maximized"
         mc:Ignorable="d ignore">
 
-    <Window.Resources />
+    <Window.Resources>
+       <converters:LogItemToColorConverter x:Key="LogColorConverter" />
+        <converters:LogEventInfoToStringConverter x:Key="LogInfoToStringConverter" />
+    </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
         <DockPanel>
@@ -101,6 +105,18 @@
                     <!--<ContentControl Content="{Binding DatabaseConnection_VM}" />-->
 
                 </TabItem>
+                <TabItem Header="Log">
+                <Grid Background="Transparent">
+                    <ListBox x:Name="RequestListBox" ItemsSource="{Binding LogMessages}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource LogInfoToStringConverter}}" Foreground="{Binding Converter={StaticResource LogColorConverter}}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </Grid>
+            </TabItem>
 
 
             </TabControl>

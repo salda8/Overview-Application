@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
-using QDMS;
-using EntityData;
+﻿using EntityData;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
+using QDMS;
 using ReactiveUI;
-using ILogger = DataStructures.ILogger;
+using System.Linq;
+using System.Windows.Input;
+
 
 namespace OverviewApp.ViewModels
 {
@@ -15,25 +14,20 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        
-
-       
-
         private ICommand refreshSummaryCommand;
 
         private ReactiveList<PortfolioSummary> summaryCollection;
 
-        #endregion
+        #endregion Fields
 
         #region
 
         /// <summary>
         ///     Initializes a new instance of the Main_ViewModel class.
         /// </summary>
-        public SummaryViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public SummaryViewModel(IMyDbContext context) : base(context)
         {
-          
-            SummaryCollection = new ReactiveList<PortfolioSummary>(this.Context.PortfolioSummaries.ToList());
+            SummaryCollection = new ReactiveList<PortfolioSummary>(this.Context.PortfolioSummary.ToList());
 
             // This will register our method with the Messenger class for incoming
             // messages of type RefreshPeople.
@@ -56,9 +50,6 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref summaryCollection, value); }
         }
 
-       
-
-		
         public ICommand RefreshSummaryCommand => refreshSummaryCommand ??
                                                   (refreshSummaryCommand =
                                                       new RelayCommand(Execute_RefreshSummary, CanExecute_RefreshSummary))
@@ -66,7 +57,6 @@ namespace OverviewApp.ViewModels
 
         #endregion
 
-      
         private bool CanExecute_RefreshSummary()
         {
             return true;
@@ -78,7 +68,7 @@ namespace OverviewApp.ViewModels
         /// <param name="arg"></param>
         private void Execute_RefreshSummary()
         {
-            SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummaries.ToList());
+            SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
             var msg = "refreshed.";
             OverviewApp.Auxiliary.StatusSetter.SetStatus(msg);
         }

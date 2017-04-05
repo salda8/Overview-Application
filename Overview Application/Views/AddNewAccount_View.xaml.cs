@@ -17,7 +17,7 @@ namespace OverviewApp.Views
         public AddNewAccountView(Account account=null)
         {
             var myDbContext = ServiceLocator.Current.GetInstance<IMyDbContext>();
-            ViewModel = new AddNewAccountViewModel(myDbContext, new Logger.Logger(), account);
+            ViewModel = new AddNewAccountViewModel(myDbContext, account);
             
             DataContext = ViewModel;
             InitializeComponent();

@@ -24,7 +24,7 @@ namespace OverviewApp.ViewModels
 
         #region
 
-        public EquityViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public EquityViewModel(IMyDbContext context) : base(context)
         {
             PlotModel = new PlotModel();
             SetUpModel();
@@ -57,7 +57,7 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            EquityCollection = new ReactiveList<Equity>(Context.Equities.ToList());
+            EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
             var dataperaccount = EquityCollection.GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
             if (EquityCollection.Count > 0)
             {

@@ -19,7 +19,7 @@ namespace OverviewApp.Views
         public AccountView()
         {
             var myDbContext = ServiceLocator.Current.GetInstance<IMyDbContext>();
-            ViewModel = new AccountViewModel(myDbContext, new Logger.Logger());
+            ViewModel = new AccountViewModel(myDbContext);
             DataContext = ViewModel;
             InitializeComponent();
             //Messenger.Default.Send(new ViewCollectionViewSourceMessageToken() { LiveTradesCollectionViewSource = (CollectionViewSource)(Resources["X_CVS"]), TradesHistoryCollectionViewSource = (CollectionViewSource)(Resources["T_CVS"]), OpenTradesCollectionViewSource = (CollectionViewSource)(Resources["O_CVS"]), AccountSummaryCollectionViewSource = (CollectionViewSource)(Resources["S_CVS"]) });

@@ -1,6 +1,5 @@
-﻿using System.Windows;
-using GalaSoft.MvvmLight.Threading;
-using log4net;
+﻿using GalaSoft.MvvmLight.Threading;
+using System.Windows;
 
 namespace OverviewApp
 {
@@ -9,10 +8,7 @@ namespace OverviewApp
     /// </summary>
     public partial class App : Application
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         #region
-
 
         static App()
         {
@@ -21,9 +17,6 @@ namespace OverviewApp
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            log4net.Config.XmlConfigurator.Configure();
-            Log.Info("Hello World");
-            
             base.OnStartup(e);
         }
 

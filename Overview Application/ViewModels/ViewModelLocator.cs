@@ -13,6 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using OverviewApp.Auxiliary.Helpers;
+using OverviewApp.Properties;
 
 namespace OverviewApp.ViewModels
 {
@@ -35,7 +36,9 @@ namespace OverviewApp.ViewModels
             ContainerHelper.Configure(container, "");
 
             ServiceLocator.SetLocatorProvider(() => locator);
-            
+
+           
+
             //var ioc = new SimpleIoc();
 
             //if (ViewModelBase.IsInDesignModeStatic)
@@ -78,10 +81,12 @@ namespace OverviewApp.ViewModels
 
         public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
 
+        
+
        
         #endregion
 
-        /// <summary>
+        /// <summary>   
         ///     Cleans up all the resources.
         /// </summary>
         public static void Cleanup()

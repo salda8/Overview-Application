@@ -20,7 +20,7 @@ namespace OverviewApp.Views
         public AddEditStrategy(Strategy strategy)
         {
             var myDbContext = ServiceLocator.Current.GetInstance<IMyDbContext>();
-            ViewModel = new AddEditStrategyViewModel(myDbContext, new Logger.Logger(), strategy);
+            ViewModel = new AddEditStrategyViewModel(myDbContext,  strategy);
             DataContext = ViewModel;
             InitializeComponent();
 

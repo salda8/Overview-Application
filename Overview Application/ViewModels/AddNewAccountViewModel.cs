@@ -3,8 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using DataStructures;
+
 using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using MvvmValidation;
@@ -34,7 +33,7 @@ namespace OverviewApp.ViewModels
         private string validationErrorsString;
         private bool? isValid;
 
-        public AddNewAccountViewModel(IMyDbContext context, ILogger logger,Account account = null) : base(context, logger)
+        public AddNewAccountViewModel(IMyDbContext context, Account account = null) : base(context)
         {
              
             originalAccount = account;
@@ -90,20 +89,20 @@ namespace OverviewApp.ViewModels
                  () =>
                 {
                     bool isAvailable =
-                         Context.Accounts.Any(x => x.AccountNumber == this.AccountNumber);
+                         Context.Account.Any(x => x.AccountNumber == this.AccountNumber);
                 
                     return RuleResult.Assert(isAvailable,
                                              $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
                 });
 
-            Validator.AddRequiredRule(() => IpAddress, "IP Adress is required.");
+            Validator.AddRequiredRule(() => IpAddress, "IP Address is required.");
             Validator.AddRule((string)(nameof(IpAddress)),
                 () =>
                 {
                     const string regexPattern =
                         @"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}↵(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
                     return RuleResult.Assert(Regex.IsMatch(IpAddress, regexPattern),
-                        "Ip adress must be a valid.");
+                        "Ip address must be a valid.");
                 });
 
             Validator.AddRequiredRule(() => Port, "Port is required");
@@ -170,12 +169,12 @@ namespace OverviewApp.ViewModels
             if (addingNew)
             {
                
-                Context.Accounts.Add(acc);
+                Context.Account.Add(acc);
                 
             }
             else
             {
-                Context.Accounts.Attach(Account);
+                Context.Account.Attach(Account);
                 Context.Entry(originalAccount).CurrentValues.SetValues(acc);
                 
             }
