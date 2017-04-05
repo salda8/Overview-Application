@@ -11,7 +11,8 @@ using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
 
 using ReactiveUI;
-using ILogger = DataStructures.ILogger;
+using Splat;
+
 
 namespace OverviewApp.ViewModels
 {

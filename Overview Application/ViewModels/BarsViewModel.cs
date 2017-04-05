@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Timers;
+using System.Windows;
 using System.Windows.Data;
 using EntityData;
 using GalaSoft.MvvmLight.Command;
@@ -13,7 +15,8 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using QDMS;
-using ILogger = DataStructures.ILogger;
+using Splat;
+
 
 namespace OverviewApp.ViewModels
 {
@@ -23,7 +26,7 @@ namespace OverviewApp.ViewModels
 
         private readonly Timer timer;
 
-        private ObservableCollection<Candlestick> barsCollection;
+        private ObservableCollection<OHLCBar> barsCollection= new ObservableCollection<OHLCBar>();
 
         private bool canRemoveSymbolFilter;
 
@@ -33,16 +36,18 @@ namespace OverviewApp.ViewModels
 
         private ObservableCollection<LiveTrade> livetradesCollection;
 
-        private string selectedSymbol;
+        private int selectedInstrumentId;
 
-        private string selectedTimeframe;
+        private BarSize selectedTimeframe;
 
-        private ObservableCollection<string> symbol;
-        private ObservableCollection<int> timeframe;
+        private ObservableCollection<Instrument> instruments;
+        private ObservableCollection<BarSize> timeframe;
         private CandleStickSeries lineSerie;
         // private List<Candlestick> FilteredBars = new List<Candlestick>();
 
         private PlotModel plotModel;
+
+        public DataDBContext DataDBContext { get; set; }
 
         #endregion
 
@@ -51,17 +56,21 @@ namespace OverviewApp.ViewModels
         //private List<Candlestick> FilteredBarsBySymbol = new List<Candlestick>();
         // private List<Candlestick> FilteredBarsByTimeframe = new List<Candlestick>();
 
-        public BarsViewModel(IMyDbContext context, ILogger logger) : base(context, logger)
+        public BarsViewModel(IMyDbContext context, ILogger logger, DataDBContext dataDbContext) : base(context, logger)
         {
             PlotModel = new PlotModel();
-            //LoadData();
-
-            //SetUpModel();
-            //InitializeCommands();
-            //timer = new Timer();
-            //timer.Elapsed += tick_handler;
-            //timer.Interval = 60000;
-            //timer.Enabled = true;
+            Instruments = new ObservableCollection<Instrument>(context.Instruments.ToList());
+            Timeframe = new ObservableCollection<BarSize>() { BarSize.FifteenMinutes, BarSize.FifteenSeconds, BarSize.FiveMinutes, BarSize.FiveSeconds, BarSize.OneDay,
+                BarSize.OneHour, BarSize.OneMinute, BarSize.OneMonth, BarSize.OneQuarter, BarSize.OneSecond, BarSize.OneWeek, BarSize.OneYear, BarSize.ThirtyMinutes, BarSize.ThirtySeconds, BarSize.Tick };
+            LoadData();
+            
+            SetUpModel();
+            InitializeCommands();
+            timer = new Timer();
+            timer.Elapsed += tick_handler;
+            timer.Interval = 60000;
+            timer.Enabled = true;
+            DataDBContext = dataDbContext;
 
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
@@ -99,7 +108,7 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public ObservableCollection<Candlestick> BarsCollection
+        public ObservableCollection<OHLCBar> BarsCollection
         {
             get { return barsCollection; }
             set { this.RaiseAndSetIfChanged(ref barsCollection, value); }
@@ -121,26 +130,26 @@ namespace OverviewApp.ViewModels
         ///     Gets or sets a list of timeframe which is used to populate the account filter
         ///     drop down list.
         /// </summary>
-        public ObservableCollection<int> Timeframe
+        public ObservableCollection<BarSize> Timeframe
         {
             get { return timeframe; }
             set { this.RaiseAndSetIfChanged(ref timeframe, value); }
         }
 
-        public ObservableCollection<string> Symbol
+        public ObservableCollection<Instrument> Instruments
         {
-            get { return symbol; }
-            set { this.RaiseAndSetIfChanged(ref symbol, value); }
+            get { return instruments; }
+            set { this.RaiseAndSetIfChanged(ref instruments, value); }
         }
 
-        public string SelectedSymbol
+        public int SelectedInstrumentId
         {
-            get { return selectedSymbol; }
+            get { return selectedInstrumentId; }
             set
             {
-                if (selectedSymbol == value) return;
-                this.RaiseAndSetIfChanged(ref selectedSymbol, value);
-                ApplyFilter(!string.IsNullOrEmpty(selectedSymbol) ? FilterField.Symbol : FilterField.None);
+                if (selectedInstrumentId == value) return;
+                this.RaiseAndSetIfChanged(ref selectedInstrumentId, value);
+                ApplyFilter(FilterField.Symbol);
                 UpdateModel();
             }
         }
@@ -148,7 +157,7 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Gets or sets the selected account in the list to filter the collection
         /// </summary>
-        public string SelectedTimeframe
+        public BarSize SelectedTimeframe
         {
             get { return selectedTimeframe; }
             set
@@ -157,7 +166,7 @@ namespace OverviewApp.ViewModels
                     return;
                 this.RaiseAndSetIfChanged(ref selectedTimeframe, value);
 
-                ApplyFilter(!string.IsNullOrEmpty(selectedTimeframe) ? FilterField.Timeframe : FilterField.None);
+                ApplyFilter( FilterField.Timeframe);
 
                 UpdateModel();
             }
@@ -189,23 +198,36 @@ namespace OverviewApp.ViewModels
         {
             if (BarsCollection!=null && BarsCollection.Count > 0)
             {
-                //var lastId = BarsCollection.Count - 1;
-                //var lastBarId = BarsCollection[lastId].Id;
-                //var newbars = Context.;
-                //if (newbars.Count > 0)
-                //{
-                //    foreach (var bars in newbars)
-                //    {
-                //        Application.Current.Dispatcher.Invoke(() => { BarsCollection.Add(bars); });
+                DateTime? lastBarId = BarsCollection.LastOrDefault()?.DT;
+                List<OHLCBar> newbars;
+                if (lastBarId == null)
+                {
+                    newbars =
+                        DataDBContext.Data.Where(
+                            x => x.Frequency == selectedTimeframe && x.InstrumentID == selectedInstrumentId).ToList();
 
-                //        if (bars.Interval == Convert.ToInt16(selectedTimeframe) && bars.Symbol == selectedSymbol)
-                //        {
-                //            lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.BarTime), bars.High, bars.Low,
-                //                bars.Open, bars.Close));
-                //            plotModel.InvalidatePlot(true);
-                //        }
-                //    }
-                //}
+                }
+                else
+                {
+                    newbars =
+                        DataDBContext.Data.Where(
+                            x =>
+                                x.DT > lastBarId && x.Frequency == selectedTimeframe &&
+                                x.InstrumentID == selectedInstrumentId).ToList();
+                }
+                if (newbars.Any())
+                {
+                    foreach (var bars in newbars)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => { BarsCollection.Add(bars); });
+
+                       
+                            lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.DT), (double) bars.High, (double) bars.Low,
+                                (double) bars.Open, (double) bars.Close));
+                            plotModel.InvalidatePlot(true);
+                        
+                    }
+                }
             }
         }
 
@@ -214,8 +236,8 @@ namespace OverviewApp.ViewModels
             RemoveBarsFilter();
             //_selectedTimeframe = "";
             //_selectedSymbol = "";
-            SelectedTimeframe = "";
-            SelectedSymbol = "";
+            SelectedTimeframe = BarSize.OneHour;
+            SelectedInstrumentId = 0;
             SetUpModel();
         }
 
@@ -237,15 +259,14 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            //BarsCollection = Context.GetBars();
-            //LiveTrades = Context.GetLiveTrades();
-            //TradesHistory = Context.GetTradeHistory();
-            //var tf = from t in BarsCollection
-            //    select t.Interval;
-            //Timeframe = new ObservableCollection<int>(tf.Distinct());
-            //var symbol = from s in BarsCollection
-            //    select s.Instrument.Symbol;
-            //Symbol = new ObservableCollection<string>(symbol.Distinct());
+            var bars = DataDBContext.Data.Where(x=>selectedInstrumentId==x.InstrumentID && SelectedTimeframe==x.Frequency);
+            foreach (var bar in bars)
+            {
+                BarsCollection.Add(bar);
+            }
+
+            
+            
         }
 
         private void SetUpModel()
@@ -320,7 +341,7 @@ namespace OverviewApp.ViewModels
                         "Date: {2:HH.mm dd.MM.yy}" + Environment.NewLine + "Open: {5}" + Environment.NewLine +
                         "High: {3}" + Environment.NewLine + "Low: {4}" + Environment.NewLine + "Close: {6}",
                     Title =
-                        $"Symbol {filteredBarsList[0].Instrument.Symbol + ":" + filteredBarsList[0].Interval + " minute"}"
+                        $"Instruments {filteredBarsList[0].Instrument.Symbol + ":" + filteredBarsList[0].Interval + " minute"}"
                 };
 
                 foreach (var data in filteredBarsList)
@@ -351,12 +372,12 @@ namespace OverviewApp.ViewModels
 
         private void FilterBySymbol(object sender, FilterEventArgs e)
         {
-            if (e.Item is Candlestick)
+            if (e.Item is OHLCBar)
             {
-                var src = (Candlestick) e.Item;
+                var src = (OHLCBar) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedSymbol, src.Instrument.Symbol) != 0)
+                else if (SelectedInstrumentId == src.InstrumentID)
                 {
                     e.Accepted = false;
                 }
@@ -380,12 +401,12 @@ namespace OverviewApp.ViewModels
 
         private void FilterByTimeframe(object sender, FilterEventArgs e)
         {
-            if (e.Item is Candlestick)
+            if (e.Item is OHLCBar)
             {
-                var src = (Candlestick) e.Item;
+                var src = (OHLCBar) e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (string.Compare(SelectedTimeframe, Convert.ToString(src.Interval)) != 0)
+                else if (SelectedTimeframe== src.Frequency)
                 {
                     e.Accepted = false;
                 }

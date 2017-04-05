@@ -85,18 +85,7 @@ namespace OverviewApp.Auxiliary.Helpers
         #endregion
     }
 
-    public class DatabaseSettings
-    {
-        #region
-
-        public DatabaseSettings()
-        {
-            var databaseConnectionView = new DatabaseConnectionView();
-            databaseConnectionView.Show();
-        }
-
-        #endregion
-    }
+    
 
     /// <summary>
     ///     Global class used to refresh the people in the datagrid.

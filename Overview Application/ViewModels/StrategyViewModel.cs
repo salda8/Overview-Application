@@ -12,7 +12,6 @@ using QDMS;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
-
 using ReactiveUI;
 
 
@@ -20,7 +19,7 @@ namespace OverviewApp.ViewModels
 {
     public class StrategyViewModel : MyBaseViewModel
     {
-       #region Fields
+        #region Fields
 
         private string parameters;
         private Strategy selectedStrategy;
@@ -38,12 +37,11 @@ namespace OverviewApp.ViewModels
             dataService, ILogger logger) : base(dataService, logger)
         {
             LoadData();
-          
-           
+
             Parameters = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui." + Environment.NewLine +
                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui." + Environment.NewLine +
                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui." + Environment.NewLine;
-            
+
             Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
         }
@@ -67,25 +65,17 @@ namespace OverviewApp.ViewModels
         public Strategy SelectedStrategy
         {
             get { return selectedStrategy; }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref selectedStrategy, value);
-            }
+            set { this.RaiseAndSetIfChanged(ref selectedStrategy, value); }
         }
 
         public string Parameters
         {
             get { return parameters; }
-            set
-            {
-               this.RaiseAndSetIfChanged(ref parameters,value);
-            }
+            set { this.RaiseAndSetIfChanged(ref parameters, value); }
         }
 
         public ReactiveCommand<Unit, Unit> LaunchStrategyCommand
             => launchStrategyCommand ?? (launchStrategyCommand = ReactiveCommand.Create(StartProcess));
-        
-       
 
         #endregion
 
@@ -96,16 +86,19 @@ namespace OverviewApp.ViewModels
         private void LoadData()
         {
             StrategyCollection = new ReactiveList<Strategy>(Context.Strategies.ToList());
+           
             Strategy = new ObservableCollection<string>();
-
-            foreach (var strat in StrategyCollection)
+            if (StrategyCollection.Count > 0)
             {
-                Strategy.Add(strat.StrategyName + " | " + strat.CalmariRatio + " | " + strat.BacktestDrawDown + " | " +
-                             strat.BacktestProfit + " | " + strat.BacktestPeriod + " | " + strat.Instrument.Symbol);
+                foreach (Strategy strat in StrategyCollection)
+                {
+                    Strategy.Add(strat.StrategyName + " | " + strat.CalmariRatio + " | " + strat.BacktestDrawDown +
+                                 " | " +
+                                 strat.BacktestProfit + " | " + strat.BacktestPeriod + " | " + strat.Instrument?.Symbol);
+                }
             }
 
             SelectedStrategy = strategyCollection.FirstOrDefault();
-
         }
 
         public void StartProcess()
@@ -125,7 +118,6 @@ namespace OverviewApp.ViewModels
             //build.StartInfo.WorkingDirectory = @"dir";
             //build.StartInfo.FileName = Directory.GetCurrentDirectory() + @"\IBSamples.exe";
             //build.StartInfo.RedirectStandardError = true;
-
 
             build.Start();
             //build.WaitForExit();

@@ -25,11 +25,13 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Bottom"
                   HorizontalContentAlignment="Left"
-                  ItemsSource="{Binding Symbol}"
-                  SelectedItem="{Binding SelectedSymbol,
+                  ItemsSource="{Binding Instruments}"
+                  SelectedValuePath="ID"
+                  DisplayMemberPath="Symbol"
+                  SelectedValue="{Binding SelectedInstrumentId,
                                          Mode=TwoWay,
                                          UpdateSourceTrigger=PropertyChanged}"
-                  Text="Symbol" />
+                  Text="Instruments" />
         <ComboBox Grid.Row="0"
                   Grid.Column="0"
                   Grid.ColumnSpan="1"
