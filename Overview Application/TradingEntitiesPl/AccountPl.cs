@@ -1,4 +1,5 @@
-﻿using QDMS;
+﻿using System.ComponentModel;
+using QDMS;
 
 namespace OverviewApp.TradingEntitiesPl
 {
@@ -7,9 +8,10 @@ namespace OverviewApp.TradingEntitiesPl
     {
        
         public int ID { get; set; }
-      
+
+        [DisplayName("Account Number")]
         public string AccountNumber { get; set; }
-       
+
         public string BrokerName { get; set; }
        
         public int Port { get; set; }

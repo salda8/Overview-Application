@@ -33,6 +33,7 @@ namespace OverviewApp.ViewModels
 
         public MainViewModel()
         {
+            MappingConfiguration.Register();
             // This will register our method with the Messenger class for incoming
             // messages of type StatusMessage. So now we can send a StatusMessage from
             // any place in our application, it'l end up here, we'll update the string
@@ -40,8 +41,11 @@ namespace OverviewApp.ViewModels
             // just happened.
             Messenger.Default.Register<StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
             LogMessages = new ConcurrentNotifierBlockingList<LogEventInfo>();
-         
+            
             StatusBarMessage = "Status in design";
+
+            
+
             var myDbContext = ServiceLocator.Current.GetInstance<MyDBContext>();
             using (myDbContext)
             {

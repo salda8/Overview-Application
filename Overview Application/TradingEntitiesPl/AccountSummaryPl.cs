@@ -1,4 +1,7 @@
-﻿namespace OverviewApp.TradingEntitiesPl
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace OverviewApp.TradingEntitiesPl
 {
     
     public class AccountSummaryPl 
@@ -19,8 +22,8 @@
         public decimal MaintMarginReq { get; set; }
    
         public decimal UnrealizedPnL { get; set; }
-   
-        public string AccountMame { get; set; }
-       
+        [DisplayName("Account Number")]
+        public string AccountNumber { get; set; }
+
     }
 }

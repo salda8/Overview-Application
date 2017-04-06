@@ -1,15 +1,17 @@
 using System;
+using System.ComponentModel;
 using QDMS;
 
 namespace OverviewApp.TradingEntitiesPl { 
 
     public class EquityPl
     {
-        #region Properties
+       
 
        public int ID { get; set; }
 
-        public virtual Account Account { get; set; }
+        [DisplayName("Account Number")]
+        public string AccountNumber { get; set; }
 
         public int AccountID { get; set; }
 
@@ -17,6 +19,6 @@ namespace OverviewApp.TradingEntitiesPl {
 
         public DateTime UpdateTime { get; set; }
 
-        #endregion
+       
     }
 }

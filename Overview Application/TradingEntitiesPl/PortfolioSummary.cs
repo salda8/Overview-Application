@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using QDMS;
 
 namespace OverviewApp.TradingEntitiesPl
@@ -35,11 +36,12 @@ namespace OverviewApp.TradingEntitiesPl
   
         public int ID { get; set; }
 
-        public virtual Account Account { get; set; }
+        [DisplayName("Account Number")]
+        public string AccountNumber { get; set; }
 
         public int AccountID { get; set; }
-   
-        public virtual Strategy Strategy { get; set; }
+
+        public string Symbol { get; set; }
 
         public int StrategyID { get; set; }
 

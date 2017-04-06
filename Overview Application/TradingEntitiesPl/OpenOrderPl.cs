@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using QDMS;
 
 namespace OverviewApp.TradingEntitiesPl
@@ -11,9 +12,9 @@ namespace OverviewApp.TradingEntitiesPl
         public int ID { get; set; }
       
         public int PermanentId { get; set; }
-      
-        public virtual Instrument Instrument { get; set; }
-       
+
+        public string Symbol { get; set; }
+
         public int InstrumentID { get; set; }
        
         public string Status { get; set; }
@@ -21,9 +22,9 @@ namespace OverviewApp.TradingEntitiesPl
         public decimal LimitPrice { get; set; }
        
         public decimal Quantity { get; set; }
-      
-        public virtual Account Account { get; set; }
-   
+        [DisplayName("Account Number")]
+        public string AccountNumber { get; set; }
+
         public int AccountID { get; set; }
       
         public DateTime UpdateTime { get; set; }
