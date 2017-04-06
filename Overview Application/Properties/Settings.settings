@@ -12,7 +12,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="databaseType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSSQL</Value>
+      <Value Profile="(Default)">MS SQL</Value>
     </Setting>
     <Setting Name="dataDatabaseName" Type="System.String" Scope="User">
       <Value Profile="(Default)">data</Value>
@@ -21,10 +21,10 @@
       <Value Profile="(Default)">server</Value>
     </Setting>
     <Setting Name="logDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">C:\Logs\</Value>
     </Setting>
     <Setting Name="sqlServerHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">(localdb)\MSSQLLocalDB11</Value>
+      <Value Profile="(Default)">(localdb)\MSSQLLocalDB</Value>
     </Setting>
   </Settings>
 </SettingsFile>

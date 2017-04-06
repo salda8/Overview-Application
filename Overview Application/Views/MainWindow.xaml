@@ -15,17 +15,15 @@
         mc:Ignorable="d ignore">
 
     <Window.Resources>
-       <converters:LogItemToColorConverter x:Key="LogColorConverter" />
+        <converters:LogItemToColorConverter x:Key="LogColorConverter" />
         <converters:LogEventInfoToStringConverter x:Key="LogInfoToStringConverter" />
+        <CollectionViewSource Source="{Binding AccountsMenu}" x:Key="Accounts" />
+        <CollectionViewSource Source="{Binding StrategyMenu}" x:Key="Strategies" />
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
         <DockPanel>
-            <!--    -->
-            <!--  Your application menu. You have default commands, and  -->
-            <!--  you can add your own commands. They work like nomrmal  -->
-            <!--  button commands, so you can reuse them  -->
-            <!--    -->
+
             <Menu HorizontalAlignment="Left"
                   Background="White"
                   BorderBrush="Black"
@@ -37,19 +35,31 @@
                     <MenuItem Command="ApplicationCommands.Cut" />
                     <MenuItem Command="ApplicationCommands.Paste" />
                 </MenuItem>
-                <!--  Our custom commands:  -->
-                <!--  Note we're sending a string here, so in our main view model:  -->
-                <!--    we'll have the command, of type RelayCommand<string>, and it        -->
-                <!--  will send the message to the messanger. In the Random_VM, we  -->
-                <!--  will subscribe to that event, and fire the Refresh people method  -->
-                <MenuItem Header="_Custom commands" IsTabStop="False">
+                <MenuItem>
                     <MenuItem Command="{Binding OpenDatabaseSettingsCommand}" Header="Database Settings" />
-                </MenuItem>
-                <MenuItem Header="_Add New" IsTabStop="false">
-                    <MenuItem Command="{Binding AddNewAccountCommand}" Header="Account"></MenuItem>
+                </MenuItem>-->
+                <MenuItem Header="Add New" IsTabStop="false">
+
+                    <MenuItem Command="{Binding AddNewAccountCommand}" Header="Account">
+                    </MenuItem>
                     <MenuItem Command="{Binding AddNewStrategyCommand}" Header="Strategy"></MenuItem>
                 </MenuItem>
-                
+                 <MenuItem Header="EditStrategy" ItemsSource="{Binding StrategyList, Mode=OneWay}" DisplayMemberPath="StrategyName" >
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Command" Value="{Binding DataContext.AddNewStrategyCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem Header="EditAccount" ItemsSource="{Binding AccountsList, Mode=OneWay}" DisplayMemberPath="AccountNumber" >
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Command" Value="{Binding DataContext.AddNewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
             </Menu>
             <!--    -->
             <!--  StatusBar at the bottom.  Binds to a property on the main view  -->
@@ -74,7 +84,6 @@
 
             <!--    Use this to quickly copy/paste a new tab:
 				<TabItem Header=" ">
-		
 				</TabItem>
 			-->
             <TabControl>
@@ -88,39 +97,31 @@
                 <!--<TabItem Header="Equity">
                     <ContentControl Content="{Binding Equity_VM}" />
                 </TabItem>-->
-                <TabItem Header="Candlestick">
+                <!--<TabItem Header="Candlestick">
                     <ContentControl Content="{Binding BarsVm}" />
-                </TabItem>
-                <TabItem Header="Matlab Value">
+                </TabItem>-->
+                <!--<TabItem Header="Matlab Value">
                     <ContentControl Content="{Binding MatlabValueVm}" />
-                </TabItem>
-                <TabItem Header="Strategy Launcher">
+                </TabItem>-->
+                <!--<TabItem Header="Strategy Launcher">
                     <ContentControl Content="{Binding StrategyVm}" />
-                </TabItem>
-                <TabItem Header="Close Trades">
+                </TabItem>-->
+                <!--<TabItem Header="Close Trades">
                     <ContentControl Content="{Binding CloseTradesVm}" />
+                </TabItem>-->
 
-                </TabItem>
-                <TabItem Header="Db Settings">
-                    <!--<ContentControl Content="{Binding DatabaseConnection_VM}" />-->
-
-                </TabItem>
                 <TabItem Header="Log">
-                <Grid Background="Transparent">
-                    <ListBox x:Name="RequestListBox" ItemsSource="{Binding LogMessages}" >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource LogInfoToStringConverter}}" Foreground="{Binding Converter={StaticResource LogColorConverter}}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                </Grid>
-            </TabItem>
-
-
+                    <Grid Background="Transparent">
+                        <ListBox x:Name="RequestListBox" ItemsSource="{Binding LogMessages}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource LogInfoToStringConverter}}" Foreground="{Binding Converter={StaticResource LogColorConverter}}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </TabItem>
             </TabControl>
         </DockPanel>
     </Grid>
-
 </Window>

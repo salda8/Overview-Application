@@ -81,6 +81,8 @@ namespace OverviewApp.ViewModels
 
         public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
 
+        public AddNewAccountViewModel AddNewAccountVm => ServiceLocator.Current.GetInstance<AddNewAccountViewModel>();
+
         
 
        

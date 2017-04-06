@@ -24,7 +24,7 @@ namespace OverviewApp.Views
             DataContext = ViewModel;
             InitializeComponent();
 
-            this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Hide());
+            this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Close());
            
 
            

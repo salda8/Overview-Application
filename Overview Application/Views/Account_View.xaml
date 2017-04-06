@@ -28,8 +28,10 @@
                       MaxWidth="110"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Bottom"
-                      ItemsSource="{Binding Source={StaticResource AccountsCvs}}"
-                      SelectedItem="{Binding SelectedAccount,
+                      ItemsSource="{Binding  AccountsList}"
+                      DisplayMemberPath="AccountNumber"
+                      SelectedValuePath="AccountNumber"
+                      SelectedValue="{Binding SelectedAccount,
                                              Mode=TwoWay,
                                              UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Row="0"
@@ -41,9 +43,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding ResetFiltersCommand,
                                       Mode=OneWay}"
-                    Content="Remove Acc filter">
-                <!--<Image Width="10" Height="10" Style="{DynamicResource ImageStyleForButtons}"/>-->
-            </Button>
+                    Content="Remove Acc filter"/>
             <Button Grid.Row="0"
                     Grid.Column="6"
                     Grid.ColumnSpan="1"

@@ -61,7 +61,7 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MS SQL")]
         public string databaseType {
             get {
                 return ((string)(this["databaseType"]));
@@ -97,7 +97,7 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Logs\\")]
         public string logDirectory {
             get {
                 return ((string)(this["logDirectory"]));
@@ -109,7 +109,7 @@ namespace OverviewApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("(localdb)\\MSSQLLocalDB11")]
+        [global::System.Configuration.DefaultSettingValueAttribute("(localdb)\\MSSQLLocalDB")]
         public string sqlServerHost {
             get {
                 return ((string)(this["sqlServerHost"]));

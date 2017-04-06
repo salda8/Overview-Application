@@ -35,13 +35,7 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                       Storyboard.TargetName="BackgroundOverlayBorder">
-                            <EasingDoubleKeyFrame KeyTime="0:0:1"
-                                                  Value="0.5" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:2"
-                                                  Value="0" />
-                        </DoubleAnimationUsingKeyFrames>-->
+                     
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="InvalidState">
@@ -54,16 +48,7 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <!--<DoubleAnimationUsingKeyFrames
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                            Storyboard.TargetName="border">
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.066"
-                                                  Value="-10" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.134"
-                                                  Value="10" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.2"
-                                                  Value="0" />
-                        </DoubleAnimationUsingKeyFrames>-->
+                       
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>

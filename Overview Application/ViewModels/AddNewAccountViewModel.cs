@@ -19,7 +19,7 @@ namespace OverviewApp.ViewModels
         private int? port;
         private string ipAddress;
         private decimal? initialBalance;
-        private decimal? currentBalance;
+        
         private string brokerName;
         private string accountNumber;
         private string windowTitle;
@@ -27,37 +27,47 @@ namespace OverviewApp.ViewModels
         private string addNewEditText;
        
         private Account account;
-        private readonly bool addingNew;
         private readonly Account originalAccount;
         private ReactiveCommand<Unit, Unit> saveCommand;
         private string validationErrorsString;
         private bool? isValid;
+        private int strategyId;
+        private ReactiveList<Strategy> strategies;
+        private ReactiveList<Account> accounts;
 
-        public AddNewAccountViewModel(IMyDbContext context, Account account = null) : base(context)
+        public AddNewAccountViewModel(IMyDbContext context, Account account) : base(context)
         {
-             
+
+            Accounts = new ReactiveList<Account>(context.Account.ToList());
+            Strategies = new ReactiveList<Strategy>(context.Strategy.ToList());
+
             originalAccount = account;
+
+
 
             if (account != null)
             {
-                Account = account;
-                WindowTitle = "Edit Account";
-                AddNewEditText = "Save Changes";
+                AccountId = originalAccount.ID;
+                Account = originalAccount;
                 AccountNumber = originalAccount.AccountNumber;
                 BrokerName = originalAccount.BrokerName;
-                CurrentBalance = originalAccount.CurrentBalance;
+
                 InitialBalance = originalAccount.InitialBalance;
                 IpAddress = originalAccount.IpAddress;
                 Port = originalAccount.Port;
+                StrategyId = originalAccount.StrategyID;
+                WindowTitle = "Edit Account";
+                AddNewEditText = "Edit";
 
             }
             else
             {
-                WindowTitle = "Add new Account";
-                AddNewEditText = "Add New";
-                addingNew = true;
+                
+                WindowTitle = "Add Account";
+                AddNewEditText = "Add";
 
             }
+            
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -160,13 +170,15 @@ namespace OverviewApp.ViewModels
             {
                 AccountNumber = this.accountNumber,
                 BrokerName = this.brokerName,
-                CurrentBalance = this.currentBalance.GetValueOrDefault(),
+              
                 InitialBalance = this.initialBalance.GetValueOrDefault(),
                 IpAddress = this.ipAddress,
-                Port = this.port.Value
+                Port = port ?? 0,
+                StrategyID = StrategyId
 
             };
-            if (addingNew)
+
+            if (AccountId==null)
             {
                
                 Context.Account.Add(acc);
@@ -174,12 +186,37 @@ namespace OverviewApp.ViewModels
             }
             else
             {
+                acc.ID = AccountId.Value;
                 Context.Account.Attach(Account);
                 Context.Entry(originalAccount).CurrentValues.SetValues(acc);
                 
             }
             Context.SaveChanges();
         }
+
+        public int StrategyId
+        {
+            get { return strategyId; }
+            set { this.RaiseAndSetIfChanged(ref strategyId, value); }
+        }
+
+        public ReactiveList<Strategy> Strategies
+        {
+            get { return strategies; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref strategies, value);
+                
+            }
+        }
+
+        public ReactiveList<Account> Accounts
+        {
+            get { return accounts; }
+            set { this.RaiseAndSetIfChanged(ref accounts, value); }
+         }
+
+        public int? AccountId { get; }
 
         public Account Account
         {
@@ -218,13 +255,7 @@ namespace OverviewApp.ViewModels
             get { return initialBalance; }
             set { this.RaiseAndSetIfChanged(ref initialBalance, value); }
         }
-
-        public decimal? CurrentBalance
-        {
-            get { return currentBalance; }
-            set { this.RaiseAndSetIfChanged(ref currentBalance, value); }
-        }
-
+        
         public string BrokerName
         {
             get { return brokerName; }

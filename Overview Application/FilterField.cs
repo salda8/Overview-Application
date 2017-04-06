@@ -1,4 +1,4 @@
-namespace OverviewApp.ViewModels
+namespace OverviewApp
 {
     public enum FilterField
     {

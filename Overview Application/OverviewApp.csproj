@@ -189,7 +189,7 @@
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
     <Compile Include="ViewModels\ConcurrentNotifierBlockingList.cs" />
-    <Compile Include="ViewModels\FilterField.cs" />
+    <Compile Include="FilterField.cs" />
     <Compile Include="ViewModels\MyValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />
@@ -223,9 +223,6 @@
     </Compile>
     <Compile Include="Views\MatlabValue_View.xaml.cs">
       <DependentUpon>MatlabValue_View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Random_View.xaml.cs">
-      <DependentUpon>Random_View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Strategy_View.xaml.cs">
       <DependentUpon>Strategy_View.xaml</DependentUpon>
@@ -284,10 +281,6 @@
     <Page Include="Views\MatlabValue_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Random_View.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Strategy_View.xaml">
       <SubType>Designer</SubType>

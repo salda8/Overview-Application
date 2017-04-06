@@ -59,7 +59,7 @@
                   Grid.RowSpan="5"
                   Grid.ColumnSpan="5"
                   AutoGenerateColumns="True"
-                  ItemsSource="{Binding Source={StaticResource BCvs}}"
+                  ItemsSource="{Binding BarListView}"
                   VerticalScrollBarVisibility="Auto" />
         <oxy:PlotView x:Name="Plot1"
                       Title="Candlestick Graph"

@@ -29,6 +29,8 @@ namespace OverviewApp.Views
             SetLogDirectory();
 
             DBUtils.SetConnectionString();
+
+            
             
             InitializeComponent();
             //Log unhandled exceptions

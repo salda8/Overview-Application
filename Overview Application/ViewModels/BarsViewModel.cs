@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -54,6 +55,7 @@ namespace OverviewApp.ViewModels
 
         //private List<Candlestick> FilteredBarsBySymbol = new List<Candlestick>();
         // private List<Candlestick> FilteredBarsByTimeframe = new List<Candlestick>();
+        public ICollectionView BarListView { get; set; }
 
         public BarsViewModel(IMyDbContext context, DataDBContext dataDbContext) : base(context)
         {
@@ -64,7 +66,15 @@ namespace OverviewApp.ViewModels
             Timeframe = new ObservableCollection<BarSize>() { BarSize.FifteenMinutes, BarSize.FifteenSeconds, BarSize.FiveMinutes, BarSize.FiveSeconds, BarSize.OneDay,
                 BarSize.OneHour, BarSize.OneMinute, BarSize.OneMonth, BarSize.OneQuarter, BarSize.OneSecond, BarSize.OneWeek, BarSize.OneYear, BarSize.ThirtyMinutes, BarSize.ThirtySeconds, BarSize.Tick };
             LoadData();
-            
+
+            Bcvs = new CollectionViewSource
+            {
+                Source = barsCollection,
+               
+            };
+
+            BarListView = Bcvs.View;
+
             SetUpModel();
             InitializeCommands();
             timer = new Timer();
@@ -74,8 +84,8 @@ namespace OverviewApp.ViewModels
            
             Logger.Info(() => "BarsViewModel init");
 
-            Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
-                Handle_ViewCollectionViewSourceMessageToken);
+            //Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
+            //    Handle_ViewCollectionViewSourceMessageToken);
         }
 
         #endregion
@@ -168,7 +178,7 @@ namespace OverviewApp.ViewModels
                     return;
                 this.RaiseAndSetIfChanged(ref selectedTimeframe, value);
 
-                ApplyFilter( FilterField.Timeframe);
+                ApplyFilter(FilterField.Timeframe);
 
                 UpdateModel();
             }
@@ -411,7 +421,7 @@ namespace OverviewApp.ViewModels
 
         private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken token)
         {
-            if (token.BarsCollectionViewSource != null)
+             if (token.BarsCollectionViewSource != null)
             {
                 Bcvs = token.BarsCollectionViewSource;
             }

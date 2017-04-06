@@ -17,7 +17,7 @@ namespace OverviewApp.ViewModels
     ///         See http://www.galasoft.ch/mvvm
     ///     </para>
     /// </summary>
-    public class MyValidatableBaseViewModel : ReactiveObject, IValidatable, INotifyDataErrorInfo
+    public class MyValidatableBaseViewModel : ReactiveObject, IValidatable, INotifyDataErrorInfo, IDisposable
     {
         private ReactiveCommand<Unit, Unit> cancelCommand;
 
@@ -26,7 +26,7 @@ namespace OverviewApp.ViewModels
         protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ReactiveCommand<Unit,Unit> CancelCommand
-            => cancelCommand ?? (cancelCommand = ReactiveCommand.Create((() => { })));
+            => cancelCommand ?? (cancelCommand = ReactiveCommand.Create(Dispose));
 
         protected ValidationHelper Validator { get; }
 
@@ -67,6 +67,12 @@ namespace OverviewApp.ViewModels
             remove { NotifyDataErrorInfoAdapter.ErrorsChanged -= value; }
         }
 
-#endregion
+        public void Dispose()
+        {
+            cancelCommand?.Dispose();
+            Context.Dispose();
+        }
+
+        #endregion
     }
 }

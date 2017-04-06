@@ -1,4 +1,5 @@
-﻿using EntityData;
+﻿using System;
+using EntityData;
 using MvvmValidation;
 using QDMS;
 using ReactiveUI;
@@ -112,14 +113,21 @@ namespace OverviewApp.ViewModels
             if (addingNew)
             {
                 Context.Strategy.Add(strat);
+                Context.SaveChanges();
             }
             else
             {
-                Context.Strategy.Attach(Strategy);
+                //Context.Strategy.Attach(Strategy);
 
-                Context.Entry(originalStrategy).CurrentValues.SetValues(strat);
+               
+                var foundStrategy = Context.Strategy.Find(originalStrategy.ID);
+                if (foundStrategy != null)
+                {
+                    Context.UpdateEntryValues(foundStrategy, strat);
+                    Context.SaveChanges();
+                }
             }
-            Context.SaveChanges();
+           
         }
 
         public string StrategyName
@@ -221,7 +229,7 @@ namespace OverviewApp.ViewModels
 
         private void ConfigureValidationRules()
         {
-            Validator.AddRequiredRule(() => StrategyName, "Account Name is required");
+            Validator.AddRequiredRule(() => StrategyName, "Strategy Name is required");
 
             Validator.AddRule((string)(nameof(StrategyName)),
                  () =>
@@ -233,7 +241,7 @@ namespace OverviewApp.ViewModels
                                               $"This strategy name {StrategyName} is present. Please choose a different one or edit existing one");
                  });
 
-            Validator.AddRequiredRule(() => FilePath, "FilePath is required");
+            //Validator.AddRequiredRule(() => FilePath, "FilePath is required");
             Validator.AddRule((string)(nameof(FilePath)),
                 () =>
                 {

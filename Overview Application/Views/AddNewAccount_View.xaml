@@ -70,17 +70,16 @@
         
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Account Number" MinWidth="105"></Label>
-            <TextBox MinWidth="150" Text="{Binding AccountNumber, Mode=TwoWay, ValidatesOnDataErrors=True}"></TextBox>
+            <ComboBox MinWidth="150"  ItemsSource="{Binding Accounts}" SelectedValuePath="ID" IsEditable="False"
+                  DisplayMemberPath="AccountNumber"
+                  SelectedValue="{Binding AccountId, Mode=OneTime}"></ComboBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Label Content="Broker Name" MinWidth="105"></Label>
             <TextBox MinWidth="150" Text="{Binding BrokerName,Mode=TwoWay, ValidatesOnDataErrors=True}"></TextBox>
             </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Content="Current Balance" MinWidth="105"></Label>
-            <TextBox MinWidth="150" Text="{Binding CurrentBalance}"></TextBox>
-            </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal"/>
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label MinWidth="105" Content="Initial Balance" ></Label>
             <TextBox Text="{Binding InitialBalance}" MinWidth="150"></TextBox>
@@ -93,9 +92,16 @@
             <Label Content="Port" MinWidth="105"></Label>
             <TextBox Text="{Binding Port}" MinWidth="150"></TextBox>
             </StackPanel>
-        <Button Grid.Row="6" Margin="5" MaxWidth="55" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
-        <Button Grid.Row="6" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
-        <Grid Grid.Row="7">
+         <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <Label Content="Strategy" MinWidth="105"></Label>
+            <ComboBox  ItemsSource="{Binding Strategies}" SelectedValuePath="ID"
+                  DisplayMemberPath="StrategyName"
+                  SelectedValue="{Binding StrategyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                MinWidth="150"/>
+            </StackPanel>
+        <Button Grid.Row="7" Margin="5" MaxWidth="55" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
+        <Button Grid.Row="8" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
+        <Grid Grid.Row="9">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -111,7 +117,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Plase correct the following errors before proceeding:"
+                <TextBlock Text="Please correct the following errors before proceeding:"
                                    Foreground="Red"
                                    FontWeight="Bold" />
                 <TextBlock Grid.Row="1"

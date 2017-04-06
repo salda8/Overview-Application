@@ -1,11 +1,16 @@
-﻿using System.Reactive;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
+using System.Windows.Controls;
 using System.Windows.Input;
+using EntityData;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using NLog;
 using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Views;
+using QDMS;
 using ReactiveUI;
 
 
@@ -24,8 +29,8 @@ namespace OverviewApp.ViewModels
         #region Fields
         protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
         private string statusBarMessage;
-        private ReactiveCommand<Unit, Unit> addNewAccountCommand;
-        private ReactiveCommand<Unit, Unit> addNewStrategyCommand;
+        private ReactiveCommand<object, Unit> addNewAccountCommand;
+        private ReactiveCommand<object, Unit> addNewStrategyCommand;
         public ConcurrentNotifierBlockingList<LogEventInfo> LogMessages { get; set; }
 
         #endregion
@@ -45,10 +50,23 @@ namespace OverviewApp.ViewModels
             // This is how you can have some design time data
 
             StatusBarMessage = "Status in design";
+            
+            var myDbContext = ServiceLocator.Current.GetInstance<MyDBContext>();
+            using (myDbContext)
+            {
+                AccountsList = myDbContext.Account.ToList();
+                StrategyList = myDbContext.Strategy.ToList();
 
-            Logger.Info(() => "MainViewModel init");
+
+            }
 
         }
+
+        public List<Strategy> StrategyList { get; set; }
+
+        public List<Account> AccountsList { get; set; }
+
+   
 
         #endregion
 
@@ -60,14 +78,17 @@ namespace OverviewApp.ViewModels
 
         public EquityViewModel EquityVm => ServiceLocator.Current.GetInstance<EquityViewModel>();
 
-        public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
+        //public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
 
         public MatlabValueViewModel MatlabValueVm => ServiceLocator.Current.GetInstance<MatlabValueViewModel>();
 
         public StrategyViewModel StrategyVm => ServiceLocator.Current.GetInstance<StrategyViewModel>();
 
-        public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
-        
+        public AddEditStrategyViewModel AddEditAccountVm => ServiceLocator.Current.GetInstance<AddEditStrategyViewModel>();
+
+
+        //public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
+
         /// <summary>
         ///     Used to bind any incoming status messages, to the MainWindow status bar.
         /// </summary>
@@ -78,25 +99,25 @@ namespace OverviewApp.ViewModels
         }
         
 
-        public ReactiveCommand<Unit, Unit> AddNewStrategyCommand
+        public ReactiveCommand<object, Unit> AddNewStrategyCommand
             =>
                 addNewStrategyCommand ??
-                (addNewStrategyCommand = ReactiveCommand.Create(AddNewStrategy));
+                (addNewStrategyCommand = ReactiveCommand.Create<object>(AddNewStrategy));
 
-        private static void AddNewStrategy()
+        private static void AddNewStrategy(object strategy)
         {
-            var window = new AddEditStrategy(null);
+            var window = new AddEditStrategy((Strategy)strategy);
             window.ShowDialog();
         }
 
-        public ReactiveCommand<Unit, Unit> AddNewAccountCommand
+        public ReactiveCommand<object, Unit> AddNewAccountCommand
             =>
                 addNewAccountCommand ??
-                (addNewAccountCommand = ReactiveCommand.Create(AddNewAccount));
+                (addNewAccountCommand = ReactiveCommand.Create<object>(AddNewAccount));
 
-        private static void AddNewAccount()
+        private static void AddNewAccount(object param)
         {
-            var window = new AddNewAccountView(null);
+            var window = new AddNewAccountView((Account)param);
             window.ShowDialog();
         }
 

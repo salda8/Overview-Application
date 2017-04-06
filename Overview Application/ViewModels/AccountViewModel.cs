@@ -55,7 +55,7 @@ namespace OverviewApp.ViewModels
 #pragma warning disable CS0169 // The field 'Account_ViewModel.stopwatch' is never used
         private Stopwatch stopwatch;
         private ReactiveList<Account> accountsList;
-        private int latestProccesedCommissionMessage = 0;
+        private int latestProccessedCommissionMessage = 0;
 #pragma warning restore CS0169 // The field 'Account_ViewModel.stopwatch' is never used
 
         #endregion Fields
@@ -76,7 +76,7 @@ namespace OverviewApp.ViewModels
 
             realoadDataTimer = new Timer();
             realoadDataTimer.Elapsed += ReloadDataTimerOnElapsed;
-            realoadDataTimer.Interval = 10000; //10000 ms = 10 seconds
+            realoadDataTimer.Interval = 30000; //10000 ms = 10 seconds
             realoadDataTimer.Enabled = true;
 
             reloadEquity = new Timer();
@@ -282,15 +282,18 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Loads the data.
         /// </summary>
-        private void LoadData()
+        private async void LoadData()
         {
-            LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrade.ToList());
-            TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.ToList());
-            OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrder.ToList());
-            AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
-            AccountsList = new ReactiveList<Account>(Context.Account.ToList());
-            EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
-            Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
+            await Task.Run(() =>
+            {
+                LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrade.ToList());
+                TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.ToList());
+                OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrder.ToList());
+                AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
+                AccountsList = new ReactiveList<Account>(Context.Account.ToList());
+                EquityCollection = new ReactiveList<Equity>(Context.Equity.ToList());
+                Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
+            });
             //SetUpModelData();
         }
 

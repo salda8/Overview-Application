@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows;
-using EntityData;
+﻿using EntityData;
 using Microsoft.Practices.ServiceLocation;
 using OverviewApp.ViewModels;
 using QDMS;
 using ReactiveUI;
-
+using System;
+using System.Windows;
 
 namespace OverviewApp.Views
 {
@@ -14,23 +13,19 @@ namespace OverviewApp.Views
     /// </summary>
     public partial class AddNewAccountView : Window, IViewFor<AddNewAccountViewModel>
     {
-        public AddNewAccountView(Account account=null)
+        public AddNewAccountView(Account account)
         {
-            var myDbContext = ServiceLocator.Current.GetInstance<IMyDbContext>();
-            ViewModel = new AddNewAccountViewModel(myDbContext, account);
-            
+            ViewModel = new AddNewAccountViewModel(ServiceLocator.Current.GetInstance<MyDBContext>(), account);
             DataContext = ViewModel;
             InitializeComponent();
 
-            this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Hide());
-            
-
+            this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Close());
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (AddNewAccountViewModel) value; }
+            set { ViewModel = (AddNewAccountViewModel)value; }
         }
 
         public AddNewAccountViewModel ViewModel { get; set; }
