@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Data;
 using EntityData;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
+using OverviewApp.TradingEntitiesPl;
 using QDMS;
 using ReactiveUI;
 
@@ -14,7 +16,7 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        private ObservableCollection<Matlabvalue> matlabvaluesCollection;
+        private ObservableCollection<MatlabvaluePl> matlabvaluesCollection;
 
         #endregion
 
@@ -36,7 +38,7 @@ namespace OverviewApp.ViewModels
 
         private CollectionViewSource Mcvs { get; set; }
 
-        public ObservableCollection<Matlabvalue> MatlabValueCollection
+        public ObservableCollection<MatlabvaluePl> MatlabValueCollection
         {
             get { return matlabvaluesCollection; }
             set { this.RaiseAndSetIfChanged(ref matlabvaluesCollection, value); }
@@ -46,8 +48,8 @@ namespace OverviewApp.ViewModels
 
         private void LoadData()
         {
-            var mlc = Context.MatlabValue.ToList();
-            MatlabValueCollection = new ObservableCollection<Matlabvalue>(mlc);
+            var mlc = Context.MatlabValue;
+           // MatlabValueCollection = mlc.MapMapTo<>new ObservableCollection<MatlabvaluePl>(ExpressMapper.Mapper.Map(mlc, typeof(List<MatlabvaluePl>)));
         }
 
         /// <summary>

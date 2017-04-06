@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using OverviewApp.TradingEntitiesPl;
 using QDMS;
 
 namespace OverviewApp.Design_Time
@@ -58,7 +59,7 @@ namespace OverviewApp.Design_Time
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<Matlabvalue> GetMatlabvalues()
+        public ObservableCollection<MatlabvaluePl> GetMatlabvalues()
         {
             throw new NotImplementedException();
         }

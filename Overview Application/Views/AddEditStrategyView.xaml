@@ -64,10 +64,6 @@
                     
                 </ComboBox>
             </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Label Content="Days Running" MinWidth="105"></Label>
-            <TextBox Text="{Binding DaysRunning}" MinWidth="150"></TextBox>
-        </StackPanel>
         
         <Label MinWidth="105" Grid.Row="3" Content="Backtest Info" ></Label>
             <StackPanel Grid.Row="8" Orientation="Horizontal">

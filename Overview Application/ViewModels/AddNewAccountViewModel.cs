@@ -47,7 +47,8 @@ namespace OverviewApp.ViewModels
 
             if (account != null)
             {
-                AccountId = originalAccount.ID;
+                AccountIDVisibility = true;
+                AccountID = originalAccount.ID;
                 Account = originalAccount;
                 AccountNumber = originalAccount.AccountNumber;
                 BrokerName = originalAccount.BrokerName;
@@ -74,6 +75,7 @@ namespace OverviewApp.ViewModels
 
         }
 
+        public bool AccountIDVisibility { get; set; } = false;
         #region Validation
         public string ValidationErrorsString
         {
@@ -101,7 +103,7 @@ namespace OverviewApp.ViewModels
                     bool isAvailable =
                          Context.Account.Any(x => x.AccountNumber == this.AccountNumber);
                 
-                    return RuleResult.Assert(isAvailable,
+                    return RuleResult.Assert(!isAvailable,
                                              $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
                 });
 
@@ -110,14 +112,15 @@ namespace OverviewApp.ViewModels
                 () =>
                 {
                     const string regexPattern =
-                        @"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}↵(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+                        @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
                     return RuleResult.Assert(Regex.IsMatch(IpAddress, regexPattern),
                         "Ip address must be a valid.");
                 });
 
             Validator.AddRequiredRule(() => Port, "Port is required");
+            Validator.AddRequiredRule(() => StrategyId, "Strategy is required");
 
-         
+
 
 
         }
@@ -170,7 +173,6 @@ namespace OverviewApp.ViewModels
             {
                 AccountNumber = this.accountNumber,
                 BrokerName = this.brokerName,
-              
                 InitialBalance = this.initialBalance.GetValueOrDefault(),
                 IpAddress = this.ipAddress,
                 Port = port ?? 0,
@@ -178,7 +180,7 @@ namespace OverviewApp.ViewModels
 
             };
 
-            if (AccountId==null)
+            if (AccountID==null)
             {
                
                 Context.Account.Add(acc);
@@ -186,11 +188,11 @@ namespace OverviewApp.ViewModels
             }
             else
             {
-                acc.ID = AccountId.Value;
-                Context.Account.Attach(Account);
-                Context.Entry(originalAccount).CurrentValues.SetValues(acc);
-                
+                var accountEntity = Context.Account.Find(AccountID);
+                Context.UpdateEntryValues(accountEntity, acc);
+
             }
+
             Context.SaveChanges();
         }
 
@@ -216,7 +218,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref accounts, value); }
          }
 
-        public int? AccountId { get; }
+        public int? AccountID { get; }
 
         public Account Account
         {

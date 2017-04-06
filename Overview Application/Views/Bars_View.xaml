@@ -62,7 +62,7 @@
                   ItemsSource="{Binding BarListView}"
                   VerticalScrollBarVisibility="Auto" />
         <oxy:PlotView x:Name="Plot1"
-                      Title="Candlestick Graph"
+                     
                       Grid.Row="1"
                       Grid.ColumnSpan="5"
                       Height="700"

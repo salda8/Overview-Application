@@ -290,23 +290,27 @@ namespace OverviewApp.ViewModels
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
             PlotModel.LegendBorder = OxyColors.Black;
 
-#pragma warning disable CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
-            var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Date", "HH:mm")
+
+            var dateAxis = new DateTimeAxis//(AxisPosition.Bottom, "Date", "HH:mm")
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
-                IntervalLength = 80
+                IntervalLength = 80,
+                Position= AxisPosition.Bottom
+
             };
-#pragma warning restore CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
+
             PlotModel.Axes.Add(dateAxis);
-#pragma warning disable CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
-            var valueAxis = new LinearAxis(AxisPosition.Left, 0)
+
+            var valueAxis = new LinearAxis()//AxisPosition.Left, 0)
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
-                Title = "Value"
+                Title = "Value",
+               Position=AxisPosition.Bottom
+
             };
-#pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
+
             PlotModel.Axes.Add(valueAxis);
             PlotModel.InvalidatePlot(true);
         }
@@ -323,13 +327,14 @@ namespace OverviewApp.ViewModels
                 PlotModel.Series.Clear();
                 var find = PlotModel.Axes.First(x => x.Title == "Value");
                 PlotModel.Axes.Remove(find);
-#pragma warning disable CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
-                var valueAxis = new LinearAxis(AxisPosition.Left, 0)
+
+                var valueAxis = new LinearAxis()//AxisPosition.Left, 0)
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Dot,
                     Maximum = max,
                     Minimum = min,
+                    Position=AxisPosition.Left,
                     //FilterMaxValue = max+1000,
                     //FilterMinValue = min+1000,
                     //StartPosition = min,
@@ -337,7 +342,7 @@ namespace OverviewApp.ViewModels
 
                     Title = "Value"
                 };
-#pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
+
 
                 PlotModel.Axes.Add(valueAxis);
                 lineSerie = new CandleStickSeries

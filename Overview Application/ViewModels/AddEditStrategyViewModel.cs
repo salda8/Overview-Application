@@ -27,7 +27,7 @@ namespace OverviewApp.ViewModels
         private decimal backTestProfit;
         private decimal calmariRatio;
         private decimal dailyProfit;
-        private decimal daysRunning;
+       
         private string filePath;
         private Instrument selectedInstrument;
         private List<Instrument> instruments;
@@ -52,8 +52,7 @@ namespace OverviewApp.ViewModels
                 BacktestPeriod = originalStrategy.BacktestPeriod;
                 BacktestProfit = originalStrategy.BacktestProfit;
                 CalmariRatio = originalStrategy.CalmariRatio;
-                DailyProfit = originalStrategy.DailyProfit;
-                DaysRunning = originalStrategy.DaysRunning;
+         
                 SelectedInstrument = originalStrategy.Instrument;
             }
             else
@@ -103,9 +102,7 @@ namespace OverviewApp.ViewModels
                 BacktestPeriod = this.BacktestPeriod,
                 BacktestProfit = this.BacktestProfit,
                 CalmariRatio = this.CalmariRatio,
-                DailyProfit = this.DailyProfit,
-                DaysRunning = this.DaysRunning,
-                Filepath = this.FilePath,
+          Filepath = this.FilePath,
                 InstrumentID = SelectedInstrument.ID.Value,
                 StrategyName = this.StrategyName
             };
@@ -170,11 +167,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref dailyProfit, value); }
         }
 
-        public decimal DaysRunning
-        {
-            get { return daysRunning; }
-            set { this.RaiseAndSetIfChanged(ref daysRunning, value); }
-        }
+       
 
         public string FilePath
         {

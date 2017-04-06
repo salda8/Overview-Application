@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
+using OverviewApp.Properties;
 
 namespace OverviewApp.ViewModels
 {
@@ -287,7 +288,7 @@ namespace OverviewApp.ViewModels
             await Task.Run(() =>
             {
                 LiveTrades = new ReactiveList<LiveTrade>(Context.LiveTrade.ToList());
-                TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.ToList());
+                TradesHistory = new ReactiveList<TradeHistory>(Context.TradeHistory.TakeLast(Settings.Default.maxTradeHistoryToLoad));
                 OpenOrders = new ReactiveList<OpenOrder>(Context.OpenOrder.ToList());
                 AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
                 AccountsList = new ReactiveList<Account>(Context.Account.ToList());
@@ -345,10 +346,12 @@ namespace OverviewApp.ViewModels
             {
                 equity = Context.Equity.ToList();
             }
-            foreach (var equita in equity)
-            {
-                Application.Current.Dispatcher.Invoke(() => { EquityCollection.Add(equita); });
-            }
+
+            EquityCollection.AddRange(equity);
+            //foreach (var equita in equity)
+            //{
+            //    Application.Current.Dispatcher.Invoke(() => { EquityCollection.Add(equita); });
+            //}
         }
 
         /// <summary>
@@ -363,9 +366,10 @@ namespace OverviewApp.ViewModels
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
             PlotModel.LegendBorder = OxyColors.Black;
 
-#pragma warning disable CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
-            var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Date", "HH:mm")
+ // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
+            var dateAxis = new DateTimeAxis()//AxisPosition.Bottom, "Date", "HH:mm")
             {
+                Position= AxisPosition.Bottom,
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
                 StringFormat = "HH:mm dd/WW/yy",
@@ -375,12 +379,15 @@ namespace OverviewApp.ViewModels
             };
 #pragma warning restore CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
             PlotModel.Axes.Add(dateAxis);
-#pragma warning disable CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
-            var valueAxis = new LinearAxis(AxisPosition.Left, 0)
+ // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
+            var valueAxis = new LinearAxis()//AxisPosition.Left, 0)
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
-                Title = "Value"
+                Title = "Value",
+                Position= AxisPosition.Left,
+
+                
             };
 #pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
             PlotModel.Axes.Add(valueAxis);
@@ -403,13 +410,13 @@ namespace OverviewApp.ViewModels
                 PlotModel.Series.Clear();
                 var find = PlotModel.Axes.First(x => x.Title == "Value");
                 PlotModel.Axes.Remove(find);
-#pragma warning disable CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
-                var valueAxis = new LinearAxis(AxisPosition.Left, 0)
+                var valueAxis = new LinearAxis()//AxisPosition.Left, 0)
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Dot,
                     Maximum = max,
                     Minimum = min,
+                    Position = AxisPosition.Left,
                     //FilterMaxValue = max+1000,
                     //FilterMinValue = min+1000,
                     //StartPosition = min,

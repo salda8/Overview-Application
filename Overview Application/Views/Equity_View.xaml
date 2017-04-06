@@ -12,7 +12,7 @@
              mc:Ignorable="d">
     <Grid>
         <wpf:PlotView x:Name="Plot1"
-                      Title="A Graph"
+                     
                       Grid.Row="0"
                       Margin="10"
                       Model="{Binding PlotModel}" />

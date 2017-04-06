@@ -63,16 +63,18 @@ namespace OverviewApp.ViewModels
             {
                 var min = EquityCollection.MinBy(m => m.Value).Value;
                 var max = EquityCollection.MaxBy(m => m.Value).Value;
-#pragma warning disable CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
-                var valueAxis = new LinearAxis(AxisPosition.Left, 0)
+
+                var valueAxis = new LinearAxis()//AxisPosition.Left, 0)
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Dot,
                     Maximum = (double) max,
                     Minimum = (double) min,
-                    Title = "Value"
+                    Title = "Value",
+                    Position= AxisPosition.Left,
+                    
                 };
-#pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
+
                 PlotModel.Axes.Add(valueAxis);
                 foreach (var data in dataperaccount)
                 {
@@ -105,14 +107,15 @@ namespace OverviewApp.ViewModels
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
             PlotModel.LegendBorder = OxyColors.Black;
 
-#pragma warning disable CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
-            var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Date", "HH:mm")
+
+            var dateAxis = new DateTimeAxis()//AxisPosition.Bottom, "Date", "HH:mm")
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
-                IntervalLength = 80
+                IntervalLength = 80,
+                Position=AxisPosition.Bottom
             };
-#pragma warning restore CS0612 // 'DateTimeAxis.DateTimeAxis(AxisPosition, string, string, DateTimeIntervalType)' is obsolete
+
             PlotModel.Axes.Add(dateAxis);
         }
 

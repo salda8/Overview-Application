@@ -130,7 +130,7 @@
                       VerticalScrollBarVisibility="Auto" />
 
             <oxy:PlotView x:Name="Plot1"
-                          Title="Equity Graph"
+                          
                           Grid.Row="8"
                           Grid.ColumnSpan="8"
                           Height="400"

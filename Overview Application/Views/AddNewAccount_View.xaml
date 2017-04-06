@@ -14,7 +14,7 @@
                     Value="{StaticResource DefaultErrorTemplate}" />
         </Style>
     </Window.Resources>
-    <resources:ApexGrid Rows="Auto, Auto,Auto, Auto,Auto,Auto, Auto,Auto" Margin="5, 5, 10,5">
+    <resources:ApexGrid Rows="Auto, Auto,Auto, Auto,Auto,Auto, Auto,Auto,Auto,Auto,Auto" Margin="5, 5, 10,5">
         <i:Interaction.Behaviors>
             <ei:DataStateBehavior Binding="{Binding IsValid}"
                                   Value="True"
@@ -34,13 +34,7 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                       Storyboard.TargetName="BackgroundOverlayBorder">
-                            <EasingDoubleKeyFrame KeyTime="0:0:1"
-                                                  Value="0.5" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:2"
-                                                  Value="0" />
-                        </DoubleAnimationUsingKeyFrames>-->
+                      
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="InvalidState">
@@ -53,53 +47,47 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <!--<DoubleAnimationUsingKeyFrames
-                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                            Storyboard.TargetName="border">
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.066"
-                                                  Value="-10" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.134"
-                                                  Value="10" />
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.2"
-                                                  Value="0" />
-                        </DoubleAnimationUsingKeyFrames>-->
+                      
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Content="Account Number" MinWidth="105"></Label>
-            <ComboBox MinWidth="150"  ItemsSource="{Binding Accounts}" SelectedValuePath="ID" IsEditable="False"
-                  DisplayMemberPath="AccountNumber"
-                  SelectedValue="{Binding AccountId, Mode=OneTime}"></ComboBox>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="{Binding AccountIDVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Label Content="ID" MinWidth="105"  />
+        <TextBox MinWidth="150" Text="{Binding AccountID, Mode=OneTime}" IsReadOnly="True"></TextBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Account Number" MinWidth="105"></Label>
+            <TextBox MinWidth="150" Text="{Binding AccountNumber, ValidatesOnDataErrors=True}"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label Content="Broker Name" MinWidth="105"></Label>
             <TextBox MinWidth="150" Text="{Binding BrokerName,Mode=TwoWay, ValidatesOnDataErrors=True}"></TextBox>
             </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal"/>
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Orientation="Horizontal"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label MinWidth="105" Content="Initial Balance" ></Label>
             <TextBox Text="{Binding InitialBalance}" MinWidth="150"></TextBox>
             </StackPanel>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Label MinWidth="105" Content="IP Address" ></Label>
             <TextBox Text="{Binding IpAddress, Mode=TwoWay, ValidatesOnDataErrors=True}" MinWidth="150"></TextBox>
             </StackPanel>
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
             <Label Content="Port" MinWidth="105"></Label>
-            <TextBox Text="{Binding Port}" MinWidth="150"></TextBox>
+            <TextBox Text="{Binding Port,Mode=TwoWay, ValidatesOnDataErrors=True}" MinWidth="150"></TextBox>
             </StackPanel>
-         <StackPanel Grid.Row="6" Orientation="Horizontal">
+         <StackPanel Grid.Row="7" Orientation="Horizontal">
             <Label Content="Strategy" MinWidth="105"></Label>
             <ComboBox  ItemsSource="{Binding Strategies}" SelectedValuePath="ID"
                   DisplayMemberPath="StrategyName"
                   SelectedValue="{Binding StrategyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 MinWidth="150"/>
             </StackPanel>
-        <Button Grid.Row="7" Margin="5" MaxWidth="55" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
+        <Button Grid.Row="8" Margin="5" MaxWidth="55" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
         <Button Grid.Row="8" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
         <Grid Grid.Row="9">
             <Grid.ColumnDefinitions>

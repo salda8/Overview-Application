@@ -26,5 +26,8 @@
     <Setting Name="sqlServerHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">(localdb)\MSSQLLocalDB</Value>
     </Setting>
+    <Setting Name="maxTradeHistoryToLoad" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
