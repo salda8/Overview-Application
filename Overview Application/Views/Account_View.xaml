@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:resources="clr-namespace:OverviewApp.Auxiliary.Resources"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              d:DesignHeight="800"
              d:DesignWidth="800"
              mc:Ignorable="d">
@@ -14,8 +15,6 @@
         <CollectionViewSource x:Key="OpenOrdersCvs" Source="{Binding OpenOrders}" />
         <CollectionViewSource x:Key="AccountsCvs" Source="{Binding AccountSummaryCollection}" />
         <CollectionViewSource x:Key="EquityCvs" Source="{Binding EquityCollection}" />
-
-
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
         <resources:ApexGrid Background="White"
@@ -43,7 +42,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding ResetFiltersCommand,
                                       Mode=OneWay}"
-                    Content="Remove Acc filter"/>
+                    Content="Remove Acc filter" />
             <Button Grid.Row="0"
                     Grid.Column="6"
                     Grid.ColumnSpan="1"
@@ -55,7 +54,7 @@
                     Command="{Binding ResetDateFilterCommand,
                                       Mode=OneWay}"
                     Content="Remove Date filter">
-                <!--<Image Width="10" Height="10" Style="{DynamicResource ImageStyleForButtons}"/>-->
+                <!--<Image Width="10" Height="10" Style="{DynamicResource ImageStyleForButtons}" />-->
             </Button>
 
             <Label Grid.Column="2" Content="Start Date:" />
@@ -84,7 +83,11 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource LiveTradesCvs}}" CanUserReorderColumns="False" />
+                      ItemsSource="{Binding Source={StaticResource LiveTradesCvs}}" CanUserReorderColumns="False">
+                <i:Interaction.Behaviors>
+                    <resources:SmartColumnBehavior />
+                </i:Interaction.Behaviors>
+            </DataGrid>
             <Label Grid.Row="9"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -94,7 +97,11 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource TradeHistoryCvs}}" />
+                      ItemsSource="{Binding Source={StaticResource TradeHistoryCvs}}">
+                <i:Interaction.Behaviors>
+                    <resources:SmartColumnBehavior />
+                </i:Interaction.Behaviors>
+            </DataGrid>
             <Label Grid.Row="5"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -104,7 +111,11 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource OpenOrdersCvs}}" />
+                      ItemsSource="{Binding Source={StaticResource OpenOrdersCvs}}">
+                <i:Interaction.Behaviors>
+                    <resources:SmartColumnBehavior />
+                </i:Interaction.Behaviors>
+            </DataGrid>
             <Label Grid.Row="1"
                    Grid.ColumnSpan="8"
                    Width="200"
@@ -115,7 +126,11 @@
                       Grid.ColumnSpan="8"
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Source={StaticResource AccountsCvs}}" />
+                      ItemsSource="{Binding Source={StaticResource AccountsCvs}}">
+                <i:Interaction.Behaviors>
+                    <resources:SmartColumnBehavior />
+                </i:Interaction.Behaviors>
+            </DataGrid>
             <Label Grid.Row="11"
                    Grid.ColumnSpan="8"
                    Margin="1"
@@ -127,10 +142,14 @@
                       AutoGenerateColumns="True"
                       IsReadOnly="True"
                       ItemsSource="{Binding Source={StaticResource EquityCvs}}"
-                      VerticalScrollBarVisibility="Auto" />
+                      VerticalScrollBarVisibility="Auto">
+                <i:Interaction.Behaviors>
+                    <resources:SmartColumnBehavior />
+                </i:Interaction.Behaviors>
+            </DataGrid>
 
             <oxy:PlotView x:Name="Plot1"
-                          
+
                           Grid.Row="8"
                           Grid.ColumnSpan="8"
                           Height="400"
@@ -139,6 +158,4 @@
                           Model="{Binding PlotModel}" />
         </resources:ApexGrid>
     </ScrollViewer>
-
-
 </UserControl>

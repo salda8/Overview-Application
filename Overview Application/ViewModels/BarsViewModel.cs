@@ -1,4 +1,13 @@
-﻿using System;
+﻿using EntityData;
+using GalaSoft.MvvmLight.Command;
+using MoreLinq;
+using OverviewApp.Auxiliary.Helpers;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using QDMS;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,17 +15,7 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using EntityData;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using MoreLinq;
-using OverviewApp.Auxiliary.Helpers;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using ReactiveUI;
-using QDMS;
-
 
 namespace OverviewApp.ViewModels
 {
@@ -24,9 +23,7 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        private readonly Timer timer;
-
-        private ObservableCollection<OHLCBar> barsCollection= new ObservableCollection<OHLCBar>();
+        private ObservableCollection<OHLCBar> barsCollection = new ObservableCollection<OHLCBar>();
 
         private bool canRemoveSymbolFilter;
 
@@ -42,14 +39,14 @@ namespace OverviewApp.ViewModels
 
         private ObservableCollection<Instrument> instruments;
         private ObservableCollection<BarSize> timeframe;
-        private CandleStickSeries lineSerie;
+        private CandleStickSeries lineSeries;
         // private List<Candlestick> FilteredBars = new List<Candlestick>();
 
         private PlotModel plotModel;
 
         public DataDBContext DataDBContext { get; set; }
 
-        #endregion
+        #endregion Fields
 
         #region
 
@@ -61,7 +58,7 @@ namespace OverviewApp.ViewModels
         {
             PlotModel = new PlotModel();
             DataDBContext = dataDbContext;
-            
+
             Instruments = new ObservableCollection<Instrument>(Context.Instruments.ToList());
             Timeframe = new ObservableCollection<BarSize>() { BarSize.FifteenMinutes, BarSize.FifteenSeconds, BarSize.FiveMinutes, BarSize.FiveSeconds, BarSize.OneDay,
                 BarSize.OneHour, BarSize.OneMinute, BarSize.OneMonth, BarSize.OneQuarter, BarSize.OneSecond, BarSize.OneWeek, BarSize.OneYear, BarSize.ThirtyMinutes, BarSize.ThirtySeconds, BarSize.Tick };
@@ -70,22 +67,21 @@ namespace OverviewApp.ViewModels
             Bcvs = new CollectionViewSource
             {
                 Source = barsCollection,
-               
             };
 
             BarListView = Bcvs.View;
 
             SetUpModel();
             InitializeCommands();
-            timer = new Timer();
+            var timer = new Timer();
             timer.Elapsed += tick_handler;
             timer.Interval = 60000;
             timer.Enabled = true;
-           
+
             Logger.Info(() => "BarsViewModel init");
 
-            //Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
-            //    Handle_ViewCollectionViewSourceMessageToken);
+            Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
+                Handle_ViewCollectionViewSourceMessageToken);
         }
 
         #endregion
@@ -105,7 +101,6 @@ namespace OverviewApp.ViewModels
             get { return canRemoveTimeframeFilter; }
             set
             {
-               
                 this.RaiseAndSetIfChanged(ref canRemoveTimeframeFilter, value);
             }
         }
@@ -115,7 +110,6 @@ namespace OverviewApp.ViewModels
             get { return canRemoveSymbolFilter; }
             set
             {
-               
                 this.RaiseAndSetIfChanged(ref canRemoveSymbolFilter, value);
             }
         }
@@ -191,8 +185,6 @@ namespace OverviewApp.ViewModels
 
         #region Nested
 
-        
-
         #endregion
 
         private void tick_handler(object sender, ElapsedEventArgs e)
@@ -202,7 +194,7 @@ namespace OverviewApp.ViewModels
 
         private void UpdateBarsData()
         {
-            if (BarsCollection!=null && BarsCollection.Count > 0)
+            if (BarsCollection != null && BarsCollection.Count > 0)
             {
                 DateTime? lastBarId = BarsCollection.LastOrDefault()?.DT;
                 List<OHLCBar> newbars;
@@ -211,7 +203,6 @@ namespace OverviewApp.ViewModels
                     newbars =
                         DataDBContext.Data.Where(
                             x => x.Frequency == selectedTimeframe && x.InstrumentID == selectedInstrumentId).ToList();
-
                 }
                 else
                 {
@@ -227,11 +218,9 @@ namespace OverviewApp.ViewModels
                     {
                         Application.Current.Dispatcher.Invoke(() => { BarsCollection.Add(bars); });
 
-                       
-                            lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.DT), (double) bars.High, (double) bars.Low,
-                                (double) bars.Open, (double) bars.Close));
-                            plotModel.InvalidatePlot(true);
-                        
+                        lineSeries.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(bars.DT), (double)bars.High, (double)bars.Low,
+                            (double)bars.Open, (double)bars.Close));
+                        plotModel.InvalidatePlot(true);
                     }
                 }
             }
@@ -260,19 +249,16 @@ namespace OverviewApp.ViewModels
 
         private void RemoveTimeframeFilter()
         {
-            throw new NotImplementedException();
+            
         }
 
         private void LoadData()
         {
-            var bars = DataDBContext.Data.Where(x=>selectedInstrumentId==x.InstrumentID && SelectedTimeframe==x.Frequency);
+            var bars = DataDBContext.Data.Where(x => selectedInstrumentId == x.InstrumentID && SelectedTimeframe == x.Frequency);
             foreach (var bar in bars)
             {
                 BarsCollection.Add(bar);
             }
-
-            
-            
         }
 
         private void SetUpModel()
@@ -290,14 +276,12 @@ namespace OverviewApp.ViewModels
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
             PlotModel.LegendBorder = OxyColors.Black;
 
-
             var dateAxis = new DateTimeAxis//(AxisPosition.Bottom, "Date", "HH:mm")
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
                 IntervalLength = 80,
-                Position= AxisPosition.Bottom
-
+                Position = AxisPosition.Bottom
             };
 
             PlotModel.Axes.Add(dateAxis);
@@ -307,8 +291,7 @@ namespace OverviewApp.ViewModels
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
                 Title = "Value",
-               Position=AxisPosition.Bottom
-
+                Position = AxisPosition.Bottom
             };
 
             PlotModel.Axes.Add(valueAxis);
@@ -334,7 +317,7 @@ namespace OverviewApp.ViewModels
                     MinorGridlineStyle = LineStyle.Dot,
                     Maximum = max,
                     Minimum = min,
-                    Position=AxisPosition.Left,
+                    Position = AxisPosition.Left,
                     //FilterMaxValue = max+1000,
                     //FilterMinValue = min+1000,
                     //StartPosition = min,
@@ -343,9 +326,8 @@ namespace OverviewApp.ViewModels
                     Title = "Value"
                 };
 
-
                 PlotModel.Axes.Add(valueAxis);
-                lineSerie = new CandleStickSeries
+                lineSeries = new CandleStickSeries
                 {
                     StrokeThickness = 1,
                     TrackerFormatString =
@@ -357,11 +339,11 @@ namespace OverviewApp.ViewModels
 
                 foreach (var data in filteredBarsList)
                 {
-                    lineSerie.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(data.BarTime), data.High, data.Low,
+                    lineSeries.Items.Add(new HighLowItem(DateTimeAxis.ToDouble(data.BarTime), data.High, data.Low,
                         data.Open, data.Close));
                 }
-                ;
-                PlotModel.Series.Add(lineSerie);
+
+                PlotModel.Series.Add(lineSeries);
                 PlotModel.InvalidatePlot(true);
             }
         }
@@ -385,7 +367,7 @@ namespace OverviewApp.ViewModels
         {
             if (e.Item is OHLCBar)
             {
-                var src = (OHLCBar) e.Item;
+                var src = (OHLCBar)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (SelectedInstrumentId == src.InstrumentID)
@@ -414,10 +396,10 @@ namespace OverviewApp.ViewModels
         {
             if (e.Item is OHLCBar)
             {
-                var src = (OHLCBar) e.Item;
+                var src = (OHLCBar)e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (SelectedTimeframe== src.Frequency)
+                else if (SelectedTimeframe == src.Frequency)
                 {
                     e.Accepted = false;
                 }
@@ -426,7 +408,7 @@ namespace OverviewApp.ViewModels
 
         private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken token)
         {
-             if (token.BarsCollectionViewSource != null)
+            if (token.BarsCollectionViewSource != null)
             {
                 Bcvs = token.BarsCollectionViewSource;
             }
@@ -445,9 +427,6 @@ namespace OverviewApp.ViewModels
                     //FilteredBars.Clear();
                     AddSymbolFilter();
                     //AddCountryFilter();
-                    break;
-
-                default:
                     break;
             }
         }

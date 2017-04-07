@@ -157,6 +157,7 @@
     <Compile Include="Auxiliary\Helpers\AttributesHelper.cs" />
     <Compile Include="Auxiliary\Helpers\IAttributesHelper.cs" />
     <Compile Include="Auxiliary\MessengerClasses.cs" />
+    <Compile Include="Auxiliary\Resources\SmartColumnBehavior.cs" />
     <Compile Include="Auxiliary\ViewCollectionViewSourceMessageToken.cs" />
     <Compile Include="Auxiliary\Helpers\ContainerHelper.cs" />
     <Compile Include="Auxiliary\Helpers\MapperHelper.cs" />
@@ -333,9 +334,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Auxiliary\Resources\What%27s here.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Auxiliary\Resources\1385_Disable_16x16_72.png" />

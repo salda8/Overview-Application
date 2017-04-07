@@ -34,7 +34,7 @@ namespace OverviewApp.ViewModels
         private readonly Timer reloadEquity;
         private ReactiveList<string> accounts;
 
-        private ReactiveList<PortfolioSummaryPl> accsummaryCollection;
+        private ReactiveList<AccountSummaryPl> accsummaryCollection;
         private bool canRemoveAccountFilter;
         private bool canRemoveEndDateFilter;
         private bool canRemoveStartDateFilter;
@@ -127,7 +127,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref openordersCollection, value); }
         }
 
-        public ReactiveList<PortfolioSummaryPl> AccountSummaryCollection
+        public ReactiveList<AccountSummaryPl> AccountSummaryCollection
         {
             get { return accsummaryCollection; }
             set { this.RaiseAndSetIfChanged(ref accsummaryCollection, value); }
@@ -287,7 +287,7 @@ namespace OverviewApp.ViewModels
                 LiveTrades = new ReactiveList<LiveTradePl>(Mapper.Map<List<LiveTrade>, ReactiveList<LiveTradePl>>(Context.LiveTrade.Include("Account").Include("Instrument").ToList()));
                 TradesHistory = new ReactiveList<TradeHistoryPl>(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Include("Account").Include("Instrument").ToList()));
                 OpenOrders = new ReactiveList<OpenOrderPl>(Mapper.Map<List<OpenOrder>,ReactiveList<OpenOrderPl>>(Context.OpenOrder.Include("Account").Include("Instrument").ToList()));
-                AccountSummaryCollection = new ReactiveList<PortfolioSummaryPl>(Mapper.Map<List<PortfolioSummary>, ReactiveList<PortfolioSummaryPl>>(Context.PortfolioSummary.Include("Account").ToList()));
+                AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
                 AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
                 EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
                 Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));

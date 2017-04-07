@@ -14,8 +14,10 @@ namespace OverviewApp.TradingEntitiesPl {
         public string AccountNumber { get; set; }
 
         public int AccountID { get; set; }
+        [DisplayName("Value")]
 
         public decimal Value { get; set; }
+        
 
         public DateTime UpdateTime { get; set; }
 
