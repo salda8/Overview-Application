@@ -1,26 +1,23 @@
-﻿using EntityData;
+﻿using Common;
+using DataAccess;
+using ExpressMapper;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MoreLinq;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Properties;
+using OverviewApp.TradingEntitiesPl;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using QDMS;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Data;
-using OverviewApp.TradingEntitiesPl;
-using ExpressMapper;
 
 namespace OverviewApp.ViewModels
 {
@@ -28,35 +25,22 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-       // private readonly List<Equity> filteredEquity = new List<Equity>();
-        private readonly List<Equity> filteredEquityByDate = new List<Equity>();
-        private readonly Timer realoadDataTimer;
-        private readonly Timer reloadEquity;
-        private ReactiveList<string> accounts;
-
-        private ReactiveList<AccountSummaryPl> accsummaryCollection;
+        private string selectedAccount;
         private bool canRemoveAccountFilter;
         private bool canRemoveEndDateFilter;
         private bool canRemoveStartDateFilter;
 
+        private ReactiveList<string> accounts;
+        private ReactiveList<AccountSummaryPl> accountSummaryCollection;
         private ReactiveList<EquityPl> equityCollection;
-
         private ReactiveList<TradeHistoryPl> historytradesCollection;
-
         private ReactiveList<LiveTradePl> livetradesCollection;
-
         private ReactiveList<OpenOrderPl> openordersCollection;
-        private string selectedAccount;
+        private ReactiveList<AccountPl> accountsList;
+
         private DateTime selectedEndDate = DateTime.Today;
         private DateTime selectedStartDate = DateTime.Today.AddDays(-10);
-
-        private long lastUpdateMilliSeconds;
-
         private PlotModel plotModel;
-
-        private Stopwatch stopwatch;
-        private ReactiveList<AccountPl> accountsList;
-        private int latestProccessedCommissionMessage = 0;
 
         #endregion Fields
 
@@ -74,12 +58,12 @@ namespace OverviewApp.ViewModels
 
             LoadData();
 
-            realoadDataTimer = new Timer();
-            realoadDataTimer.Elapsed += ReloadDataTimerOnElapsed;
-            realoadDataTimer.Interval = 30000; //10000 ms = 10 seconds
-            realoadDataTimer.Enabled = true;
+            var reloadDataTimer = new Timer();
+            reloadDataTimer.Elapsed += ReloadDataTimerOnElapsed;
+            reloadDataTimer.Interval = 30000; //10000 ms = 10 seconds
+            reloadDataTimer.Enabled = true;
 
-            reloadEquity = new Timer();
+            var reloadEquity = new Timer();
             reloadEquity.Elapsed += ReloadTickEquity;
             reloadEquity.Interval = 65000;
             reloadEquity.Enabled = true;
@@ -129,8 +113,8 @@ namespace OverviewApp.ViewModels
 
         public ReactiveList<AccountSummaryPl> AccountSummaryCollection
         {
-            get { return accsummaryCollection; }
-            set { this.RaiseAndSetIfChanged(ref accsummaryCollection, value); }
+            get { return accountSummaryCollection; }
+            set { this.RaiseAndSetIfChanged(ref accountSummaryCollection, value); }
         }
 
         public PlotModel PlotModel
@@ -166,7 +150,6 @@ namespace OverviewApp.ViewModels
                 if (selectedAccount == value)
                     return;
 
-                //RaisePropertyChanged("SelectedAuthor");
                 this.RaiseAndSetIfChanged(ref selectedAccount, value);
                 // FilteredEquity.Clear();
 
@@ -186,7 +169,6 @@ namespace OverviewApp.ViewModels
                 if (selectedStartDate == value)
                     return;
 
-                //RaisePropertyChanged("SelectedAuthor");
                 this.RaiseAndSetIfChanged(ref selectedStartDate, value);
                 if (selectedStartDate != DateTime.Today.AddYears(-1))
                 {
@@ -211,7 +193,6 @@ namespace OverviewApp.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedEndDate, value);
                 if (selectedEndDate != DateTime.Today)
                 {
-                    filteredEquityByDate.Clear();
                     ApplyFilter(FilterField.EndDate);
                     //UpdateModelByEndDate();
                     UpdateModel();
@@ -286,7 +267,7 @@ namespace OverviewApp.ViewModels
             {
                 LiveTrades = new ReactiveList<LiveTradePl>(Mapper.Map<List<LiveTrade>, ReactiveList<LiveTradePl>>(Context.LiveTrade.Include("Account").Include("Instrument").ToList()));
                 TradesHistory = new ReactiveList<TradeHistoryPl>(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Include("Account").Include("Instrument").ToList()));
-                OpenOrders = new ReactiveList<OpenOrderPl>(Mapper.Map<List<OpenOrder>,ReactiveList<OpenOrderPl>>(Context.OpenOrder.Include("Account").Include("Instrument").ToList()));
+                OpenOrders = new ReactiveList<OpenOrderPl>(Mapper.Map<List<OpenOrder>, ReactiveList<OpenOrderPl>>(Context.OpenOrder.Include("Account").Include("Instrument").ToList()));
                 AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
                 AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
                 EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
@@ -304,47 +285,53 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Updates the data.
         /// </summary>
-        private void UpdateData()
+        private async void UpdateData()
         {
-            //var livetrades = Context.LiveTrade.ToList();
-            //var openorder = Context.OpenOrder();
-            //var summary = Context.PortfolioSummary();
-            //var tradeHistory = messageHandler.UpdateTradeHistory(TradesHistory.Count - 1);
-            //if (tradeHistory?.Count > 0)
-            //{
-            //    Context.TradeHistories.AddRange(tradeHistory);
-            //    Context.SaveChangesAsync();
+            await Task.Run(() =>
+            {
+                LiveTrades = new ReactiveList<LiveTradePl>(Mapper.Map<List<LiveTrade>, ReactiveList<LiveTradePl>>(Context.LiveTrade.Include("Account").Include("Instrument").ToList()));
+                OpenOrders = new ReactiveList<OpenOrderPl>(Mapper.Map<List<OpenOrder>, ReactiveList<OpenOrderPl>>(Context.OpenOrder.Include("Account").Include("Instrument").ToList()));
+                AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
+                AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
+                EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
+                Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
 
-            //    foreach (TradeHistory tradeHistor in tradeHistory)
-            //    {
-            //        Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
-            //    }
-            //}
+                if (TradesHistory?.Count > 0)
+                {
+                    int latestTradeHistoryID = TradesHistory.Max(x => x.ID);
+                    TradesHistory.AddRange(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Where(x => x.ID > latestTradeHistoryID).Include("Account").Include("Instrument").ToList()));
+                }
+                else
+                {
+                    TradesHistory = new ReactiveList<TradeHistoryPl>(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Include("Account").Include("Instrument").ToList()));
+                }
+            });
 
-            //LiveTrades = new ReactiveList<LiveTrade>();
-
-            //OpenOrders = new ReactiveList<OpenOrder>(messageHandler.UpdateOpenOrders());
-
-            //AccountSummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
+            //      Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
         }
 
         /// <summary>
         ///     Updates the equity data.
         /// </summary>
-        private void UpdateEquityData()
+
+        private async void UpdateEquity()
         {
-            if (EquityCollection.Count > 0)
+            await Task.Run(() =>
             {
-                var lastIdEquity = EquityCollection[EquityCollection.Count - 1].ID;
-                EquityCollection.AddRange(Mapper.Map<List<Equity>, List<EquityPl>>(Context.Equity.Where(x => x.ID > lastIdEquity).Include("Account").ToList()));
-               
-            }
-            else
-            {
-                EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
-
-            }
-
+                if (EquityCollection?.Count > 0)
+                {
+                    var lastIdEquity = EquityCollection.Max(x => x.ID);
+                    EquityCollection.AddRange(
+                        Mapper.Map<List<Equity>, List<EquityPl>>(
+                            Context.Equity.Where(x => x.ID > lastIdEquity).Include("Account").ToList()));
+                }
+                else
+                {
+                    EquityCollection =
+                        new ReactiveList<EquityPl>(
+                            Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
+                }
+            });
 
             //foreach (var equita in equity)
             //{
@@ -419,12 +406,12 @@ namespace OverviewApp.ViewModels
 
                     Title = "Value"
                 };
-#pragma warning restore CS0612 // 'LinearAxis.LinearAxis(AxisPosition, double, double, string)' is obsolete
+
                 PlotModel.Axes.Add(valueAxis);
 
                 foreach (var data in dataPerAccount)
                 {
-                    var lineSerie = new LineSeries
+                    var lineSeries = new LineSeries
                     {
                         StrokeThickness = 2,
                         MarkerSize = 3,
@@ -438,8 +425,8 @@ namespace OverviewApp.ViewModels
                         Smooth = false
                     };
 
-                    data.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double)d.Value)));
-                    PlotModel.Series.Add(lineSerie);
+                    data.ForEach(d => lineSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double)d.Value)));
+                    PlotModel.Series.Add(lineSeries);
                     PlotModel.Title = "Equity Graph"; // Account:"+data.Key;
                 }
             }
@@ -463,7 +450,7 @@ namespace OverviewApp.ViewModels
 
         private void ReloadTickEquity(object sender, EventArgs e)
         {
-            UpdateData();
+            UpdateEquity();
         }
 
         private async void ReloadDataTimerOnElapsed(object sender, EventArgs e)
@@ -478,7 +465,6 @@ namespace OverviewApp.ViewModels
         /// <param name="e">The <see cref="FilterEventArgs" /> instance containing the event data.</param>
         private void FilterByAccount(object sender, FilterEventArgs e)
         {
-            
             if (e.Item is LiveTradePl)
             {
                 var src = (LiveTradePl)e.Item;
@@ -517,7 +503,7 @@ namespace OverviewApp.ViewModels
                     //filteredEquity.Add(src);
                 }
             }
-            else if(e.Item is PortfolioSummaryPl)
+            else if (e.Item is PortfolioSummaryPl)
             {
                 var src = (PortfolioSummaryPl)e.Item;
                 if (src == null)
@@ -654,10 +640,10 @@ namespace OverviewApp.ViewModels
                 {
                     e.Accepted = false;
                 }
-                else
-                {
-                    filteredEquityByDate.Add(src);
-                }
+                //else
+                //{
+                //    filteredEquityByDate.Add(src);
+                //}
             }
         }
 
@@ -692,7 +678,7 @@ namespace OverviewApp.ViewModels
 
                 SelectedAccount = null;
                 CanRemoveAccountFilter = false;
-               // filteredEquity.Clear();
+                // filteredEquity.Clear();
                 PlotModel.Series.Clear();
                 // SetUpModelData();
                 PlotModel.InvalidatePlot(true);
@@ -738,9 +724,6 @@ namespace OverviewApp.ViewModels
 
                 case FilterField.EndDate:
                     AddEndDateFilter();
-                    break;
-
-                default:
                     break;
             }
         }

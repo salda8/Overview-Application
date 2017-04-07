@@ -1,11 +1,12 @@
-﻿using EntityData;
+﻿
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.Auxiliary.Helpers;
-using QDMS;
 using ReactiveUI;
 using System.Linq;
 using System.Windows.Input;
+using Common;
+using DataAccess;
 
 
 namespace OverviewApp.ViewModels
@@ -27,7 +28,7 @@ namespace OverviewApp.ViewModels
         /// </summary>
         public SummaryViewModel(IMyDbContext context) : base(context)
         {
-            SummaryCollection = new ReactiveList<PortfolioSummary>(this.Context.PortfolioSummary.ToList());
+            SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
 
             // This will register our method with the Messenger class for incoming
             // messages of type RefreshPeople.
@@ -70,7 +71,7 @@ namespace OverviewApp.ViewModels
         {
             SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
             var msg = "refreshed.";
-            OverviewApp.Auxiliary.StatusSetter.SetStatus(msg);
+            Auxiliary.StatusSetter.SetStatus(msg);
         }
     }
 }

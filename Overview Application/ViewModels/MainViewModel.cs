@@ -1,14 +1,14 @@
-﻿using EntityData;
+﻿using Common;
+using DataAccess;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using NLog;
-using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Views;
-using QDMS;
 using ReactiveUI;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using OverviewApp.Auxiliary;
+using StatusMessage = OverviewApp.Auxiliary.Helpers.StatusMessage;
 
 namespace OverviewApp.ViewModels
 {
@@ -41,10 +41,8 @@ namespace OverviewApp.ViewModels
             // just happened.
             Messenger.Default.Register<StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
             LogMessages = new ConcurrentNotifierBlockingList<LogEventInfo>();
-            
-            StatusBarMessage = "Status in design";
 
-            
+            StatusBarMessage = "Status in design";
 
             var myDbContext = ServiceLocator.Current.GetInstance<MyDBContext>();
             using (myDbContext)
@@ -53,16 +51,12 @@ namespace OverviewApp.ViewModels
                 if (accounts.Count > 0)
                 {
                     AccountsList.AddRange(accounts);
-
                 }
                 var strategies = myDbContext.Strategy.ToList();
-                if (strategies.Count>0)
+                if (strategies.Count > 0)
                 {
                     StrategyList.AddRange(strategies);
                 }
-                    
-                
-
             }
         }
 
@@ -116,12 +110,15 @@ namespace OverviewApp.ViewModels
             var myDbContext = ServiceLocator.Current.GetInstance<MyDBContext>();
             using (myDbContext)
             {
-                
                 var strategies = myDbContext.Strategy.ToList();
                 if (strategies.Count > 0)
                 {
                     StrategyList.Clear();
-                    StrategyList.AddRange(strategies);
+                    foreach (Strategy strategy in strategies)
+                    {
+                        StrategyList.Add(strategy);
+                    }
+                    
                 }
             }
         }
@@ -135,8 +132,11 @@ namespace OverviewApp.ViewModels
                 if (accounts.Count > 0)
                 {
                     AccountsList.Clear();
-                    AccountsList.AddRange(accounts);
-                    
+                    foreach (Account account in accounts)
+                    {
+                        AccountsList.Add(account);
+                    }
+                   
                 }
             }
         }

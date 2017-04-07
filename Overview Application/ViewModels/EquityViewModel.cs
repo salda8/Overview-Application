@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-
-using EntityData;
+﻿using Common;
+using DataAccess;
 using MoreLinq;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using QDMS;
 using ReactiveUI;
+using System.Linq;
 
 namespace OverviewApp.ViewModels
 {
@@ -15,12 +13,10 @@ namespace OverviewApp.ViewModels
     {
         #region Fields
 
-        
         private ReactiveList<Equity> equityCollection;
-        private DateTime lastUpdate = DateTime.Now;
         private PlotModel plotModel;
 
-        #endregion
+        #endregion Fields
 
         #region
 
@@ -28,7 +24,6 @@ namespace OverviewApp.ViewModels
         {
             PlotModel = new PlotModel();
             SetUpModel();
-         
 
             LoadData();
         }
@@ -68,11 +63,10 @@ namespace OverviewApp.ViewModels
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     MinorGridlineStyle = LineStyle.Dot,
-                    Maximum = (double) max,
-                    Minimum = (double) min,
+                    Maximum = (double)max,
+                    Minimum = (double)min,
                     Title = "Value",
-                    Position= AxisPosition.Left,
-                    
+                    Position = AxisPosition.Left,
                 };
 
                 PlotModel.Axes.Add(valueAxis);
@@ -90,11 +84,10 @@ namespace OverviewApp.ViewModels
                     };
 
                     data.ToList()
-                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double) d.Value)));
+                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.UpdateTime), (double)d.Value)));
                     PlotModel.Series.Add(lineSerie);
                 }
             }
-            lastUpdate = DateTime.Now;
             PlotModel.InvalidatePlot(true);
         }
 
@@ -107,13 +100,12 @@ namespace OverviewApp.ViewModels
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
             PlotModel.LegendBorder = OxyColors.Black;
 
-
             var dateAxis = new DateTimeAxis()//AxisPosition.Bottom, "Date", "HH:mm")
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,
                 IntervalLength = 80,
-                Position=AxisPosition.Bottom
+                Position = AxisPosition.Bottom
             };
 
             PlotModel.Axes.Add(dateAxis);

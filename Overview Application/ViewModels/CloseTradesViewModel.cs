@@ -1,40 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Common;
+using DataAccess;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using OverviewApp.Auxiliary.Helpers;
+using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using QDMS;
-using EntityData;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
-
-using ReactiveUI;
-
 
 namespace OverviewApp.ViewModels
 {
     public class CloseTradesViewModel : MyBaseViewModel
     {
-     
         #region Fields
-
-        private readonly List<Equity> filteredEquity = new List<Equity>();
-        private readonly List<Equity> filteredEquityByDate = new List<Equity>();
 
         private ObservableCollection<string> accounts;
 
         private ObservableCollection<PortfolioSummary> accsummaryCollection;
         private bool canRemoveAccountFilter;
         private bool canRemoveEndDateFilter;
-#pragma warning disable CS0169 // The field 'CloseTrades_ViewModel._canRemoveStartDateFilter' is never used
-        private bool canRemoveStartDateFilter;
-#pragma warning restore CS0169 // The field 'CloseTrades_ViewModel._canRemoveStartDateFilter' is never used
-
-#pragma warning disable CS0169 // The field 'CloseTrades_ViewModel._equityCollection' is never used
-        private ObservableCollection<Equity> equityCollection;
-#pragma warning restore CS0169 // The field 'CloseTrades_ViewModel._equityCollection' is never used
 
         private ObservableCollection<LiveTrade> livetradesCollection;
 
@@ -45,9 +31,6 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private string selectedAccount;
 
-        private DateTime selectedEndDate = DateTime.Today;
-
-
         /// <summary>
         ///     Gets or sets the selected row.
         /// </summary>
@@ -56,12 +39,9 @@ namespace OverviewApp.ViewModels
         /// </value>
         private LiveTrade selectedRow;
 
-        private DateTime selectedStartDate = DateTime.Today.AddDays(-10);
-#pragma warning disable CS0169 // The field 'CloseTrades_ViewModel.lastUpdateMilliSeconds' is never used
-        private long lastUpdateMilliSeconds;
-#pragma warning restore CS0169 // The field 'CloseTrades_ViewModel.lastUpdateMilliSeconds' is never used
 
-        #endregion
+
+        #endregion Fields
 
         #region
 
@@ -70,9 +50,8 @@ namespace OverviewApp.ViewModels
         /// </summary>
         public CloseTradesViewModel(IMyDbContext context) : base(context)
         {
-          
             InitializeCommands();
-           
+
             LoadData();
             // This will register our method with the Messenger class for incoming
             // messages of type ViewCollectionViewSourceMessageToken.
@@ -87,7 +66,6 @@ namespace OverviewApp.ViewModels
         /// <summary>
         ///     Gets or sets the IDownloadContext member
         /// </summary>
-       
 
         /// <summary>
         ///     Gets or sets the CollectionViewSource which is the proxy for the
@@ -163,8 +141,6 @@ namespace OverviewApp.ViewModels
 
         #region Nested
 
-        
-
         #endregion
 
         /// <summary>
@@ -179,7 +155,7 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        public  void Cleanup()
+        public void Cleanup()
         {
             Messenger.Default.Unregister<ViewCollectionViewSourceMessageToken>(this);
             //base.Cleanup();
@@ -220,12 +196,12 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void CloseTrade()
         {
-           // var row = SelectedRow;
-           //var wrapper = new IbClient();
-           // wrapper.ClientSocket.eConnect("127.0.0.1", row.Port, 9999);
-           // ReqGlobalCancel(wrapper);
-           // Trade.PlaceMarketTrade(row.Instrument.Symbol, (double) row.Quantity, wrapper);
-           // wrapper.ClientSocket.eDisconnect();
+            // var row = SelectedRow;
+            //var wrapper = new IbClient();
+            // wrapper.ClientSocket.eConnect("127.0.0.1", row.Port, 9999);
+            // ReqGlobalCancel(wrapper);
+            // Trade.PlaceMarketTrade(row.Instrument.Symbol, (double) row.Quantity, wrapper);
+            // wrapper.ClientSocket.eDisconnect();
         }
 
         /// <summary>
@@ -235,7 +211,7 @@ namespace OverviewApp.ViewModels
         //public static void ReqGlobalCancel(IbClient wrapper)
         //{
         //    wrapper.ClientSocket.reqGlobalCancel();
-            
+
         //}
 
         /// <summary>
@@ -248,7 +224,7 @@ namespace OverviewApp.ViewModels
             // see Notes on Filter Methods:
             if (e.Item is LiveTrade)
             {
-                var src = (LiveTrade) e.Item;
+                var src = (LiveTrade)e.Item;
                 if (src == null)
                     e.Accepted = false;
                 else if (string.Compare(SelectedAccount, src.Account.AccountNumber) != 0)

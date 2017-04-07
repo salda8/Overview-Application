@@ -17,8 +17,6 @@
     <Window.Resources>
         <converters:LogItemToColorConverter x:Key="LogColorConverter" />
         <converters:LogEventInfoToStringConverter x:Key="LogInfoToStringConverter" />
-        <CollectionViewSource Source="{Binding AccountsMenu}" x:Key="Accounts" />
-        <CollectionViewSource Source="{Binding StrategyMenu}" x:Key="Strategies" />
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -35,7 +33,7 @@
                     <MenuItem Command="ApplicationCommands.Cut" />
                     <MenuItem Command="ApplicationCommands.Paste" />
                 </MenuItem>
-                <MenuItem>
+                <!--<MenuItem>
                     <MenuItem Command="{Binding OpenDatabaseSettingsCommand}" Header="Database Settings" />
                 </MenuItem>-->
                 <MenuItem Header="Add New" IsTabStop="false">
@@ -44,7 +42,7 @@
                     </MenuItem>
                     <MenuItem Command="{Binding AddNewStrategyCommand}" Header="Strategy"></MenuItem>
                 </MenuItem>
-                 <MenuItem Header="EditStrategy" ItemsSource="{Binding StrategyList, Mode=OneWay}" DisplayMemberPath="StrategyName" >
+                <MenuItem Header="EditStrategy" ItemsSource="{Binding StrategyList, Mode=OneWay}" DisplayMemberPath="StrategyName">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="Command" Value="{Binding DataContext.AddNewStrategyCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
@@ -52,7 +50,7 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
-                <MenuItem Header="EditAccount" ItemsSource="{Binding AccountsList, Mode=OneWay}" DisplayMemberPath="AccountNumber" >
+                <MenuItem Header="EditAccount" ItemsSource="{Binding AccountsList, Mode=OneWay}" DisplayMemberPath="AccountNumber">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="Command" Value="{Binding DataContext.AddNewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />

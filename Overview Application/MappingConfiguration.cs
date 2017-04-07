@@ -1,6 +1,6 @@
-﻿using ExpressMapper;
+﻿using Common;
+using ExpressMapper;
 using OverviewApp.TradingEntitiesPl;
-using QDMS;
 
 namespace OverviewApp
 {
@@ -19,7 +19,7 @@ namespace OverviewApp
             Mapper.Register<OpenOrder, OpenOrderPl>()
                 .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber)
                 .Member(dest => dest.Symbol, src => src.Instrument.Symbol);
-                
+
             Mapper.Register<LiveTrade, LiveTradePl>()
                 .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber).Member(dest => dest.Symbol, src => src.Instrument.Symbol);
             Mapper.Register<TradeHistory, TradeHistoryPl>()
@@ -33,8 +33,6 @@ namespace OverviewApp
 
             // Mapper.RegisterCustom<Account, string>(src => src.AccountNumber);
 
-
-
             Mapper.Compile();
         }
 
@@ -43,6 +41,4 @@ namespace OverviewApp
             return 1;
         }
     }
-
-    
 }

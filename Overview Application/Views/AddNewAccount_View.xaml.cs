@@ -1,10 +1,13 @@
-﻿using EntityData;
+﻿using Common;
+using DataAccess;
 using Microsoft.Practices.ServiceLocation;
 using OverviewApp.ViewModels;
-using QDMS;
 using ReactiveUI;
 using System;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
+using Timer = System.Threading.Timer;
 
 namespace OverviewApp.Views
 {
@@ -18,8 +21,15 @@ namespace OverviewApp.Views
             ViewModel = new AddNewAccountViewModel(ServiceLocator.Current.GetInstance<MyDBContext>(), account);
             DataContext = ViewModel;
             InitializeComponent();
-
+           // this.WhenAnyObservable(x => x.ViewModel.SaveCommand).Subscribe(x => WaitAndClose());
+            
             this.WhenAnyObservable(x => x.ViewModel.CancelCommand).Subscribe(x => Close());
+        }
+
+        private async void WaitAndClose()
+        {
+            await Task.Delay(2000);
+            Close();
         }
 
         object IViewFor.ViewModel

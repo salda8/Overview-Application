@@ -1,7 +1,7 @@
-﻿using System.Reactive;
-using EntityData;
+﻿using DataAccess;
 using NLog;
 using ReactiveUI;
+using System.Reactive;
 
 namespace OverviewApp.ViewModels
 {
@@ -19,17 +19,12 @@ namespace OverviewApp.ViewModels
 
         protected static NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ReactiveCommand<Unit,Unit> CancelCommand
+        public ReactiveCommand<Unit, Unit> CancelCommand
             => cancelCommand ?? (cancelCommand = ReactiveCommand.Create((() => { })));
-        
 
         public MyBaseViewModel(IMyDbContext context)
         {
-            this.Context = context;
-           
-          
+            Context = context;
         }
-
-       
     }
 }

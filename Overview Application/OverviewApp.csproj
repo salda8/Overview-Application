@@ -190,7 +190,7 @@
     <Compile Include="ViewModels\AddEditStrategyViewModel.cs" />
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
-    <Compile Include="ViewModels\ConcurrentNotifierBlockingList.cs" />
+    <Compile Include="Auxiliary\ConcurrentNotifierBlockingList.cs" />
     <Compile Include="FilterField.cs" />
     <Compile Include="ViewModels\MyValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
@@ -343,17 +343,17 @@
     <EmbeddedResource Include="Auxiliary\Resources\OxyPlot.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\qdms\EntityData\EntityData.csproj">
-      <Project>{aea3426e-81b7-4c7e-a1cc-29743229cdcc}</Project>
-      <Name>EntityData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\qdms\QDMS\QDMS.csproj">
-      <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
-      <Name>QDMS</Name>
-    </ProjectReference>
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\..\qdms\Common\Common.csproj">
+      <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\qdms\DataAccess\DataAccess.csproj">
+      <Project>{aea3426e-81b7-4c7e-a1cc-29743229cdcc}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

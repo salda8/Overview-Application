@@ -1,33 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using Common;
+using DataAccess;
+using MvvmValidation;
+using ReactiveUI;
 using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using EntityData;
-using GalaSoft.MvvmLight.CommandWpf;
-using MvvmValidation;
-using QDMS;
-using ReactiveUI;
-
-
 namespace OverviewApp.ViewModels
 {
     public class AddNewAccountViewModel : MyValidatableBaseViewModel
     {
-        
-        private int? port;
-        private string ipAddress;
-        private decimal? initialBalance;
-        
-        private string brokerName;
+        private int? port=4001;
+        private string ipAddress="127.0.0.1";
+        private decimal? initialBalance=100000;
+
+        private string brokerName="Interactive Brokers";
         private string accountNumber;
         private string windowTitle;
-        
+
         private string addNewEditText;
-       
+
         private Account account;
-        private readonly Account originalAccount;
         private ReactiveCommand<Unit, Unit> saveCommand;
         private string validationErrorsString;
         private bool? isValid;
@@ -37,13 +31,10 @@ namespace OverviewApp.ViewModels
 
         public AddNewAccountViewModel(IMyDbContext context, Account account) : base(context)
         {
-
             Accounts = new ReactiveList<Account>(context.Account.ToList());
             Strategies = new ReactiveList<Strategy>(context.Strategy.ToList());
 
-            originalAccount = account;
-
-
+            Account originalAccount = account;
 
             if (account != null)
             {
@@ -59,31 +50,31 @@ namespace OverviewApp.ViewModels
                 StrategyId = originalAccount.StrategyID;
                 WindowTitle = "Edit Account";
                 AddNewEditText = "Edit";
-
+                IsAccountNumberEditable = false;
             }
             else
             {
-                
                 WindowTitle = "Add Account";
                 AddNewEditText = "Add";
-
+                IsAccountNumberEditable = true ;
             }
-            
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
-
         }
 
         public bool AccountIDVisibility { get; set; } = false;
+
+        public bool IsAccountNumberEditable { get; set; } 
+
         #region Validation
+
         public string ValidationErrorsString
         {
             get { return validationErrorsString; }
             private set
             {
-               
-                this.RaiseAndSetIfChanged(ref validationErrorsString,value);
+                this.RaiseAndSetIfChanged(ref validationErrorsString, value);
             }
         }
 
@@ -93,16 +84,16 @@ namespace OverviewApp.ViewModels
             private set { this.RaiseAndSetIfChanged(ref isValid, value); }
         }
 
-
         private void ConfigureValidationRules()
         {
             Validator.AddRequiredRule(() => AccountNumber, "Account Name is required");
-            Validator.AddRule((string)(nameof(AccountNumber)),
+            Validator.AddRule(nameof(AccountNumber),
                  () =>
-                {
+                 {
+                     if (!IsAccountNumberEditable) return RuleResult.Valid();
                     bool isAvailable =
-                         Context.Account.Any(x => x.AccountNumber == this.AccountNumber);
-                
+                         Context.Account.Any(x => x.AccountNumber == AccountNumber);
+
                     return RuleResult.Assert(!isAvailable,
                                              $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
                 });
@@ -119,11 +110,8 @@ namespace OverviewApp.ViewModels
 
             Validator.AddRequiredRule(() => Port, "Port is required");
             Validator.AddRequiredRule(() => StrategyId, "Strategy is required");
-
-
-
-
         }
+
         private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
         {
             if (!IsValid.GetValueOrDefault(true))
@@ -133,10 +121,14 @@ namespace OverviewApp.ViewModels
                 UpdateValidationSummary(validationResult);
             }
         }
-        private void UpdateValidationSummary(ValidationResult validationResult)
+
+        private async Task UpdateValidationSummary(ValidationResult validationResult)
         {
-            IsValid = validationResult.IsValid;
-            ValidationErrorsString = validationResult.ToString();
+            await Task.Run(() =>
+            {
+                IsValid = validationResult.IsValid;
+                ValidationErrorsString = validationResult.ToString();
+            });
         }
 
         private async void Validate()
@@ -148,11 +140,13 @@ namespace OverviewApp.ViewModels
         {
             var result = await Validator.ValidateAllAsync();
 
-            UpdateValidationSummary(result);
+            await UpdateValidationSummary(result);
         }
-        #endregion
-        public ReactiveCommand<Unit,Unit> SaveCommand => saveCommand ?? (saveCommand = 
-            ReactiveCommand.Create(()=>
+
+        #endregion Validation
+
+        public ReactiveCommand<Unit, Unit> SaveCommand => saveCommand ?? (saveCommand =
+            ReactiveCommand.Create(() =>
 
                 {
                     Validate();
@@ -161,36 +155,29 @@ namespace OverviewApp.ViewModels
                     {
                         AddNewAccount();
                     }
-                   
                 }
         ));
-       
 
         private void AddNewAccount()
         {
-
             var acc = new Account()
             {
-                AccountNumber = this.accountNumber,
-                BrokerName = this.brokerName,
-                InitialBalance = this.initialBalance.GetValueOrDefault(),
-                IpAddress = this.ipAddress,
+                AccountNumber = accountNumber,
+                BrokerName = brokerName,
+                InitialBalance = initialBalance.GetValueOrDefault(),
+                IpAddress = ipAddress,
                 Port = port ?? 0,
                 StrategyID = StrategyId
-
             };
 
-            if (AccountID==null)
+            if (AccountID == null)
             {
-               
                 Context.Account.Add(acc);
-                
             }
             else
             {
                 var accountEntity = Context.Account.Find(AccountID);
                 Context.UpdateEntryValues(accountEntity, acc);
-
             }
 
             Context.SaveChanges();
@@ -208,7 +195,6 @@ namespace OverviewApp.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref strategies, value);
-                
             }
         }
 
@@ -216,7 +202,7 @@ namespace OverviewApp.ViewModels
         {
             get { return accounts; }
             set { this.RaiseAndSetIfChanged(ref accounts, value); }
-         }
+        }
 
         public int? AccountID { get; }
 
@@ -257,7 +243,7 @@ namespace OverviewApp.ViewModels
             get { return initialBalance; }
             set { this.RaiseAndSetIfChanged(ref initialBalance, value); }
         }
-        
+
         public string BrokerName
         {
             get { return brokerName; }

@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Reactive;
 using System.Threading.Tasks;
-
-using EntityData;
+using DataAccess;
 using MvvmValidation;
 using NLog;
 using ReactiveUI;
@@ -35,7 +34,7 @@ namespace OverviewApp.ViewModels
         public MyValidatableBaseViewModel(IMyDbContext context)// IUnityContainer container)
         {
             Validator = new ValidationHelper();
-            this.Context = context;
+            Context = context;
            
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(Validator);
             NotifyDataErrorInfoAdapter.ErrorsChanged += OnErrorsChanged;

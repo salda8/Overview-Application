@@ -1,6 +1,5 @@
-﻿using EntityData;
+﻿using DataAccess;
 using Microsoft.Practices.Unity;
-using OverviewApp.Properties;
 using OverviewApp.ViewModels;
 
 namespace OverviewApp.Auxiliary.Helpers
@@ -22,7 +21,7 @@ namespace OverviewApp.Auxiliary.Helpers
             container.RegisterType<IAttributesHelper, AttributesHelper>();
             container.RegisterType<IMyDbContext, MyDBContext>();
             container.RegisterType<IDataDBContext, DataDBContext>();
-            
+
             //container.RegisterType<IMyDbContext, MyDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.allPurposeDatabaseName)));
 
             //container.RegisterType<IDataDBContext, DataDBContext>(new InjectionConstructor(DBUtils.GetConnectionStringFromAppConfig(Settings.Default.dataDatabaseName)));

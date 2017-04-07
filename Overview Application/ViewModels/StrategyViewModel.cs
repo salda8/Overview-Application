@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Common;
+using DataAccess;
+using GalaSoft.MvvmLight.Messaging;
+using OverviewApp.Auxiliary.Helpers;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Windows;
-
-using EntityData;
-using QDMS;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
-using ReactiveUI;
-
 
 namespace OverviewApp.ViewModels
 {
@@ -28,7 +25,7 @@ namespace OverviewApp.ViewModels
         public List<string> StrategyList = new List<string>();
         private ReactiveCommand<Unit, Unit> launchStrategyCommand;
 
-        #endregion
+        #endregion Fields
 
         #region
 
@@ -85,7 +82,7 @@ namespace OverviewApp.ViewModels
         private void LoadData()
         {
             StrategyCollection = new ReactiveList<Strategy>(Context.Strategy.ToList());
-           
+
             Strategy = new ObservableCollection<string>();
             if (StrategyCollection.Count > 0)
             {
@@ -174,7 +171,6 @@ namespace OverviewApp.ViewModels
                 //var rowview = StrategyLaunchDataGrid.SelectedItem as DataRowView;
                 //if (rowview != null)
                 //{
-
                 //    var filepath = rowview.Row[8].ToString();
                 //    var account = rowview.Row[5].ToString();
                 //    var port = rowview.Row[6].ToString();

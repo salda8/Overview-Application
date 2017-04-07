@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using Common;
 using OverviewApp.TradingEntitiesPl;
-using QDMS;
+using System;
+using System.Collections.ObjectModel;
 
 namespace OverviewApp.Design_Time
 {

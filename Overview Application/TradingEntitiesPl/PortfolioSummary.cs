@@ -1,14 +1,13 @@
+using Common;
 using System;
 using System.ComponentModel;
-using QDMS;
 
 namespace OverviewApp.TradingEntitiesPl
 {
-
     public class PortfolioSummary1 : IEntity
     {
         #region Properties
-     
+
         public int ID { get; set; }
         public virtual Account Account { get; set; }
         public int AccountID { get; set; }
@@ -26,14 +25,13 @@ namespace OverviewApp.TradingEntitiesPl
         public virtual Strategy Strategy { get; set; }
         public int StrategyID { get; set; }
 
-
-        #endregion
+        #endregion Properties
     }
 
     public class PortfolioSummaryPl : IEntity
     {
         #region Properties
-  
+
         public int ID { get; set; }
 
         [DisplayName("Account Number")]
@@ -67,9 +65,7 @@ namespace OverviewApp.TradingEntitiesPl
         //public int DaysRunning { get; set; }
         //public decimal DailyPercent { get; set; }
         //public int GatewayPort { get; set; }
-        
 
-
-        #endregion
+        #endregion Properties
     }
 }

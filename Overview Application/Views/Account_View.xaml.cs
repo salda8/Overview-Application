@@ -1,11 +1,11 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
-using EntityData;
+﻿using DataAccess;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.ViewModels;
 using ReactiveUI;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace OverviewApp.Views
 {
@@ -44,10 +44,11 @@ namespace OverviewApp.Views
                 EquityCollectionViewSource = (CollectionViewSource)Resources["EquityCvs"]
             });
         }
+
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (AccountViewModel) value; }
+            set { ViewModel = (AccountViewModel)value; }
         }
 
         public AccountViewModel ViewModel { get; set; }

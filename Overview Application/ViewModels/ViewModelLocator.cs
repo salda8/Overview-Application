@@ -4,16 +4,15 @@
       <vm:ViewModelLocatorTemplate xmlns:vm="clr-namespace:MVVM_Template_Project.ViewModels"
                                    x:Key="Locator" />
   </Application.Resources>
-  
+
   In the View:
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Properties;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OverviewApp.ViewModels
 {
@@ -30,14 +29,11 @@ namespace OverviewApp.ViewModels
 
         static ViewModelLocator()
         {
-
             var container = new UnityContainer();
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ContainerHelper.Configure(container, "");
 
             ServiceLocator.SetLocatorProvider(() => locator);
-
-           
 
             //var ioc = new SimpleIoc();
 
@@ -45,14 +41,10 @@ namespace OverviewApp.ViewModels
             //{
             //    SimpleIoc.Default.Register<IMyDbContext, DesignContext>();
             //}
-            //else { 
+            //else {
             //    SimpleIoc.Default.Register<IMyDbContext, Context>();
 
-
             //}
-
-
-
         }
 
         #endregion
@@ -83,12 +75,9 @@ namespace OverviewApp.ViewModels
 
         public AddNewAccountViewModel AddNewAccountVm => ServiceLocator.Current.GetInstance<AddNewAccountViewModel>();
 
-        
-
-       
         #endregion
 
-        /// <summary>   
+        /// <summary>
         ///     Cleans up all the resources.
         /// </summary>
         public static void Cleanup()

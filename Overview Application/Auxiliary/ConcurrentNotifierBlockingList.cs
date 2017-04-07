@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace OverviewApp.ViewModels
+namespace OverviewApp.Auxiliary
 {
     public class ConcurrentNotifierBlockingList<T> : IEnumerable, INotifyCollectionChanged
     {

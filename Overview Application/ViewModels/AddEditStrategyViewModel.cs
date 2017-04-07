@@ -1,7 +1,6 @@
-﻿using System;
-using EntityData;
+﻿using Common;
+using DataAccess;
 using MvvmValidation;
-using QDMS;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +21,12 @@ namespace OverviewApp.ViewModels
         private readonly Strategy originalStrategy;
         private Strategy strategy;
         private string strategyName;
-        private decimal backTestDrawDown;
-        private decimal backTestPeriod;
-        private decimal backTestProfit;
-        private decimal calmariRatio;
+        private decimal backTestDrawDown=5000;
+        private decimal backTestPeriod=30;
+        private decimal backTestProfit=10000;
+        private decimal calmariRatio=2;
         private decimal dailyProfit;
-       
+
         private string filePath;
         private Instrument selectedInstrument;
         private List<Instrument> instruments;
@@ -36,7 +35,7 @@ namespace OverviewApp.ViewModels
         private ReactiveCommand<Unit, Unit> saveCommand;
         private ReactiveCommand<Unit, Unit> openFileDialogCommand;
 
-        public AddEditStrategyViewModel(IMyDbContext context,  Strategy strategy) : base(context)
+        public AddEditStrategyViewModel(IMyDbContext context, Strategy strategy) : base(context)
         {
             originalStrategy = strategy;
 
@@ -44,7 +43,7 @@ namespace OverviewApp.ViewModels
             {
                 Strategy = strategy;
                 WindowTitle = "Edit Strategy";
-                AddNewEditText = "Save Changes";
+                AddNewEditText = "Edit";
                 BacktestDrawDown = originalStrategy.BacktestDrawDown;
                 StrategyName = originalStrategy.StrategyName;
                 FilePath = originalStrategy.Filepath;
@@ -52,19 +51,23 @@ namespace OverviewApp.ViewModels
                 BacktestPeriod = originalStrategy.BacktestPeriod;
                 BacktestProfit = originalStrategy.BacktestProfit;
                 CalmariRatio = originalStrategy.CalmariRatio;
-         
+
                 SelectedInstrument = originalStrategy.Instrument;
+                IsStrategyNameEditable = false;
             }
             else
             {
                 WindowTitle = "Add new Strategy";
                 AddNewEditText = "Add New";
                 addingNew = true;
+                IsStrategyNameEditable = true;
             }
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
         }
+
+        public bool IsStrategyNameEditable { get; set; }
 
         public List<Instrument> Instruments
             => instruments ?? (instruments = new List<Instrument>(Context.Instruments.ToList()));
@@ -98,13 +101,14 @@ namespace OverviewApp.ViewModels
         {
             var strat = new Strategy()
             {
-                BacktestDrawDown = this.BacktestDrawDown,
-                BacktestPeriod = this.BacktestPeriod,
-                BacktestProfit = this.BacktestProfit,
-                CalmariRatio = this.CalmariRatio,
-          Filepath = this.FilePath,
+                BacktestDrawDown = BacktestDrawDown,
+                BacktestPeriod = BacktestPeriod,
+                BacktestProfit = BacktestProfit,
+                CalmariRatio = CalmariRatio,
+                Filepath = FilePath,
                 InstrumentID = SelectedInstrument.ID.Value,
-                StrategyName = this.StrategyName
+                StrategyName = StrategyName,
+                
             };
 
             if (addingNew)
@@ -114,9 +118,6 @@ namespace OverviewApp.ViewModels
             }
             else
             {
-                //Context.Strategy.Attach(Strategy);
-
-               
                 var foundStrategy = Context.Strategy.Find(originalStrategy.ID);
                 if (foundStrategy != null)
                 {
@@ -124,7 +125,6 @@ namespace OverviewApp.ViewModels
                     Context.SaveChanges();
                 }
             }
-           
         }
 
         public string StrategyName
@@ -166,8 +166,6 @@ namespace OverviewApp.ViewModels
             get { return dailyProfit; }
             set { this.RaiseAndSetIfChanged(ref dailyProfit, value); }
         }
-
-       
 
         public string FilePath
         {
@@ -227,10 +225,11 @@ namespace OverviewApp.ViewModels
             Validator.AddRule((string)(nameof(StrategyName)),
                  () =>
                  {
-                     bool isAvailable =
-                          Context.Strategy.Any(x => x.StrategyName == this.StrategyName);
+                     if (!IsStrategyNameEditable) return RuleResult.Valid();
+                     bool isNotAvailable =
+                          Context.Strategy.Any(x => x.StrategyName == StrategyName);
 
-                     return RuleResult.Assert(isAvailable,
+                     return RuleResult.Assert(!isNotAvailable,
                                               $"This strategy name {StrategyName} is present. Please choose a different one or edit existing one");
                  });
 
@@ -238,10 +237,14 @@ namespace OverviewApp.ViewModels
             Validator.AddRule((string)(nameof(FilePath)),
                 () =>
                 {
+                    if (string.IsNullOrEmpty(FilePath))
+                    {
+                        return RuleResult.Valid();
+                    }
                     bool isAvailable =
-                         Context.Strategy.Any(x => x.Filepath == this.FilePath);
+                         Context.Strategy.Any(x => x.Filepath == FilePath);
 
-                    return RuleResult.Assert(isAvailable,
+                    return RuleResult.Assert(!isAvailable,
                                              $"This file is already used. Please choose a different strategy or edit existing one.");
                 });
         }

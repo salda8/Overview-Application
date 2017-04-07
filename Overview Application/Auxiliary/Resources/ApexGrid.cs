@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,17 +18,17 @@ namespace OverviewApp.Auxiliary.Resources
         ///     The rows dependency property.
         /// </summary>
         private static readonly DependencyProperty RowsProperty =
-            DependencyProperty.Register("Rows", typeof (string), typeof (ApexGrid),
+            DependencyProperty.Register("Rows", typeof(string), typeof(ApexGrid),
                 new PropertyMetadata(null, OnRowsChanged));
 
         /// <summary>
         ///     The columns dependency property.
         /// </summary>
         private static readonly DependencyProperty ColumnsProperty =
-            DependencyProperty.Register("Columns", typeof (string), typeof (ApexGrid),
+            DependencyProperty.Register("Columns", typeof(string), typeof(ApexGrid),
                 new PropertyMetadata(null, OnColumnsChanged));
 
-        #endregion
+        #endregion Fields
 
         #region Properties
 
@@ -37,7 +39,7 @@ namespace OverviewApp.Auxiliary.Resources
         [Description("The rows property."), Category("Common Properties")]
         public string Rows
         {
-            get { return (string) GetValue(RowsProperty); }
+            get { return (string)GetValue(RowsProperty); }
             set { SetValue(RowsProperty, value); }
         }
 
@@ -48,11 +50,11 @@ namespace OverviewApp.Auxiliary.Resources
         [Description("The columns property."), Category("Common Properties")]
         public string Columns
         {
-            get { return (string) GetValue(ColumnsProperty); }
+            get { return (string)GetValue(ColumnsProperty); }
             set { SetValue(ColumnsProperty, value); }
         }
 
-        #endregion
+        #endregion Properties
 
         /// <summary>
         ///     Called when the rows property is changed.
@@ -68,11 +70,11 @@ namespace OverviewApp.Auxiliary.Resources
             var apexGrid = dependencyObject as ApexGrid;
 
             //  Clear any current rows definitions.
-            apexGrid.RowDefinitions.Clear();
+            apexGrid?.RowDefinitions.Clear();
 
             //  Add each row from the row lengths definition.
-            foreach (var rowLength in StringLengthsToGridLengths(apexGrid.Rows))
-                apexGrid.RowDefinitions.Add(new RowDefinition {Height = rowLength});
+            foreach (var rowLength in StringLengthsToGridLengths(apexGrid?.Rows))
+                apexGrid?.RowDefinitions.Add(new RowDefinition { Height = rowLength });
         }
 
         /// <summary>
@@ -87,13 +89,19 @@ namespace OverviewApp.Auxiliary.Resources
         {
             //  Get the apex grid.
             var apexGrid = dependencyObject as ApexGrid;
+            if (apexGrid == null)
+            {
+                throw new ArgumentNullException(nameof(apexGrid));
+            }
+            else
+            {
+                //  Clear any current column definitions.
+                apexGrid.ColumnDefinitions.Clear();
 
-            //  Clear any current column definitions.
-            apexGrid.ColumnDefinitions.Clear();
-
-            //  Add each column from the column lengths definition.
-            foreach (var columnLength in StringLengthsToGridLengths(apexGrid.Columns))
-                apexGrid.ColumnDefinitions.Add(new ColumnDefinition {Width = columnLength});
+                //  Add each column from the column lengths definition.
+                foreach (var columnLength in StringLengthsToGridLengths(apexGrid.Columns))
+                    apexGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = columnLength });
+            }
         }
 
         /// <summary>
@@ -121,8 +129,7 @@ namespace OverviewApp.Auxiliary.Resources
             var gridLengthConverter = new GridLengthConverter();
 
             //  Use the grid length converter to set each length.
-            foreach (var length in theLengths)
-                gridLengths.Add((GridLength) gridLengthConverter.ConvertFromString(length));
+            gridLengths.AddRange(theLengths.Select(length => gridLengthConverter.ConvertFromString(length)).Where(convertFromString => convertFromString != null).Cast<GridLength>());
 
 #else
 
@@ -144,19 +151,19 @@ namespace OverviewApp.Auxiliary.Resources
           //  If there is a coefficient, try and convert it.
           //  If we fail, throw an exception.
           if (starVal.Length > 0 && double.TryParse(starVal, out coefficient) == false)
-            throw new Exception("'" + length + "' is not a valid value."); 
+            throw new Exception("'" + length + "' is not a valid value.");
 
           //  We've handled the star value.
           gridLengths.Add(new GridLength(coefficient, GridUnitType.Star));
         }
         else
         {
-          //  It's not auto or star, so unless it's a plain old pixel 
+          //  It's not auto or star, so unless it's a plain old pixel
           //  value we must throw an exception.
           double pixelVal = 0;
           if(double.TryParse(length, out pixelVal) == false)
             throw new Exception("'" + length + "' is not a valid value.");
-          
+
           //  We've handled the star value.
           gridLengths.Add(new GridLength(pixelVal, GridUnitType.Pixel));
         }
