@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using System.Windows.Data;
 
 namespace OverviewApp.ViewModels
@@ -30,7 +31,7 @@ namespace OverviewApp.ViewModels
         private bool canRemoveEndDateFilter;
         private bool canRemoveStartDateFilter;
 
-        private ReactiveList<string> accounts;
+        
         private ReactiveList<AccountSummaryPl> accountSummaryCollection;
         private ReactiveList<EquityPl> equityCollection;
         private ReactiveList<TradeHistoryPl> historytradesCollection;
@@ -129,16 +130,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref equityCollection, value); }
         }
 
-        /// <summary>
-        ///     Gets or sets a list of accounts which is used to populate the account filter
-        ///     drop down list.
-        /// </summary>
-        public ReactiveList<string> Accounts
-        {
-            get { return accounts; }
-            set { this.RaiseAndSetIfChanged(ref accounts, value); }
-        }
-
+       
         /// <summary>
         ///     Gets or sets the selected account in the list to filter the collection
         /// </summary>
@@ -271,7 +263,7 @@ namespace OverviewApp.ViewModels
                 AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
                 AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
                 EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
-                Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
+                
             });
             //SetUpModelData();
         }
@@ -289,22 +281,40 @@ namespace OverviewApp.ViewModels
         {
             await Task.Run(() =>
             {
-                LiveTrades = new ReactiveList<LiveTradePl>(Mapper.Map<List<LiveTrade>, ReactiveList<LiveTradePl>>(Context.LiveTrade.Include("Account").Include("Instrument").ToList()));
-                OpenOrders = new ReactiveList<OpenOrderPl>(Mapper.Map<List<OpenOrder>, ReactiveList<OpenOrderPl>>(Context.OpenOrder.Include("Account").Include("Instrument").ToList()));
-                AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
-                AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
-                EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
-                Accounts = new ReactiveList<string>(AccountsList?.Select(x => x.AccountNumber));
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    foreach (LiveTradePl liveTradePl in Mapper.Map<List<LiveTrade>, ReactiveList<LiveTradePl>>(
+                                Context.LiveTrade.Include("Account").Include("Instrument").ToList()))
+                    {
+                        LiveTrades.Add(liveTradePl);
+                    }
+                    foreach (OpenOrderPl openorder in Mapper.Map<List<OpenOrder>, ReactiveList<OpenOrderPl>>(
+                                Context.OpenOrder.Include("Account").Include("Instrument").ToList()))
+                    {
+                        OpenOrders.Add(openorder);
+                    }
 
-                if (TradesHistory?.Count > 0)
-                {
+                    foreach (AccountSummaryPl accountSummary in Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(
+                                Context.AccountSummary.Include("Account").ToList()))
+                    {
+                        AccountSummaryCollection.Add(accountSummary);
+                    }
+                    foreach (AccountPl accountPl in Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()))
+                    {
+                        AccountsList.Add(accountPl);
+                    }
+                    foreach (EquityPl equityPl in Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()))
+                    {
+                        EquityCollection.Add(equityPl);
+                    }
+
                     int latestTradeHistoryID = TradesHistory.Max(x => x.ID);
-                    TradesHistory.AddRange(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Where(x => x.ID > latestTradeHistoryID).Include("Account").Include("Instrument").ToList()));
-                }
-                else
-                {
-                    TradesHistory = new ReactiveList<TradeHistoryPl>(Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Include("Account").Include("Instrument").ToList()));
-                }
+                    foreach (var tradeHistory in Mapper.Map<List<TradeHistory>, ReactiveList<TradeHistoryPl>>(Context.TradeHistory.Where(x => x.ID > latestTradeHistoryID).Include("Account").Include("Instrument").ToList()))
+                    {
+                        TradesHistory.Add(tradeHistory);
+                    }
+                    
+                });
             });
 
             //      Application.Current.Dispatcher.Invoke(() => TradesHistory.Add(tradeHistor));
@@ -318,18 +328,13 @@ namespace OverviewApp.ViewModels
         {
             await Task.Run(() =>
             {
-                if (EquityCollection?.Count > 0)
+                if (EquityCollection != null)
                 {
-                    var lastIdEquity = EquityCollection.Max(x => x.ID);
-                    EquityCollection.AddRange(
-                        Mapper.Map<List<Equity>, List<EquityPl>>(
-                            Context.Equity.Where(x => x.ID > lastIdEquity).Include("Account").ToList()));
-                }
-                else
-                {
-                    EquityCollection =
-                        new ReactiveList<EquityPl>(
-                            Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
+                    int lastIdEquity = EquityCollection.Count > 0 ? EquityCollection.Max(x => x.ID) : 0;
+                    foreach (var equity in Mapper.Map<List<Equity>, List<EquityPl>>(Context.Equity.Where(x => x.ID > lastIdEquity).Include("Account").ToList()))
+                    {
+                        Application.Current.Dispatcher.Invoke(() => EquityCollection.Add(equity));
+                    }
                 }
             });
 
@@ -380,11 +385,11 @@ namespace OverviewApp.ViewModels
         /// </summary>
         private void UpdateModel()
         {
-            var listEquity = EquityCollectionViewSource.View.Cast<Equity>().ToList();
+            var listEquity = EquityCollectionViewSource.View.Cast<EquityPl>().ToList();
             if (listEquity.Count != 0)
             {
                 var dataPerAccount =
-                    listEquity.DistinctBy(x => x.ID).GroupBy(m => m.Account).OrderBy(m => m.Key).ToList();
+                    listEquity.DistinctBy(x => x.ID).GroupBy(m => m.AccountNumber).OrderBy(m => m.Key).ToList();
 
                 var min = Convert.ToDouble(listEquity.MinBy(m => m.Value).Value);
                 var max = Convert.ToDouble(listEquity.MaxBy(m => m.Value).Value);
@@ -443,7 +448,7 @@ namespace OverviewApp.ViewModels
             RemoveAccountFilterCommand = new RelayCommand(RemoveAccountFilter, () => CanRemoveAccountFilter);
             ResetFiltersCommand = new RelayCommand(ResetFilters, null);
             ResetDateFilterCommand = new RelayCommand(ResetDateFilter, null);
-            ReloadDataCommand = ReactiveCommand.Create(LoadData);
+            ReloadDataCommand = ReactiveCommand.Create(UpdateData);
         }
 
         public ReactiveCommand<Unit, Unit> ReloadDataCommand { get; set; }

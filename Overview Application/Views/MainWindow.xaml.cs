@@ -1,14 +1,13 @@
 ﻿using NLog;
+using NLog.Targets;
+using OverviewApp.Auxiliary.Helpers;
+using OverviewApp.Properties;
 using OverviewApp.ViewModels;
 using ReactiveUI;
 using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using NLog.Targets;
-using OverviewApp.Auxiliary.Helpers;
-using OverviewApp.Properties;
-
 
 namespace OverviewApp.Views
 {
@@ -17,8 +16,6 @@ namespace OverviewApp.Views
     /// </summary>
     public partial class MainWindow : Window, IViewFor<MainViewModel>
     {
-        #region
-
         /// <summary>
         ///     Initializes a new instance of the MainWindow class.
         /// </summary>
@@ -30,8 +27,6 @@ namespace OverviewApp.Views
 
             DBUtils.SetConnectionString();
 
-            
-            
             InitializeComponent();
             //Log unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += AppDomain_CurrentDomain_UnhandledException;
@@ -46,26 +41,29 @@ namespace OverviewApp.Views
         private void AppDomain_CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             NLog.Logger logger = LogManager.GetCurrentClassLogger();
-            logger.Error((Exception) e.ExceptionObject, "Unhandled exception");
+            logger.Error((Exception)e.ExceptionObject, "Unhandled exception");
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = (MainViewModel) value; }
+            set { ViewModel = (MainViewModel)value; }
         }
 
         public MainViewModel ViewModel { get; set; }
 
         private void SetLogDirectory()
         {
-            if (Directory.Exists(Properties.Settings.Default.logDirectory))
+            if (Directory.Exists(Settings.Default.logDirectory))
             {
-                ((FileTarget) LogManager.Configuration.FindTargetByName("default")).FileName =
+                ((FileTarget)LogManager.Configuration.FindTargetByName("logfile")).FileName =
+                    Settings.Default.logDirectory + "Log.log";
+            }
+            else
+            {
+                Directory.CreateDirectory(Properties.Settings.Default.logDirectory);
+                ((FileTarget)LogManager.Configuration.FindTargetByName("logfile")).FileName =
                     Properties.Settings.Default.logDirectory + "Log.log";
-
-
-                #endregion
             }
         }
     }

@@ -265,17 +265,7 @@ namespace OverviewApp.ViewModels
             ValidationErrorsString = validationResult.ToString();
         }
 
-        private async void Validate()
-        {
-            await ValidateAsync();
-        }
-
-        private async Task ValidateAsync()
-        {
-            var result = await Validator.ValidateAllAsync();
-
-            UpdateValidationSummary(result);
-        }
+        private void Validate() => UpdateValidationSummary(Validator.ValidateAllAsync().Result);
 
         #endregion Validation
     }

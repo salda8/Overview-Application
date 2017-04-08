@@ -11,11 +11,11 @@ namespace OverviewApp.ViewModels
 {
     public class AddNewAccountViewModel : MyValidatableBaseViewModel
     {
-        private int? port=4001;
-        private string ipAddress="127.0.0.1";
-        private decimal? initialBalance=100000;
+        private int? port = 4001;
+        private string ipAddress = "127.0.0.1";
+        private decimal? initialBalance = 100000;
 
-        private string brokerName="Interactive Brokers";
+        private string brokerName = "Interactive Brokers";
         private string accountNumber;
         private string windowTitle;
 
@@ -56,7 +56,7 @@ namespace OverviewApp.ViewModels
             {
                 WindowTitle = "Add Account";
                 AddNewEditText = "Add";
-                IsAccountNumberEditable = true ;
+                IsAccountNumberEditable = true;
             }
 
             ConfigureValidationRules();
@@ -65,7 +65,7 @@ namespace OverviewApp.ViewModels
 
         public bool AccountIDVisibility { get; set; } = false;
 
-        public bool IsAccountNumberEditable { get; set; } 
+        public bool IsAccountNumberEditable { get; set; }
 
         #region Validation
 
@@ -91,12 +91,12 @@ namespace OverviewApp.ViewModels
                  () =>
                  {
                      if (!IsAccountNumberEditable) return RuleResult.Valid();
-                    bool isAvailable =
-                         Context.Account.Any(x => x.AccountNumber == AccountNumber);
+                     bool isAvailable =
+                          Context.Account.Any(x => x.AccountNumber == AccountNumber);
 
-                    return RuleResult.Assert(!isAvailable,
-                                             $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
-                });
+                     return RuleResult.Assert(!isAvailable,
+                                              $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
+                 });
 
             Validator.AddRequiredRule(() => IpAddress, "IP Address is required.");
             Validator.AddRule((string)(nameof(IpAddress)),
@@ -122,26 +122,13 @@ namespace OverviewApp.ViewModels
             }
         }
 
-        private async Task UpdateValidationSummary(ValidationResult validationResult)
+        private void UpdateValidationSummary(ValidationResult validationResult)
         {
-            await Task.Run(() =>
-            {
-                IsValid = validationResult.IsValid;
-                ValidationErrorsString = validationResult.ToString();
-            });
+            IsValid = validationResult.IsValid;
+            ValidationErrorsString = validationResult.ToString();
         }
 
-        private async void Validate()
-        {
-            await ValidateAsync();
-        }
-
-        private async Task ValidateAsync()
-        {
-            var result = await Validator.ValidateAllAsync();
-
-            await UpdateValidationSummary(result);
-        }
+        private void Validate() => UpdateValidationSummary(Validator.ValidateAllAsync().Result);
 
         #endregion Validation
 
@@ -172,7 +159,18 @@ namespace OverviewApp.ViewModels
 
             if (AccountID == null)
             {
-                Context.Account.Add(acc);
+                //Context.Account.Add(acc);
+                Context.AccountSummary.Add(new AccountSummary()
+                {
+                    Account=acc,
+                    CashBalance = 0,
+                    DayTradesRemaining = 0,
+                    EquityWithLoanValue = 0,
+                    InitMarginReq = 0,
+                    MaintMarginReq = 0,
+                    NetLiquidation = 0,
+                    UnrealizedPnL = 0
+                });
             }
             else
             {

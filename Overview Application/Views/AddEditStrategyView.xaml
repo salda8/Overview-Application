@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-       Title="{Binding WindowTitle}" Height="422.524" Width="470.381">
+       Title="{Binding WindowTitle}" Height="300" Width="450">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Validation.ErrorTemplate"
@@ -89,7 +89,7 @@
         </StackPanel>
 
         <Button Grid.Row="9" Margin="5" Content="{Binding AddNewEditText}"  Command="{Binding SaveCommand}"></Button>
-            <Button Grid.Row="9" Content="Cancel" Margin="5" Command="{Binding CancelCommand}" HorizontalAlignment="Right"></Button>
+        
         <Grid Grid.Row="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
