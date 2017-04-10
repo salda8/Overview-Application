@@ -10,13 +10,7 @@ using ReactiveUI;
 
 namespace OverviewApp.ViewModels
 {
-    /// <summary>
-    ///     This class contains properties that a View can data bind to.
-    ///     <para>
-    ///         See http://www.galasoft.ch/mvvm
-    ///     </para>
-    /// </summary>
-    public class MyValidatableBaseViewModel : ReactiveObject, IValidatable, INotifyDataErrorInfo, IDisposable
+    public class ValidateableBaseViewModel : ReactiveObject, IValidatable, INotifyDataErrorInfo, IDisposable
     {
         private ReactiveCommand<Unit, Unit> cancelCommand;
 
@@ -31,11 +25,10 @@ namespace OverviewApp.ViewModels
 
         private NotifyDataErrorInfoAdapter NotifyDataErrorInfoAdapter { get; }
 
-        public MyValidatableBaseViewModel(IMyDbContext context)// IUnityContainer container)
+        public ValidateableBaseViewModel(IMyDbContext context)// IUnityContainer container)
         {
             Validator = new ValidationHelper();
             Context = context;
-           
             NotifyDataErrorInfoAdapter = new NotifyDataErrorInfoAdapter(Validator);
             NotifyDataErrorInfoAdapter.ErrorsChanged += OnErrorsChanged;
         }
