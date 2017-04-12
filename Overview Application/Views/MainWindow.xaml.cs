@@ -30,10 +30,9 @@ namespace OverviewApp.Views
             InitializeComponent();
             //Log unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += AppDomain_CurrentDomain_UnhandledException;
-            //target is where the log managers send their logs, here we grab the memory target which has a Subject to observe
-            var target = LogManager.Configuration.AllTargets.Single(x => x.Name == "myTarget") as MemoryTarget;
-            //we subscribe to the messages and send them all to the LogMessages collection
-            target?.Messages.Subscribe(msg => ViewModel.LogMessages.TryAdd(msg));
+            
+            var target = LogManager.Configuration.AllTargets.Single(x => x.Name == "myTarget");
+           
 
             Closing += (s, e) => ViewModelLocator.Cleanup();
         }

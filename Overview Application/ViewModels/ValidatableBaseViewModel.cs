@@ -3,6 +3,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Reactive;
 using System.Threading.Tasks;
+using Common;
+using Common.Interfaces;
 using DataAccess;
 using MvvmValidation;
 using NLog;

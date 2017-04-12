@@ -6,6 +6,8 @@ using OverviewApp.ViewModels;
 using ReactiveUI;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Common;
+using Common.Interfaces;
 
 namespace OverviewApp.Views
 {

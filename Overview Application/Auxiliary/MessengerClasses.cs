@@ -1,22 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.ViewModels;
-using OverviewApp.Views;
 
 namespace OverviewApp.Auxiliary
 {
-    /*
-	 * If you're using the MVVM Messenger, this classes can be helpful in order to send 
-	 * specific types of messages, with specific results, like changing the status
-	 * bar in your Main window from any part of the system, or switching views as response
-	 * to clicking a button.
-	 * 
-	 * For example, using MVVM data service DI:
-	 * Messenger.Default.Send(new SwitchView(new SomeViewModel(_Context)));
-	 *
-	 * Or without using MVVM data service DI:
-	 * Messenger.Default.Send(new SwitchView(new SomeOtherViewModel()));
-	 */
-
     #region Set Status
 
     /// <summary>
@@ -46,52 +31,18 @@ namespace OverviewApp.Auxiliary
             NewStatus = status;
         }
 
-        #endregion
+        #endregion Set Status
 
         #region Properties
 
         public string NewStatus { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     #endregion
 
     #region Switch view
-
-    /// <summary>
-    ///     Used as message, to switch the view to a different one. Whatever you set
-    ///     to catches this message will be the one changing the views.
-    /// </summary>
-    /// <remarks>
-    ///     NOT USED IN THIS TEMPLATE. This is just the prototype to
-    ///     show you how you can easily do it.
-    /// </remarks>
-    public class SwitchView
-    {
-        #region
-
-        public SwitchView(MyBaseViewModel viewmodel)
-        {
-            ViewModel = viewmodel;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public MyBaseViewModel ViewModel { get; set; }
-
-        #endregion
-    }
-
-    
-
-   
-
-    public class RefreshSummary
-    {
-    }
 
     #endregion
 }

@@ -6,10 +6,12 @@ using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Common.EntityModels;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {
-    public class AddNewAccountViewModel : MyValidatableBaseViewModel
+    public class AddNewAccountViewModel :ValidateableBaseViewModel
     {
         private int? port = 4001;
         private string ipAddress = "127.0.0.1";

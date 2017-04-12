@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.EntityModels;
 using ExpressMapper;
 using OverviewApp.TradingEntitiesPl;
 

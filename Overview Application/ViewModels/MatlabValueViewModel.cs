@@ -5,6 +5,8 @@ using OverviewApp.TradingEntitiesPl;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
+using Common;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

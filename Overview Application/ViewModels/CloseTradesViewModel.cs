@@ -9,6 +9,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Common.EntityModels;
+using Common.Enums;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

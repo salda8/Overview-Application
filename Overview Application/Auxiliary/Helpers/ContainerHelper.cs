@@ -1,4 +1,6 @@
-﻿using DataAccess;
+﻿using Common;
+using Common.Interfaces;
+using DataAccess;
 using Microsoft.Practices.Unity;
 using OverviewApp.ViewModels;
 
@@ -18,7 +20,7 @@ namespace OverviewApp.Auxiliary.Helpers
             container.RegisterType<MatlabValueViewModel>();
             container.RegisterType<StrategyViewModel>();
             container.RegisterType<CloseTradesViewModel>();
-            container.RegisterType<IAttributesHelper, AttributesHelper>();
+           
             container.RegisterType<IMyDbContext, MyDBContext>();
             container.RegisterType<IDataDBContext, DataDBContext>();
 

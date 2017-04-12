@@ -10,6 +10,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Windows;
+using Common.EntityModels;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

@@ -6,6 +6,8 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using System.Linq;
+using Common.EntityModels;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

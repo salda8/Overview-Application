@@ -5,13 +5,14 @@ using ReactiveUI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Common.EntityModels;
+using Common.Interfaces;
 using ReactiveCommand = ReactiveUI.ReactiveCommand;
 
 namespace OverviewApp.ViewModels
 {
-    public class AddEditStrategyViewModel : MyValidatableBaseViewModel
+    public class AddEditStrategyViewModel : ValidateableBaseViewModel
     {
         private string windowTitle;
 
@@ -21,10 +22,10 @@ namespace OverviewApp.ViewModels
         private readonly Strategy originalStrategy;
         private Strategy strategy;
         private string strategyName;
-        private decimal backTestDrawDown=5000;
-        private decimal backTestPeriod=30;
-        private decimal backTestProfit=10000;
-        private decimal calmariRatio=2;
+        private decimal backTestDrawDown = 5000;
+        private decimal backTestPeriod = 30;
+        private decimal backTestProfit = 10000;
+        private decimal calmariRatio = 2;
         private decimal dailyProfit;
 
         private string filePath;
@@ -108,7 +109,6 @@ namespace OverviewApp.ViewModels
                 Filepath = FilePath,
                 InstrumentID = SelectedInstrument.ID.Value,
                 StrategyName = StrategyName,
-                
             };
 
             if (addingNew)

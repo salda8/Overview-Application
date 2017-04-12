@@ -5,6 +5,9 @@ using OverviewApp.ViewModels;
 using ReactiveUI;
 using System;
 using System.Windows;
+using Common.EntityModels;
+using Common.Interfaces;
+
 namespace OverviewApp.Views
 {
     /// <summary>

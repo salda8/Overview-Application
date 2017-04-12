@@ -145,37 +145,25 @@
     </ApplicationDefinition>
     <Compile Include="Auxiliary\Converters\BooleanConverter.cs" />
     <Compile Include="Auxiliary\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Auxiliary\Converters\CommentsConverter.cs" />
     <Compile Include="Auxiliary\Converters\ErrorContentConverter.cs" />
     <Compile Include="Auxiliary\Helpers\DBUtils.cs" />
     <Compile Include="Auxiliary\Helpers\EncryptionUtils.cs" />
     <Compile Include="Auxiliary\Helpers\StringExtensionMethods.cs" />
     <Compile Include="Auxiliary\Helpers\MessengerClasses.cs" />
-    <Compile Include="Auxiliary\Helpers\Random_Helper.cs" />
     <Compile Include="Auxiliary\Helpers\Validation_Helper.cs" />
     <Compile Include="Auxiliary\Helpers\ViewCollectionViewSourceMessageToken.cs" />
-    <Compile Include="Auxiliary\Helpers\AttributesHelper.cs" />
-    <Compile Include="Auxiliary\Helpers\IAttributesHelper.cs" />
     <Compile Include="Auxiliary\MessengerClasses.cs" />
     <Compile Include="Auxiliary\Resources\SmartColumnBehavior.cs" />
     <Compile Include="Auxiliary\ViewCollectionViewSourceMessageToken.cs" />
     <Compile Include="Auxiliary\Helpers\ContainerHelper.cs" />
     <Compile Include="Auxiliary\Helpers\MapperHelper.cs" />
-    <Compile Include="Helpers\AttributesHelper.cs" />
-    <Compile Include="Helpers\EncryptionUtils.cs" />
-    <Compile Include="Helpers\IAttributesHelper.cs" />
-    <Compile Include="Helpers\Random_Helper.cs" />
-    <Compile Include="Helpers\StringExtensionMethods.cs" />
-    <Compile Include="Helpers\Validation_Helper.cs" />
     <Compile Include="Auxiliary\Converters\LogEventInfoToStringConverter.cs" />
-    <Compile Include="ListBoxExt.cs" />
+    <Compile Include="Auxiliary\Resources\ListBoxExt.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
-    <Compile Include="Design Time\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Auxiliary\Converters\LogItemToColorConverter.cs" />
     <Compile Include="MappingConfiguration.cs" />
-    <Compile Include="MemoryTarget.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TradingEntitiesPl\AccountPl.cs" />
     <Compile Include="TradingEntitiesPl\AccountSummaryPl.cs" />
@@ -191,7 +179,6 @@
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
     <Compile Include="Auxiliary\ConcurrentNotifierBlockingList.cs" />
-    <Compile Include="FilterField.cs" />
     <Compile Include="ViewModels\ValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />
@@ -317,6 +304,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using Common.EntityModels;
 using Timer = System.Threading.Timer;
 
 namespace OverviewApp.Views

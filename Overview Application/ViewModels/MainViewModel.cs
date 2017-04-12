@@ -7,6 +7,7 @@ using OverviewApp.Views;
 using ReactiveUI;
 using System.Linq;
 using System.Reactive;
+using Common.EntityModels;
 using OverviewApp.Auxiliary;
 using StatusMessage = OverviewApp.Auxiliary.Helpers.StatusMessage;
 

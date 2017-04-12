@@ -2,6 +2,8 @@
 using NLog;
 using ReactiveUI;
 using System.Reactive;
+using Common;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

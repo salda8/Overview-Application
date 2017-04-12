@@ -1,5 +1,7 @@
 ﻿using Common;
 using System.ComponentModel;
+using Common.EntityModels;
+using Common.Interfaces;
 
 namespace OverviewApp.TradingEntitiesPl
 {

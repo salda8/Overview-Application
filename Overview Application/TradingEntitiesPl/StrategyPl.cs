@@ -1,4 +1,6 @@
 using Common;
+using Common.EntityModels;
+using Common.Interfaces;
 
 namespace OverviewApp.TradingEntitiesPl
 {

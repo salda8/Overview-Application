@@ -16,6 +16,9 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
+using Common.EntityModels;
+using Common.Enums;
+using Common.Interfaces;
 
 namespace OverviewApp.ViewModels
 {

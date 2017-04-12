@@ -6,6 +6,8 @@ using ReactiveUI;
 using System.Linq;
 using System.Windows.Input;
 using Common;
+using Common.EntityModels;
+using Common.Interfaces;
 using DataAccess;
 
 

@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OverviewApp.App" Collapsed="true">
+    <Position X="31" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ListBoxExt" Collapsed="true">
+    <Position X="27.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAABAAAAAAAAAAIgAAA=</HashCode>
+      <FileName>ListBoxExt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.AutoScrollHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAIAAAAAAABAgAAAQAAAABAIAAAAA=</HashCode>
+      <FileName>ListBoxExt.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.MappingConfiguration" Collapsed="true">
+    <Position X="27.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MappingConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.ConcurrentNotifierBlockingList&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIABQBAACAAAgACAAAAAABAAAAAAAAIAAAA=</HashCode>
+      <FileName>Auxiliary\ConcurrentNotifierBlockingList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.StatusSetter" Collapsed="true">
+    <Position X="31" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.StatusMessage" Collapsed="true">
+    <Position X="27.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.ViewCollectionViewSourceMessageToken" Collapsed="true">
+    <Position X="18.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEEAAEBAhAAAAAAAAAAAAAAAAAAAABAACAAAAAA=</HashCode>
+      <FileName>Auxiliary\ViewCollectionViewSourceMessageToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Converters.BooleanConverter&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAIAAAAAAAAgAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Converters\BooleanConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Converters.BooleanToVisibilityConverter" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Converters\BooleanToVisibilityConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Converters.ErrorContentConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Converters\ErrorContentConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Converters.LogEventInfoToStringConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Converters\LogEventInfoToStringConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Converters.LogItemToColorConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Converters\LogItemToColorConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.AttributesHelper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Auxiliary\Helpers\AttributesHelper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.ContainerHelper" Collapsed="true">
+    <Position X="22.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\ContainerHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.DBUtils" Collapsed="true">
+    <Position X="27.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAIAAAAAAAAAAAABEAABBAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\DBUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.EncryptionUtils" Collapsed="true">
+    <Position X="31" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\EncryptionUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.MapperHelper" Collapsed="true">
+    <Position X="25.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MapperHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.StatusSetter" Collapsed="true">
+    <Position X="32.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.StatusMessage" Collapsed="true">
+    <Position X="29.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.SwitchView" Collapsed="true">
+    <Position X="27.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.RefreshPeople" Collapsed="true">
+    <Position X="17" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.RefreshSummary" Collapsed="true">
+    <Position X="18.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\MessengerClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.RandomHelper" Collapsed="true">
+    <Position X="31" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKgCEAAAAACAAAAAAAICgAAAAQAAgAAAgAAAIEQEQ=</HashCode>
+      <FileName>Auxiliary\Helpers\Random_Helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.StringExtensionMethods" Collapsed="true">
+    <Position X="20.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAIAAAAAAABAQEAAAAgABAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\StringExtensionMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.ValidationHelper" Collapsed="true">
+    <Position X="17" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAABAAAAAAAAAAAAAIAAAAAAACAAIAAAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\Validation_Helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Helpers.ViewCollectionViewSourceMessageToken" Collapsed="true">
+    <Position X="20.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEEAAEBAhAAAAAAAAAAAAAAAAAAAABAACAAAAAA=</HashCode>
+      <FileName>Auxiliary\Helpers\ViewCollectionViewSourceMessageToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Resources.ApexGrid" Collapsed="true">
+    <Position X="29.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgAAAAAAAAEAAAAAAAABAAAAAAAAAAAAgAAiAAAA=</HashCode>
+      <FileName>Auxiliary\Resources\ApexGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Auxiliary.Resources.SmartColumnBehavior" Collapsed="true">
+    <Position X="25.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAACAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Auxiliary\Resources\SmartColumnBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Design_Time.DesignContext" Collapsed="true">
+    <Position X="29.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAACAAEAAAAEAAAAAQAACAAJACAAAAAAQAAA=</HashCode>
+      <FileName>Design Time\DesignDataService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Logger.Logger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAEAAAA=</HashCode>
+      <FileName>Logger\Logger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Properties.CanBeNullAttribute" Collapsed="true">
+    <Position X="31" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.NotNullAttribute" Collapsed="true">
+    <Position X="20.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.StringFormatMethodAttribute" Collapsed="true">
+    <Position X="22.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.InvokerParameterNameAttribute" Collapsed="true">
+    <Position X="25.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.NotifyPropertyChangedInvocatorAttribute" Collapsed="true">
+    <Position X="18.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.ContractAnnotationAttribute" Collapsed="true">
+    <Position X="24" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.LocalizationRequiredAttribute" Collapsed="true">
+    <Position X="31" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.CannotApplyEqualityOperatorAttribute" Collapsed="true">
+    <Position X="32.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.BaseTypeRequiredAttribute" Collapsed="true">
+    <Position X="29.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.UsedImplicitlyAttribute" Collapsed="true">
+    <Position X="31" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.MeansImplicitUseAttribute" Collapsed="true">
+    <Position X="32.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.PublicAPIAttribute" Collapsed="true">
+    <Position X="27.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.InstantHandleAttribute" Collapsed="true">
+    <Position X="24" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.PureAttribute" Collapsed="true">
+    <Position X="29.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.PathReferenceAttribute" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcAreaMasterLocationFormatAttribute" Collapsed="true">
+    <Position X="18.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcAreaPartialViewLocationFormatAttribute" Collapsed="true">
+    <Position X="20.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcAreaViewLocationFormatAttribute" Collapsed="true">
+    <Position X="22.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcMasterLocationFormatAttribute" Collapsed="true">
+    <Position X="31" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcPartialViewLocationFormatAttribute" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcViewLocationFormatAttribute" Collapsed="true">
+    <Position X="22.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcActionAttribute" Collapsed="true">
+    <Position X="32.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcAreaAttribute" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcControllerAttribute" Collapsed="true">
+    <Position X="24" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcMasterAttribute" Collapsed="true">
+    <Position X="29.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcModelTypeAttribute" Collapsed="true">
+    <Position X="32.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcPartialViewAttribute" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcSupressViewErrorAttribute" Collapsed="true">
+    <Position X="18.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcDisplayTemplateAttribute" Collapsed="true">
+    <Position X="25.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcEditorTemplateAttribute" Collapsed="true">
+    <Position X="27.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcTemplateAttribute" Collapsed="true">
+    <Position X="20.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcViewAttribute" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.AspMvcActionSelectorAttribute" Collapsed="true">
+    <Position X="17" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.HtmlElementAttributesAttribute" Collapsed="true">
+    <Position X="22.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.HtmlAttributeValueAttribute" Collapsed="true">
+    <Position X="20.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.RazorSectionAttribute" Collapsed="true">
+    <Position X="32.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.Resources" Collapsed="true">
+    <Position X="22.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Properties.Settings" Collapsed="true">
+    <Position X="24" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAACAAAACAAAAAACIAEAAAABBAAAACAAgAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.AccountPl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAgAAAAACAAAAACAgAgAAAAAAAABEAAAA=</HashCode>
+      <FileName>TradingEntitiesPl\AccountPl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.AccountSummaryPl" Collapsed="true">
+    <Position X="18.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAQgABAAQgAAAAAAAgAEEAAAAAAAAAAAAA=</HashCode>
+      <FileName>TradingEntitiesPl\AccountSummaryPl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.EquityPl" Collapsed="true">
+    <Position X="32.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgQAAAgAAAAAAAAgAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>TradingEntitiesPl\EquityPl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.LiveTradePl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAwSAAAgQAAAQAAAiAAACAAAAAgAAACAA=</HashCode>
+      <FileName>TradingEntitiesPl\LiveTradePl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.MatlabvaluePl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAQAAAAACAAAAAAAAAAgABEAAQA=</HashCode>
+      <FileName>TradingEntitiesPl\Matlabvalue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.OpenOrderPl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAMAAAAgQAAAgQAAAAAAAgAAAAAAQAQgAAACAA=</HashCode>
+      <FileName>TradingEntitiesPl\OpenOrderPl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.PortfolioSummary1" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAABAAAgABAAgAAAAACAAAAAACBAAAMAFEAAEA=</HashCode>
+      <FileName>TradingEntitiesPl\PortfolioSummary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.PortfolioSummaryPl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAiAAAAgAAAAQAAAiAAAAAAAAAggEACAA=</HashCode>
+      <FileName>TradingEntitiesPl\PortfolioSummary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.StrategyPl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAEAIAgAAAAgQABAAACAAAAAAACAQAAAAAAAA=</HashCode>
+      <FileName>TradingEntitiesPl\StrategyPl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.TradingEntitiesPl.TradeHistoryPl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAQAAiAAAAgQAAAAAAAgAAAABAAAAgAAACAI=</HashCode>
+      <FileName>TradingEntitiesPl\TradeHistory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.ViewModel.MainViewModel" Collapsed="true">
+    <Position X="20.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.AccountViewModel" Collapsed="true">
+    <Position X="1" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAFsAAEAEgBwljMABgywYoCKEBAAAEAACAw5CMAQTAI=</HashCode>
+      <FileName>ViewModels\AccountViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.AddEditStrategyViewModel" Collapsed="true">
+    <Position X="24" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIAUggAAE4LICBAESggiJAAAAAAAQEgAAJRAABKUAAI=</HashCode>
+      <FileName>ViewModels\AddEditStrategyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.AddNewAccountViewModel" Collapsed="true">
+    <Position X="27.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQAEAkEAAgCICIAADgiACECgCIgAgAiAAAQAQACEAEI=</HashCode>
+      <FileName>ViewModels\AddNewAccountViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.BarsViewModel" Collapsed="true">
+    <Position X="3.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAABAsgEQAt0BAEWCSAAOADCgAEBgiAARAAAAQQA=</HashCode>
+      <FileName>ViewModels\BarsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.CloseTradesViewModel" Collapsed="true">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEEAAAAEgAQAhAABASAQMgKgIAAAECAEAAJCMAADAA=</HashCode>
+      <FileName>ViewModels\CloseTradesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.EquityViewModel" Collapsed="true">
+    <Position X="7.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAQAAAAAAgAAAAAABAAAAAACAgAAAAAQAA=</HashCode>
+      <FileName>ViewModels\EquityViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.MainViewModel" Collapsed="true">
+    <Position X="22.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAIQAAARIAACAAgQAgAiFAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.MatlabValueViewModel" Collapsed="true">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgACQAgAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MatlabValueViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.MyBaseViewModel" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAgIAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MyBaseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.StrategyViewModel" Collapsed="true">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAABASAgCAACAAAAIAAIAAEAgAAIABABCgAAA=</HashCode>
+      <FileName>ViewModels\StrategyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.SummaryViewModel" Collapsed="true">
+    <Position X="14.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAIAAAACBAAAAAQAAAAAAgA=</HashCode>
+      <FileName>ViewModels\SummaryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.ViewModels.ValidateableBaseViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAiIAAAABQAAAAAACAAAAAAAIgAAAAAAhIAA=</HashCode>
+      <FileName>ViewModels\ValidatableBaseViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.ViewModels.ViewModelLocator" Collapsed="true">
+    <Position X="22.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAAAAAAAAAAIQAAACAAAAAAAAIQAEAABEAAAAA=</HashCode>
+      <FileName>ViewModels\ViewModelLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OverviewApp.Views.AccountView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Account_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.AddEditStrategy" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AddEditStrategyView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.AddNewAccountView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Views\AddNewAccount_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.BarsView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Bars_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.CloseTradesView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\CloseTrades_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.DBConnection_View" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\DBConnection_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.EquityView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Equity_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAUAAAAQAAAAAAAIAAAAA=</HashCode>
+      <FileName>Views\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.MatlabvalueView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\MatlabValue_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.StrategyView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Strategy_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OverviewApp.Views.SummaryView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Summary_View.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="OverviewApp.Auxiliary.Helpers.IAttributesHelper" Collapsed="true">
+    <Position X="17" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Auxiliary\Helpers\IAttributesHelper.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="OverviewApp.FilterField" Collapsed="true">
+    <Position X="17" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAgAAAAAAAAAAAAAEEACEA=</HashCode>
+      <FileName>FilterField.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OverviewApp.Properties.ImplicitUseKindFlags" Collapsed="true">
+    <Position X="18.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAABAEAAAAAAIAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OverviewApp.Properties.ImplicitUseTargetFlags" Collapsed="true">
+    <Position X="20.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAIAAAAAAAAAAAAAAEAAAAAAQ=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

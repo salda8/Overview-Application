@@ -4,7 +4,7 @@
                     xmlns:views1="clr-namespace:OverviewApp.Views"
                     xmlns:vm="clr-namespace:OverviewApp.ViewModels">
 
-    <converters:CommentsConverter x:Key="CommentsConverter" />
+   
     <converters:BooleanToVisibilityConverter   x:Key="BooleanToVisibilityConverter" True="Visible" False="Collapsed"/>
 
     <!--  Here I'm binding ViewModels to Views, so the content  -->

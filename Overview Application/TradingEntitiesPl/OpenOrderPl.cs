@@ -1,6 +1,7 @@
 using Common;
 using System;
 using System.ComponentModel;
+using Common.Interfaces;
 
 namespace OverviewApp.TradingEntitiesPl
 {
