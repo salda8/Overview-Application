@@ -2,7 +2,6 @@
 using DataAccess;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -58,7 +57,7 @@ namespace OverviewApp.ViewModels
             LoadData();
             // This will register our method with the Messenger class for incoming
             // messages of type ViewCollectionViewSourceMessageToken.
-            Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
+            Messenger.Default.Register<Helpers.ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
         }
 
@@ -150,7 +149,7 @@ namespace OverviewApp.ViewModels
         ///     This method handles a message recieved from the View which enables a reference to the
         ///     instantiated CollectionViewSource to be used in the ViewModel.
         /// </summary>
-        private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken token)
+        private void Handle_ViewCollectionViewSourceMessageToken(Helpers.ViewCollectionViewSourceMessageToken token)
         {
             if (token.LiveTradesCollectionViewSource != null)
             {
@@ -160,7 +159,7 @@ namespace OverviewApp.ViewModels
 
         public void Cleanup()
         {
-            Messenger.Default.Unregister<ViewCollectionViewSourceMessageToken>(this);
+            Messenger.Default.Unregister<Helpers.ViewCollectionViewSourceMessageToken>(this);
             //base.Cleanup();
         }
 

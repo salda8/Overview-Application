@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace OverviewApp.Auxiliary.Converters
+namespace OverviewApp.Converters
 {
     /// <summary>
     ///     An example for an error converter.
@@ -30,9 +30,7 @@ namespace OverviewApp.Auxiliary.Converters
                 : "";
         }
 
-        /// <summary>
-        ///     It it makes sense to convert back, IMPLEMENT the following method as well !!!!
-        /// </summary>
+       
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

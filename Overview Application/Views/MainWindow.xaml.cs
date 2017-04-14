@@ -1,6 +1,5 @@
 ﻿using NLog;
 using NLog.Targets;
-using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.Properties;
 using OverviewApp.ViewModels;
 using ReactiveUI;
@@ -8,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using OverviewApp.Helpers;
 
 namespace OverviewApp.Views
 {

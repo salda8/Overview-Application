@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
-using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.ViewModels;
 using ReactiveUI;
 using System.Windows.Controls;
@@ -25,23 +24,23 @@ namespace OverviewApp.Views
             DataContext = ViewModel;
             InitializeComponent();
             //Messenger.Default.Send(new ViewCollectionViewSourceMessageToken() { LiveTradesCollectionViewSource = (CollectionViewSource)(Resources["X_CVS"]), TradesHistoryCollectionViewSource = (CollectionViewSource)(Resources["T_CVS"]), OpenTradesCollectionViewSource = (CollectionViewSource)(Resources["O_CVS"]), AccountSummaryCollectionViewSource = (CollectionViewSource)(Resources["S_CVS"]) });
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 LiveTradesCollectionViewSource = (CollectionViewSource)Resources["LiveTradesCvs"]
             });
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 TradesHistoryCollectionViewSource = (CollectionViewSource)Resources["TradeHistoryCvs"]
             });
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 OpenTradesCollectionViewSource = (CollectionViewSource)Resources["OpenOrdersCvs"]
             });
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 AccountSummaryCollectionViewSource = (CollectionViewSource)Resources["AccountsCvs"]
             });
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 EquityCollectionViewSource = (CollectionViewSource)Resources["EquityCvs"]
             });

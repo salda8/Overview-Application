@@ -1,7 +1,6 @@
 ﻿using Common;
 using DataAccess;
 using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -40,7 +39,7 @@ namespace OverviewApp.ViewModels
                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui." + Environment.NewLine +
                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dui." + Environment.NewLine;
 
-            Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
+            Messenger.Default.Register<Helpers.ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
         }
 
@@ -77,7 +76,7 @@ namespace OverviewApp.ViewModels
 
         #endregion
 
-        private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken obj)
+        private void Handle_ViewCollectionViewSourceMessageToken(Helpers.ViewCollectionViewSourceMessageToken obj)
         {
         }
 

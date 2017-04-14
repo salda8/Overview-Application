@@ -11,8 +11,8 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-using OverviewApp.Auxiliary.Helpers;
 using System.Diagnostics.CodeAnalysis;
+using OverviewApp.Helpers;
 
 namespace OverviewApp.ViewModels
 {
@@ -65,7 +65,7 @@ namespace OverviewApp.ViewModels
 
         public EquityViewModel EquityVm => ServiceLocator.Current.GetInstance<EquityViewModel>();
 
-        public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
+        //public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
 
         public MatlabValueViewModel MatlabValueVm => ServiceLocator.Current.GetInstance<MatlabValueViewModel>();
 

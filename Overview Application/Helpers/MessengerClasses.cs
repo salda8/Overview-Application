@@ -1,8 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using OverviewApp.ViewModels;
-using OverviewApp.Views;
 
-namespace OverviewApp.Auxiliary.Helpers
+namespace OverviewApp.Helpers
 {
     /*
 	 * If you're using the MVVM Messenger, this classes can be helpful in order to send 

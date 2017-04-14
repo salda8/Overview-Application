@@ -1,10 +1,9 @@
-﻿using Common;
-using Common.Interfaces;
+﻿using Common.Interfaces;
 using DataAccess;
 using Microsoft.Practices.Unity;
 using OverviewApp.ViewModels;
 
-namespace OverviewApp.Auxiliary.Helpers
+namespace OverviewApp.Helpers
 {
     public static class ContainerHelper
     {
@@ -16,7 +15,7 @@ namespace OverviewApp.Auxiliary.Helpers
             container.RegisterType<SummaryViewModel>();
             container.RegisterType<AccountViewModel>();
             container.RegisterType<EquityViewModel>();
-            container.RegisterType<BarsViewModel>();
+            // container.RegisterType<BarsViewModel>();}}
             container.RegisterType<MatlabValueViewModel>();
             container.RegisterType<StrategyViewModel>();
             container.RegisterType<CloseTradesViewModel>();

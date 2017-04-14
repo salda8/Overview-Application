@@ -8,7 +8,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OverviewApp.Auxiliary.Helpers
+namespace OverviewApp.Helpers
 {
     public static class EncryptionUtils
     {

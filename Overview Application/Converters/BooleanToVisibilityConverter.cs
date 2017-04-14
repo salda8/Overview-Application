@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace OverviewApp.Auxiliary.Converters
+namespace OverviewApp.Converters
 {
     public sealed class BooleanToVisibilityConverter : BooleanConverter<Visibility>
     {

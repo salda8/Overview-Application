@@ -1,6 +1,6 @@
 ﻿using System.Windows.Data;
 
-namespace OverviewApp.Auxiliary.Helpers
+namespace OverviewApp
 {
     public class ViewCollectionViewSourceMessageToken
     {

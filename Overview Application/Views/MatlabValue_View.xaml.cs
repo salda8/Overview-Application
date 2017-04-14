@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
 using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
 
 namespace OverviewApp.Views
 {
@@ -15,7 +14,7 @@ namespace OverviewApp.Views
         public MatlabvalueView()
         {
             InitializeComponent();
-            Messenger.Default.Send(new ViewCollectionViewSourceMessageToken
+            Messenger.Default.Send(new Helpers.ViewCollectionViewSourceMessageToken
             {
                 MatlabValuesCollectionViewSource = (CollectionViewSource) Resources["M_CVS"]
             });

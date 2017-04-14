@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace OverviewApp.Auxiliary.Resources
+namespace OverviewApp.Resources
 {
     /// <summary>
     ///     The ApexGrid control is a Grid that supports easy definition of rows and columns.

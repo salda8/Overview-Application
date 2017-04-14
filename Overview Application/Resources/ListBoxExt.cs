@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace OverviewApp.Auxiliary.Resources
+namespace OverviewApp.Resources
 {
     public static class ListBoxExt
     {

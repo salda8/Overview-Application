@@ -8,8 +8,7 @@ using ReactiveUI;
 using System.Linq;
 using System.Reactive;
 using Common.EntityModels;
-using OverviewApp.Auxiliary;
-using StatusMessage = OverviewApp.Auxiliary.Helpers.StatusMessage;
+using StatusMessage = OverviewApp.Helpers.StatusMessage;
 
 namespace OverviewApp.ViewModels
 {
@@ -40,7 +39,7 @@ namespace OverviewApp.ViewModels
             // any place in our application, it'l end up here, we'll update the string
             // we use to bind to our MainWindow status bar string, and wualla, magic
             // just happened.
-            Messenger.Default.Register<StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
+            Messenger.Default.Register<Helpers.StatusMessage>(this, msg => StatusBarMessage = msg.NewStatus);
             LogMessages = new ConcurrentNotifierBlockingList<LogEventInfo>();
 
             StatusBarMessage = "Status in design";

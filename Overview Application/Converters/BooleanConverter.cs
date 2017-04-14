@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace OverviewApp.Auxiliary.Converters
+namespace OverviewApp.Converters
 {
     public class BooleanConverter<T> : IValueConverter
     {

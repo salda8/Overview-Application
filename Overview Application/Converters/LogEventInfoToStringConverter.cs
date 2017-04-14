@@ -1,13 +1,12 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Media;
 using NLog;
 
-namespace OverviewApp.Auxiliary.Converters
+namespace OverviewApp.Converters
 {
-    [ValueConversion(typeof(LogEventInfo), typeof(SolidColorBrush))]
-    public class LogItemToColorConverter : IValueConverter
+    [ValueConversion(typeof(LogEventInfo), typeof(string))]
+    internal class LogEventInfoToStringConverter : IValueConverter
     {
         /// <summary>
         /// Converts a value. 
@@ -18,14 +17,8 @@ namespace OverviewApp.Auxiliary.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (((LogEventInfo)value).Level == LogLevel.Info || ((LogEventInfo)value).Level == LogLevel.Trace)
-            {
-                return Brushes.Black;
-            }
-            else
-            {
-                return Brushes.Red;
-            }
+            return
+                $"{((LogEventInfo)value).TimeStamp:HH:mm:ss.fff}|{((LogEventInfo)value).Level}|{((LogEventInfo)value).FormattedMessage}";
         }
 
         /// <summary>

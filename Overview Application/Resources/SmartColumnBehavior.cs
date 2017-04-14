@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace OverviewApp.Auxiliary.Resources
+namespace OverviewApp.Resources
 {
     //https://www.codeproject.com/Articles/389764/A-Smart-Behavior-for-DataGrid-AutoGenerateColumn
     public class SmartColumnBehavior : Behavior<DataGrid>

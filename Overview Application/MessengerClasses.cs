@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 
-namespace OverviewApp.Auxiliary
+namespace OverviewApp
 {
     #region Set Status
 

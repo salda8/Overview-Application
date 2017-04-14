@@ -2,7 +2,7 @@
 using System.Linq;
 using OverviewApp.Properties;
 
-namespace OverviewApp.Auxiliary.Helpers
+namespace OverviewApp.Helpers
 {
     /// <summary>
     ///     This holds some string extension methods I find useful, and some I've used once, just

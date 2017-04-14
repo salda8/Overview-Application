@@ -1,6 +1,5 @@
 ﻿using DataAccess;
 using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
 using OverviewApp.TradingEntitiesPl;
 using ReactiveUI;
 using System.Collections.ObjectModel;
@@ -23,7 +22,7 @@ namespace OverviewApp.ViewModels
         public MatlabValueViewModel(IMyDbContext context) : base(context)
         {
             LoadData();
-            Messenger.Default.Register<ViewCollectionViewSourceMessageToken>(this,
+            Messenger.Default.Register<Helpers.ViewCollectionViewSourceMessageToken>(this,
                 Handle_ViewCollectionViewSourceMessageToken);
         }
 
@@ -51,7 +50,7 @@ namespace OverviewApp.ViewModels
         ///     This method handles a message received from the View which enables a reference to the
         ///     instantiated CollectionViewSource to be used in the ViewModel.
         /// </summary>
-        private void Handle_ViewCollectionViewSourceMessageToken(ViewCollectionViewSourceMessageToken token)
+        private void Handle_ViewCollectionViewSourceMessageToken(Helpers.ViewCollectionViewSourceMessageToken token)
         {
             if (token.MatlabValuesCollectionViewSource != null)
             {

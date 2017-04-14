@@ -1,4 +1,4 @@
-﻿namespace OverviewApp.Auxiliary.Helpers
+﻿namespace OverviewApp.Helpers
 {
     public static class MapperHelper
     {

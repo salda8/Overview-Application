@@ -1,7 +1,6 @@
 ﻿
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using OverviewApp.Auxiliary.Helpers;
 using ReactiveUI;
 using System.Linq;
 using System.Windows.Input;
@@ -9,6 +8,7 @@ using Common;
 using Common.EntityModels;
 using Common.Interfaces;
 using DataAccess;
+using OverviewApp.Helpers;
 
 
 namespace OverviewApp.ViewModels
@@ -73,7 +73,7 @@ namespace OverviewApp.ViewModels
         {
             SummaryCollection = new ReactiveList<PortfolioSummary>(Context.PortfolioSummary.ToList());
             var msg = "refreshed.";
-            Auxiliary.StatusSetter.SetStatus(msg);
+            StatusSetter.SetStatus(msg);
         }
     }
 }

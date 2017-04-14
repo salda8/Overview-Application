@@ -1,6 +1,6 @@
 ﻿using Splat;
 
-namespace OverviewApp.Logger
+namespace OverviewApp
 {
     /// <summary>
     /// Logger implementation

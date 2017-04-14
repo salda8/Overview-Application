@@ -143,26 +143,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Auxiliary\Converters\BooleanConverter.cs" />
-    <Compile Include="Auxiliary\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Auxiliary\Converters\ErrorContentConverter.cs" />
-    <Compile Include="Auxiliary\Helpers\DBUtils.cs" />
-    <Compile Include="Auxiliary\Helpers\EncryptionUtils.cs" />
-    <Compile Include="Auxiliary\Helpers\StringExtensionMethods.cs" />
-    <Compile Include="Auxiliary\Helpers\MessengerClasses.cs" />
-    <Compile Include="Auxiliary\Helpers\Validation_Helper.cs" />
-    <Compile Include="Auxiliary\Helpers\ViewCollectionViewSourceMessageToken.cs" />
-    <Compile Include="Auxiliary\MessengerClasses.cs" />
-    <Compile Include="Auxiliary\Resources\SmartColumnBehavior.cs" />
-    <Compile Include="Auxiliary\ViewCollectionViewSourceMessageToken.cs" />
-    <Compile Include="Auxiliary\Helpers\ContainerHelper.cs" />
-    <Compile Include="Auxiliary\Helpers\MapperHelper.cs" />
-    <Compile Include="Auxiliary\Converters\LogEventInfoToStringConverter.cs" />
-    <Compile Include="Auxiliary\Resources\ListBoxExt.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\ErrorContentConverter.cs" />
+    <Compile Include="Helpers\DBUtils.cs" />
+    <Compile Include="Helpers\EncryptionUtils.cs" />
+    <Compile Include="Helpers\StringExtensionMethods.cs" />
+    <Compile Include="Helpers\MessengerClasses.cs" />
+    <Compile Include="Helpers\Validation_Helper.cs" />
+    <Compile Include="Helpers\ViewCollectionViewSourceMessageToken.cs" />
+    <Compile Include="MessengerClasses.cs" />
+    <Compile Include="Resources\SmartColumnBehavior.cs" />
+    <Compile Include="ViewCollectionViewSourceMessageToken.cs" />
+    <Compile Include="Helpers\ContainerHelper.cs" />
+    <Compile Include="Helpers\MapperHelper.cs" />
+    <Compile Include="Converters\LogEventInfoToStringConverter.cs" />
+    <Compile Include="Resources\ListBoxExt.cs" />
     <Compile Include="Logger\Logger.cs" />
-    <Compile Include="Auxiliary\Resources\ApexGrid.cs" />
+    <Compile Include="Resources\ApexGrid.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Auxiliary\Converters\LogItemToColorConverter.cs" />
+    <Compile Include="Converters\LogItemToColorConverter.cs" />
     <Compile Include="MappingConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TradingEntitiesPl\AccountPl.cs" />
@@ -178,7 +178,7 @@
     <Compile Include="ViewModels\AddEditStrategyViewModel.cs" />
     <Compile Include="ViewModels\AddNewAccountViewModel.cs" />
     <Compile Include="ViewModels\BarsViewModel.cs" />
-    <Compile Include="Auxiliary\ConcurrentNotifierBlockingList.cs" />
+    <Compile Include="ConcurrentNotifierBlockingList.cs" />
     <Compile Include="ViewModels\ValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
     <Compile Include="ViewModels\CloseTradesViewModel.cs" />
@@ -219,11 +219,11 @@
     <Compile Include="Views\Summary_View.xaml.cs">
       <DependentUpon>Summary_View.xaml</DependentUpon>
     </Compile>
-    <Page Include="Auxiliary\Resources\DataTemplates.xaml">
+    <Page Include="Resources\DataTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Auxiliary\Resources\Styles.xaml">
+    <Page Include="Resources\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -321,18 +321,16 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Auxiliary\Resources\What%27s here.txt" />
+    <Resource Include="Resources\What%27s here.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Auxiliary\Resources\1385_Disable_16x16_72.png" />
-    <Resource Include="Auxiliary\Resources\1385_Disable_16x16_72_disabled.png" />
+    <Resource Include="Resources\1385_Disable_16x16_72.png" />
+    <Resource Include="Resources\1385_Disable_16x16_72_disabled.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Auxiliary\Resources\OxyPlot.png" />
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\qdms\Common\Common.csproj">
       <Project>{7ea40d71-4d14-4b86-b07d-932959fa0d20}</Project>
