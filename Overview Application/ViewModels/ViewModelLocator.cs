@@ -66,13 +66,9 @@ namespace OverviewApp.ViewModels
         public EquityViewModel EquityVm => ServiceLocator.Current.GetInstance<EquityViewModel>();
 
         //public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
-
-       
-
+        
         public StrategyViewModel StrategyVm => ServiceLocator.Current.GetInstance<StrategyViewModel>();
-
-        public CloseTradesViewModel CloseTradesVm => ServiceLocator.Current.GetInstance<CloseTradesViewModel>();
-
+        
         public AddNewAccountViewModel AddNewAccountVm => ServiceLocator.Current.GetInstance<AddNewAccountViewModel>();
 
         #endregion

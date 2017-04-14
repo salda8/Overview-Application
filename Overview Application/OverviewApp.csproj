@@ -181,7 +181,6 @@
     <Compile Include="ConcurrentNotifierBlockingList.cs" />
     <Compile Include="ViewModels\ValidatableBaseViewModel.cs" />
     <Compile Include="ViewModels\StrategyViewModel.cs" />
-    <Compile Include="ViewModels\CloseTradesViewModel.cs" />
     <Compile Include="ViewModels\EquityViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MyBaseViewModel.cs" />
@@ -199,9 +198,6 @@
     </Compile>
     <Compile Include="Views\Bars_View.xaml.cs">
       <DependentUpon>Bars_View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CloseTrades_View.xaml.cs">
-      <DependentUpon>CloseTrades_View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DBConnection_View.xaml.cs">
       <DependentUpon>DBConnection_View.xaml</DependentUpon>
@@ -236,10 +232,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Bars_View.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CloseTrades_View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

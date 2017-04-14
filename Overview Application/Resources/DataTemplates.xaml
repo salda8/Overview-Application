@@ -30,9 +30,6 @@
     <DataTemplate DataType="{x:Type vm:StrategyViewModel}">
         <views1:StrategyView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:CloseTradesViewModel}">
-        <views1:CloseTradesView />
-    </DataTemplate>
 
     <ControlTemplate x:Key="DefaultErrorTemplate">
         <Grid x:Name="container">
