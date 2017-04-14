@@ -1,9 +1,8 @@
-using Common;
 using System;
 using System.ComponentModel;
 using Common.Interfaces;
 
-namespace OverviewApp.TradingEntitiesPl
+namespace OverviewApp.Model
 {
     public class OpenOrderPl : IEntity
     {

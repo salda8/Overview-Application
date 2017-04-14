@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace OverviewApp.TradingEntitiesPl
+namespace OverviewApp.Model
 {
     public class EquityPl
     {

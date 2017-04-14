@@ -1,10 +1,9 @@
-using Common;
 using System;
 using System.ComponentModel;
 using Common.EntityModels;
 using Common.Interfaces;
 
-namespace OverviewApp.TradingEntitiesPl
+namespace OverviewApp.Model
 {
     public class PortfolioSummary1 : IEntity
     {

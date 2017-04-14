@@ -4,7 +4,6 @@ using ExpressMapper;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MoreLinq;
-using OverviewApp.TradingEntitiesPl;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -21,6 +20,7 @@ using System.Windows.Data;
 using Common.EntityModels;
 using Common.Enums;
 using Common.Interfaces;
+using OverviewApp.Model;
 
 namespace OverviewApp.ViewModels
 {
