@@ -67,7 +67,7 @@ namespace OverviewApp.ViewModels
 
         //public BarsViewModel BarsVm => ServiceLocator.Current.GetInstance<BarsViewModel>();
 
-        public MatlabValueViewModel MatlabValueVm => ServiceLocator.Current.GetInstance<MatlabValueViewModel>();
+       
 
         public StrategyViewModel StrategyVm => ServiceLocator.Current.GetInstance<StrategyViewModel>();
 

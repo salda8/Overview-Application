@@ -26,9 +26,7 @@
         <views1:EquityView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type vm:MatlabValueViewModel}">
-        <views1:MatlabvalueView />
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:StrategyViewModel}">
         <views1:StrategyView />
     </DataTemplate>

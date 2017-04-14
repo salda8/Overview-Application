@@ -16,7 +16,7 @@ namespace OverviewApp.Helpers
             container.RegisterType<AccountViewModel>();
             container.RegisterType<EquityViewModel>();
             // container.RegisterType<BarsViewModel>();}}
-            container.RegisterType<MatlabValueViewModel>();
+           
             container.RegisterType<StrategyViewModel>();
             container.RegisterType<CloseTradesViewModel>();
            
