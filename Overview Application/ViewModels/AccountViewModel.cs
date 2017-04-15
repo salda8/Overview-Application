@@ -1,9 +1,11 @@
-﻿using Common;
-using DataAccess;
+﻿using Common.EntityModels;
+using Common.Enums;
+using Common.Interfaces;
 using ExpressMapper;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MoreLinq;
+using OverviewApp.Model;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -17,10 +19,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using Common.EntityModels;
-using Common.Enums;
-using Common.Interfaces;
-using OverviewApp.Model;
 
 namespace OverviewApp.ViewModels
 {
@@ -33,7 +31,6 @@ namespace OverviewApp.ViewModels
         private bool canRemoveEndDateFilter;
         private bool canRemoveStartDateFilter;
 
-        
         private ReactiveList<AccountSummaryPl> accountSummaryCollection;
         private ReactiveList<EquityPl> equityCollection;
         private ReactiveList<TradeHistoryPl> historytradesCollection;
@@ -132,7 +129,6 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref equityCollection, value); }
         }
 
-       
         /// <summary>
         ///     Gets or sets the selected account in the list to filter the collection
         /// </summary>
@@ -265,7 +261,6 @@ namespace OverviewApp.ViewModels
                 AccountSummaryCollection = new ReactiveList<AccountSummaryPl>(Mapper.Map<List<AccountSummary>, ReactiveList<AccountSummaryPl>>(Context.AccountSummary.Include("Account").ToList()));
                 AccountsList = new ReactiveList<AccountPl>(Mapper.Map<List<Account>, ReactiveList<AccountPl>>(Context.Account.ToList()));
                 EquityCollection = new ReactiveList<EquityPl>(Mapper.Map<List<Equity>, ReactiveList<EquityPl>>(Context.Equity.Include("Account").ToList()));
-                
             });
             //SetUpModelData();
         }
@@ -315,7 +310,6 @@ namespace OverviewApp.ViewModels
                     {
                         TradesHistory.Add(tradeHistory);
                     }
-                    
                 });
             });
 
@@ -340,10 +334,7 @@ namespace OverviewApp.ViewModels
                 }
             });
 
-            //foreach (var equita in equity)
-            //{
-            //    Application.Current.Dispatcher.Invoke(() => { EquityCollection.Add(equita); });
-            //}
+            
         }
 
         /// <summary>

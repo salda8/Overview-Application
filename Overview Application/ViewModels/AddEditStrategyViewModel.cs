@@ -107,7 +107,7 @@ namespace OverviewApp.ViewModels
                 BacktestProfit = BacktestProfit,
                 CalmariRatio = CalmariRatio,
                 Filepath = FilePath,
-                InstrumentID = SelectedInstrument.ID.Value,
+                InstrumentID = SelectedInstrument.ID,
                 StrategyName = StrategyName,
             };
 
