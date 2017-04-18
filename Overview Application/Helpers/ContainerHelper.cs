@@ -10,7 +10,7 @@ namespace OverviewApp.Helpers
         public static void Configure(UnityContainer container, string connectionString)
         {
             container.RegisterType<MainViewModel>();
-            container.RegisterType<SummaryViewModel>();
+          
             container.RegisterType<AccountViewModel>();
             container.RegisterType<EquityViewModel>();
             // container.RegisterType<BarsViewModel>();}}

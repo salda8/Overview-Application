@@ -183,7 +183,6 @@
     <Compile Include="ViewModels\EquityViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MyBaseViewModel.cs" />
-    <Compile Include="ViewModels\SummaryViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Views\Account_View.xaml.cs">

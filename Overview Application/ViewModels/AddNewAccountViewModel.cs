@@ -30,13 +30,15 @@ namespace OverviewApp.ViewModels
         private int strategyId;
         private ReactiveList<Strategy> strategies;
         private ReactiveList<Account> accounts;
+        private bool isAccountNumberEditable;
+        private readonly Account originalAccount;
 
         public AddNewAccountViewModel(IMyDbContext context, Account account) : base(context)
         {
             Accounts = new ReactiveList<Account>(context.Account.ToList());
             Strategies = new ReactiveList<Strategy>(context.Strategy.ToList());
 
-            Account originalAccount = account;
+             originalAccount = account;
 
             if (account != null)
             {
@@ -52,13 +54,11 @@ namespace OverviewApp.ViewModels
                 StrategyId = originalAccount.StrategyID;
                 WindowTitle = "Edit Account";
                 AddNewEditText = "Edit";
-                IsAccountNumberEditable = false;
             }
             else
             {
                 WindowTitle = "Add Account";
                 AddNewEditText = "Add";
-                IsAccountNumberEditable = true;
             }
 
             ConfigureValidationRules();
@@ -66,8 +66,6 @@ namespace OverviewApp.ViewModels
         }
 
         public bool AccountIDVisibility { get; set; } = false;
-
-        public bool IsAccountNumberEditable { get; set; }
 
         #region Validation
 
@@ -92,9 +90,22 @@ namespace OverviewApp.ViewModels
             Validator.AddRule(nameof(AccountNumber),
                  () =>
                  {
-                     if (!IsAccountNumberEditable) return RuleResult.Valid();
-                     bool isAvailable =
-                          Context.Account.Any(x => x.AccountNumber == AccountNumber);
+                     bool isAvailable;
+                     if (originalAccount != null)
+                     {
+                         isAvailable =
+                             Context.Account.Any(
+                                 x =>
+                                     x.AccountNumber == AccountNumber &&
+                                     (originalAccount == null || x.ID != originalAccount.ID));
+                     }
+                     else
+                     {
+                         isAvailable= Context.Account.Any(
+                             x =>
+                                 x.AccountNumber == AccountNumber
+                                 );
+                     }
 
                      return RuleResult.Assert(!isAvailable,
                                               $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");

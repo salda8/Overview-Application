@@ -59,7 +59,7 @@ namespace OverviewApp.ViewModels
             Justification = "This non-static member is needed for data binding purposes.")]
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
-        public SummaryViewModel SummaryVm => ServiceLocator.Current.GetInstance<SummaryViewModel>();
+        
 
         public AccountViewModel AccountVm => ServiceLocator.Current.GetInstance<AccountViewModel>();
 

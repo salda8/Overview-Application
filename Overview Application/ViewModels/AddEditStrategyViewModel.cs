@@ -35,6 +35,7 @@ namespace OverviewApp.ViewModels
         private string validationErrorsString;
         private ReactiveCommand<Unit, Unit> saveCommand;
         private ReactiveCommand<Unit, Unit> openFileDialogCommand;
+        private bool isStrategyNameEditable;
 
         public AddEditStrategyViewModel(IMyDbContext context, Strategy strategy) : base(context)
         {
@@ -54,21 +55,17 @@ namespace OverviewApp.ViewModels
                 CalmariRatio = originalStrategy.CalmariRatio;
 
                 SelectedInstrument = originalStrategy.Instrument;
-                IsStrategyNameEditable = false;
             }
             else
             {
                 WindowTitle = "Add new Strategy";
                 AddNewEditText = "Add New";
                 addingNew = true;
-                IsStrategyNameEditable = true;
             }
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
         }
-
-        public bool IsStrategyNameEditable { get; set; }
 
         public List<Instrument> Instruments
             => instruments ?? (instruments = new List<Instrument>(Context.Instruments.ToList()));
@@ -223,11 +220,26 @@ namespace OverviewApp.ViewModels
             Validator.AddRequiredRule(() => StrategyName, "Strategy Name is required");
 
             Validator.AddRule((string)(nameof(StrategyName)),
-                 () =>
-                 {
-                     if (!IsStrategyNameEditable) return RuleResult.Valid();
-                     bool isNotAvailable =
-                          Context.Strategy.Any(x => x.StrategyName == StrategyName);
+                () =>
+                {
+
+                    bool isNotAvailable;
+                    if (originalStrategy != null)
+                    {
+
+
+                        isNotAvailable =
+                            Context.Strategy.Any(
+                                x =>
+                                    x.StrategyName == StrategyName &&
+                                    (x.ID != originalStrategy.ID));
+                    }
+                    else
+                    { isNotAvailable =
+                             Context.Strategy.Any(
+                                 x =>
+                                     x.StrategyName == StrategyName
+                                    );}
 
                      return RuleResult.Assert(!isNotAvailable,
                                               $"This strategy name {StrategyName} is present. Please choose a different one or edit existing one");

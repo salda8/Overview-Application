@@ -15,9 +15,7 @@
     <!--  controll will know what to display (on the view) when  -->
     <!--  it encounters a ViewModel  -->
 
-    <DataTemplate DataType="{x:Type vm:SummaryViewModel}">
-        <views1:SummaryView />
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:AccountViewModel}">
         <views1:AccountView />
     </DataTemplate>

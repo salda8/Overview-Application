@@ -68,7 +68,7 @@ namespace OverviewApp.ViewModels
 
         #region Properties
 
-        public SummaryViewModel SummaryVm => ServiceLocator.Current.GetInstance<SummaryViewModel>();
+        
 
         public AccountViewModel AccountVm => ServiceLocator.Current.GetInstance<AccountViewModel>();
 

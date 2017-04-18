@@ -25,8 +25,7 @@ namespace OverviewApp
                 .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber).Member(dest => dest.Symbol, src => src.Instrument.Symbol);
             Mapper.Register<TradeHistory, TradeHistoryPl>()
                 .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber).Member(dest => dest.Symbol, src => src.Instrument.Symbol);
-            Mapper.Register<PortfolioSummary, PortfolioSummaryPl>()
-                .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber);
+            
             Mapper.Register<AccountSummary, AccountSummaryPl>()
                 .Member(dest => dest.AccountNumber, src => src.Account.AccountNumber);
             Mapper.Register<Equity, EquityPl>()
