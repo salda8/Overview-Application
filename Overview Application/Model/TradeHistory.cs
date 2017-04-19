@@ -10,13 +10,13 @@ namespace OverviewApp.Model
         public int ID { get; set; }
 
         //[DisplayName("Execution ID")]
-        public string ExecId { get; set; }
+        public string ExecutionID { get; set; }
 
         [DisplayName("Quantity")]
         public decimal Quantity { get; set; }
 
         [DisplayName("Side")]
-        public TradeDirection Side { get; set; }
+        public TradeDirection Side { get; set; }    
 
         [DisplayName("Symbol")]
         public string Symbol { get; set; }
@@ -33,7 +33,7 @@ namespace OverviewApp.Model
         public decimal RealizedPnL { get; set; }
 
         [DisplayName("Execution Time")]
-        public DateTime ExecTime { get; set; }
+        public DateTime ExecutionTime { get; set; }
 
         [DisplayName("Account Number")]
         public string AccountNumber { get; set; }

@@ -1,18 +1,18 @@
-﻿<Window x:Class="OverviewApp.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ignore="http://www.ignore.com"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:OverviewApp.Converters"
-        Title="Managing Application"
-        Width="800"
-        Height="800"
-        DataContext="{Binding Main,
-                              Source={StaticResource Locator}}"
-        Icon="../icon.ico"
-        WindowState="Maximized"
-        mc:Ignorable="d ignore">
+﻿<Window
+    x:Class="OverviewApp.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:OverviewApp.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ignore="http://www.ignore.com"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Managing Application"
+    Width="800"
+    Height="800"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    Icon="../icon.ico"
+    WindowState="Maximized"
+    mc:Ignorable="d ignore">
 
     <Window.Resources>
         <converters:LogItemToColorConverter x:Key="LogColorConverter" />
@@ -22,11 +22,12 @@
     <Grid x:Name="LayoutRoot">
         <DockPanel>
 
-            <Menu HorizontalAlignment="Left"
-                  Background="White"
-                  BorderBrush="Black"
-                  DockPanel.Dock="Top"
-                  IsTabStop="False">
+            <Menu
+                HorizontalAlignment="Left"
+                Background="White"
+                BorderBrush="Black"
+                DockPanel.Dock="Top"
+                IsTabStop="False">
                 <!--  Default application commands:  -->
                 <MenuItem Header="_Default commands" IsTabStop="False">
                     <MenuItem Command="ApplicationCommands.Copy" />
@@ -38,11 +39,13 @@
                 </MenuItem>-->
                 <MenuItem Header="Add New" IsTabStop="false">
 
-                    <MenuItem Command="{Binding AddNewAccountCommand}" Header="Account">
-                    </MenuItem>
-                    <MenuItem Command="{Binding AddNewStrategyCommand}" Header="Strategy"></MenuItem>
+                    <MenuItem Command="{Binding AddNewAccountCommand}" Header="Account" />
+                    <MenuItem Command="{Binding AddNewStrategyCommand}" Header="Strategy" />
                 </MenuItem>
-                <MenuItem Header="EditStrategy" ItemsSource="{Binding StrategyList, Mode=OneWay}" DisplayMemberPath="StrategyName">
+                <MenuItem
+                    DisplayMemberPath="StrategyName"
+                    Header="EditStrategy"
+                    ItemsSource="{Binding StrategyList, Mode=OneWay}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="Command" Value="{Binding DataContext.AddNewStrategyCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
@@ -50,7 +53,10 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
-                <MenuItem Header="EditAccount" ItemsSource="{Binding AccountsList, Mode=OneWay}" DisplayMemberPath="AccountNumber">
+                <MenuItem
+                    DisplayMemberPath="AccountNumber"
+                    Header="EditAccount"
+                    ItemsSource="{Binding AccountsList, Mode=OneWay}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="Command" Value="{Binding DataContext.AddNewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type MenuItem}, AncestorLevel=1}}" />
@@ -65,13 +71,15 @@
             <!--  Messenger, and it'll update this. Look at the view model  -->
             <!--  constructor for more details  -->
             <!--    -->
-            <StatusBar Height="30"
-                       DockPanel.Dock="Bottom"
-                       IsTabStop="False">
+            <StatusBar
+                Height="30"
+                DockPanel.Dock="Bottom"
+                IsTabStop="False">
                 <StatusBarItem HorizontalAlignment="Right">
-                    <TextBlock Name="StatBarText"
-                               Margin="0 0 30 0"
-                               Text="{Binding StatusBarMessage}" />
+                    <TextBlock
+                        Name="StatBarText"
+                        Margin="0,0,30,0"
+                        Text="{Binding StatusBarMessage}" />
                 </StatusBarItem>
             </StatusBar>
 
@@ -113,7 +121,7 @@
                         <ListBox x:Name="RequestListBox" ItemsSource="{Binding LogMessages}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource LogInfoToStringConverter}}" Foreground="{Binding Converter={StaticResource LogColorConverter}}" />
+                                    <TextBlock Foreground="{Binding Converter={StaticResource LogColorConverter}}" Text="{Binding Converter={StaticResource LogInfoToStringConverter}}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

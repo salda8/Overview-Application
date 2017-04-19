@@ -331,7 +331,10 @@ namespace OverviewApp.ViewModels
                     {
                         Application.Current.Dispatcher.Invoke(() => EquityCollection.Add(equity));
                     }
+
+                    Application.Current.Dispatcher.Invoke(() => UpdateModel());
                 }
+
             });
 
             
@@ -453,7 +456,7 @@ namespace OverviewApp.ViewModels
 
         private async void ReloadDataTimerOnElapsed(object sender, EventArgs e)
         {
-            await Task.Run(() => ReloadDataCommand.Execute()).ConfigureAwait(true);
+            await Task.Run(() => ReloadDataCommand.Execute()).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -501,16 +504,7 @@ namespace OverviewApp.ViewModels
                     //filteredEquity.Add(src);
                 }
             }
-            else if (e.Item is PortfolioSummaryPl)
-            {
-                var src = (PortfolioSummaryPl)e.Item;
-                if (src == null)
-                    e.Accepted = false;
-                else if (string.CompareOrdinal(SelectedAccount, src.AccountNumber) != 0)
-                {
-                    e.Accepted = false;
-                }
-            }
+           
         }
 
         /// <summary>
@@ -575,7 +569,7 @@ namespace OverviewApp.ViewModels
                 if (src == null)
                     e.Accepted = false;
                 //else if (string.Compare(SelectedAccount, src.Account) != 0)
-                else if (DateTime.Compare(SelectedEndDate, src.ExecTime) <= 0)
+                else if (DateTime.Compare(SelectedEndDate, src.ExecutionTime) <= 0)
                     e.Accepted = false;
             }
             else if (e.Item is Equity)
@@ -626,7 +620,7 @@ namespace OverviewApp.ViewModels
                 var src = (TradeHistory)e.Item;
                 if (src == null)
                     e.Accepted = false;
-                else if (DateTime.Compare(SelectedStartDate, src.ExecTime) >= 0)
+                else if (DateTime.Compare(SelectedStartDate, src.ExecutionTime) >= 0)
                     e.Accepted = false;
             }
             else if (e.Item is Equity)

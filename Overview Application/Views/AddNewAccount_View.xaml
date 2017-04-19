@@ -50,14 +50,7 @@
             <Label MinWidth="105" Content="Initial Balance" />
             <TextBox MinWidth="150" Text="{Binding InitialBalance}" />
         </StackPanel>
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
-            <Label MinWidth="105" Content="IP Address" />
-            <TextBox MinWidth="150" Text="{Binding IpAddress, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-        </StackPanel>
-        <StackPanel Grid.Row="6" Orientation="Horizontal">
-            <Label MinWidth="105" Content="Port" />
-            <TextBox MinWidth="150" Text="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-        </StackPanel>
+
         <StackPanel Grid.Row="7" Orientation="Horizontal">
             <Label MinWidth="105" Content="Strategy" />
             <ComboBox
@@ -69,6 +62,7 @@
         </StackPanel>
         <Button
             Grid.Row="8"
+            Height="20"
             MaxWidth="55"
             Margin="5"
             Command="{Binding SaveCommand}"
@@ -109,6 +103,7 @@
                 VerticalAlignment="Center"
                 Visibility="Collapsed">
                 <TextBlock
+                    Width="250"
                     FontSize="14"
                     Foreground="Green"
                     Text="Congratulations! You successfully added new account!" />

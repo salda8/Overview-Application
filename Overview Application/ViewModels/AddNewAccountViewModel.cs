@@ -8,13 +8,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Common.EntityModels;
 using Common.Interfaces;
+using OverviewApp.Model;
 
 namespace OverviewApp.ViewModels
 {
     public class AddNewAccountViewModel :ValidateableBaseViewModel
     {
-        private int? port = 4001;
-        private string ipAddress = "127.0.0.1";
+      
         private decimal? initialBalance = 100000;
 
         private string brokerName = "Interactive Brokers";
@@ -49,8 +49,7 @@ namespace OverviewApp.ViewModels
                 BrokerName = originalAccount.BrokerName;
 
                 InitialBalance = originalAccount.InitialBalance;
-                IpAddress = originalAccount.IpAddress;
-                Port = originalAccount.Port;
+                
                 StrategyId = originalAccount.StrategyID;
                 WindowTitle = "Edit Account";
                 AddNewEditText = "Edit";
@@ -96,8 +95,8 @@ namespace OverviewApp.ViewModels
                          isAvailable =
                              Context.Account.Any(
                                  x =>
-                                     x.AccountNumber == AccountNumber &&
-                                     (originalAccount == null || x.ID != originalAccount.ID));
+                                     x.AccountNumber == AccountNumber 
+                                     && x.ID != originalAccount.ID);
                      }
                      else
                      {
@@ -111,17 +110,7 @@ namespace OverviewApp.ViewModels
                                               $"This account name {AccountNumber} is present. Please choose a different one or edit existing one");
                  });
 
-            Validator.AddRequiredRule(() => IpAddress, "IP Address is required.");
-            Validator.AddRule((string)(nameof(IpAddress)),
-                () =>
-                {
-                    const string regexPattern =
-                        @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
-                    return RuleResult.Assert(Regex.IsMatch(IpAddress, regexPattern),
-                        "Ip address must be a valid.");
-                });
-
-            Validator.AddRequiredRule(() => Port, "Port is required");
+           
             Validator.AddRequiredRule(() => StrategyId, "Strategy is required");
         }
 
@@ -165,8 +154,7 @@ namespace OverviewApp.ViewModels
                 AccountNumber = accountNumber,
                 BrokerName = brokerName,
                 InitialBalance = initialBalance.GetValueOrDefault(),
-                IpAddress = ipAddress,
-                Port = port ?? 0,
+               
                 StrategyID = StrategyId
             };
 
@@ -229,26 +217,7 @@ namespace OverviewApp.ViewModels
             set { this.RaiseAndSetIfChanged(ref windowTitle, value); }
         }
 
-        public int? Port
-        {
-            get { return port; }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref port, value);
-                Validator.Validate((nameof(Port)));
-            }
-        }
-
-        public string IpAddress
-        {
-            get { return ipAddress; }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref ipAddress, value);
-                Validator.Validate((nameof(IpAddress)));
-            }
-        }
-
+        
         public decimal? InitialBalance
         {
             get { return initialBalance; }

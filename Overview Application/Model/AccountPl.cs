@@ -13,10 +13,6 @@ namespace OverviewApp.Model
 
         public string BrokerName { get; set; }
 
-        public int Port { get; set; }
-
-        public string IpAddress { get; set; }
-
         public decimal InitialBalance { get; set; }
 
         public virtual Strategy Strategy { get; set; }

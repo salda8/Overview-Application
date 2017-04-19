@@ -22,10 +22,7 @@ namespace OverviewApp.Model
 
         [DisplayName("Market Price")]
         public decimal MarketPrice { get; set; }
-
-        [DisplayName("Market Value")]
-        public decimal MarketValue { get; set; }
-
+        
         [DisplayName("Average Price")]
         public decimal AveragePrice { get; set; }
 
